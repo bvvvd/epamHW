@@ -59,8 +59,25 @@ public class IntSetTest {
     }
 
     @Test
-    public void remove() throws Exception {
+    public void testRemoveNegativeNumber() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(-10);
+        set.remove(-10);
+        assertFalse(set.contains(-10));
+        set.add(-100);
+        set.remove(-100);
+        assertFalse(set.contains(-100));
+    }
 
+    @Test
+    public void testRemoveNonNegativeNumber() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(0);
+        set.remove(0);
+        assertFalse(set.contains(0));
+        set.add(100);
+        set.remove(100);
+        assertFalse(set.contains(100));
     }
 
     @Test

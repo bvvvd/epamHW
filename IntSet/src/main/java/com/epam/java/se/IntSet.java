@@ -73,19 +73,33 @@ public class IntSet {
             final long result = negativeData[frameOfValue] & mask;
             return result != 0;
         } else {
-            final long mask = 1L << value;
             int frameOfValue = value / 64;
             if (frameOfValue >= nonNegativeData.length) {
                 return false;
             }
+            final long mask = 1L << value;
             final long result = nonNegativeData[frameOfValue] & mask;
             return result != 0;
         }
     }
 
     public void remove(int value) {
-        // TODO: 19.02.2017 implement
-        throw new UnsupportedOperationException();
+        if (value < 0) {
+            int absoluteValue = Math.abs(value);
+            int frameOfValue = (absoluteValue - 1) / 64;
+            if (frameOfValue >= getCapacityOfNegativeData()) {
+                return;
+            }
+            final long mask = 1L << (absoluteValue - 1);
+            negativeData[frameOfValue] &= ~mask;
+        }else {
+            int frameOfValue = value / 64;
+            if (frameOfValue >= getCapacityOfNonNegativeData()) {
+                return;
+            }
+            final long mask = 1L << value;
+            nonNegativeData[frameOfValue] &= ~mask;
+        }
     }
 
     public IntSet union(IntSet anotherSet) {
