@@ -134,7 +134,7 @@ public class IntSetTest {
         try {
             final IntSet united = set.union(null);
         } catch (IllegalArgumentException e) {
-            System.out.println("at least it's not NPE now");
+            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
         }
     }
 
@@ -180,13 +180,62 @@ public class IntSetTest {
         try {
             final IntSet intersection = set.intersection(null);
         } catch (IllegalArgumentException e) {
-            System.out.println("at least it's not NPE now");
+            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
         }
     }
 
     @Test
-    public void difference() throws Exception {
+    public void testDifferenceCorrectArgument() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(-5);
+        set.add(5);
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(5);
+        final IntSet difference1 = set.difference(anotherSet);
+        for (int i = -64; i < 64; i++) {
+            if (i == -5) {
+                assertTrue(difference1.contains(i));
+            } else {
+                assertFalse(difference1.contains(i));
+            }
+        }
+    }
 
+    @Test
+    public void testDifferenceEmptyArgument() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(-5);
+        set.add(5);
+        final IntSet anotherSet = new IntSet();
+        final IntSet difference1 = set.difference(anotherSet);
+        for (int i = -64; i < 64; i++) {
+            if (i == -5 || i == 5) {
+                assertTrue(difference1.contains(i));
+            } else {
+                assertFalse(difference1.contains(i));
+            }
+        }
+    }
+
+    @Test
+    public void testDifferenceEmptyCurrentSet() throws Exception {
+        final IntSet set = new IntSet();
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(5);
+        final IntSet difference1 = set.difference(anotherSet);
+        for (int i = -64; i < 64; i++) {
+            assertFalse(difference1.contains(i));
+        }
+    }
+
+    @Test
+    public void testDifferenceNullArgumentThrowsIllegalArgumentException() throws Exception {
+        final IntSet set = new IntSet();
+        try {
+            final IntSet intersection = set.intersection(null);
+        } catch (IllegalArgumentException e) {
+            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
+        }
     }
 
     @Test

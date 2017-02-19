@@ -167,8 +167,21 @@ public class IntSet {
     }
 
     public IntSet difference(IntSet anotherSet) {
-        // TODO: 19.02.2017 implement
-        throw new UnsupportedOperationException();
+        final long[] resultingSetNonNegativeData = new long[getCapacityOfNonNegativeData()];
+        final int frameOfDifferenceNonNegativeData =
+                Math.min(this.getCapacityOfNonNegativeData(), anotherSet.getCapacityOfNonNegativeData());
+        for (int i = 0; i < frameOfDifferenceNonNegativeData; i++) {
+            resultingSetNonNegativeData[i] = this.nonNegativeData[i] & ~anotherSet.nonNegativeData[i];
+        }
+
+        final long[] resultingSetNegativeData = new long[getCapacityOfNegativeData()];
+        final int frameOfDifferenceNegativeData =
+                Math.min(this.getCapacityOfNegativeData(), anotherSet.getCapacityOfNegativeData());
+        for (int i = 0; i < frameOfDifferenceNegativeData; i++) {
+            resultingSetNegativeData[i] = this.negativeData[i] & ~anotherSet.negativeData[i];
+        }
+
+        return new IntSet(resultingSetNegativeData, resultingSetNonNegativeData);
     }
 
     public boolean isSubsetOf(IntSet anotherSet) {
