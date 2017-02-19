@@ -129,18 +129,59 @@ public class IntSetTest {
     }
 
     @Test
-    public void testUnionNullArgument() throws Exception {
+    public void testUnionNullArgumentThrowsIllegalArgumentException() throws Exception {
         final IntSet set = new IntSet();
         try {
             final IntSet united = set.union(null);
-        } catch (NullPointerException e) {
-            System.out.println("dunno what to do with NPE in method's argument");
+        } catch (IllegalArgumentException e) {
+            System.out.println("at least it's not NPE now");
         }
     }
 
     @Test
-    public void intersection() throws Exception {
+    public void testIntersectionCorrectArgument() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(-10);
+        set.add(10);
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(-100);
+        anotherSet.add(100);
+        final IntSet intersection = set.intersection(anotherSet);
+        for (int i = -100; i <= 100; i++) {
+            assertFalse(intersection.contains(i));
+        }
+    }
 
+    @Test
+    public void testIntersectionEmptySetArgument() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(5);
+        final IntSet anotherSet = new IntSet();
+        final IntSet intersection = set.intersection(anotherSet);
+        for (int i = -64; i < 64; i++) {
+            assertFalse(intersection.contains(i));
+        }
+    }
+
+    @Test
+    public void testIntersectionEmptyCurrentSet() throws Exception {
+        final IntSet set = new IntSet();
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(5);
+        final IntSet intersection = set.intersection(anotherSet);
+        for (int i = -64; i < 64; i++) {
+            assertFalse(intersection.contains(i));
+        }
+    }
+
+    @Test
+    public void testIntersectionNullArgumentThrowsIllegalArgumentException() throws Exception {
+        final IntSet set = new IntSet();
+        try {
+            final IntSet intersection = set.intersection(null);
+        } catch (IllegalArgumentException e) {
+            System.out.println("at least it's not NPE now");
+        }
     }
 
     @Test

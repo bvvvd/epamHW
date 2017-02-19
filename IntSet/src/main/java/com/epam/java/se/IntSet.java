@@ -1,7 +1,6 @@
 package com.epam.java.se;
 
-import com.sun.istack.internal.NotNull;
-
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
@@ -105,7 +104,7 @@ public class IntSet {
     }
 
 
-    public IntSet union( IntSet anotherSet) {
+    public IntSet union(@Nonnull IntSet anotherSet) {
 
         final int resultingSetCopyOfNonNegativeDataSize =
                 Math.min(this.getCapacityOfNonNegativeData(), anotherSet.getCapacityOfNonNegativeData());
@@ -147,9 +146,24 @@ public class IntSet {
 
     }
 
-    public IntSet intersection(IntSet anotherSet) {
-        // TODO: 19.02.2017 implement
-        throw new UnsupportedOperationException();
+    public IntSet intersection(@Nonnull IntSet anotherSet) {
+        final int resultingSetNonNegativeDataSize =
+                Math.min(this.getCapacityOfNonNegativeData(), anotherSet.getCapacityOfNonNegativeData());
+
+        long[] resultingSetNonNegativeData = new long[resultingSetNonNegativeDataSize];
+            for (int i = 0; i < resultingSetNonNegativeDataSize; i++) {
+                resultingSetNonNegativeData[i] = this.nonNegativeData[i] & anotherSet.nonNegativeData[i];
+            }
+
+        final int resultingSetNegativeDataSize =
+                Math.min(this.getCapacityOfNegativeData(), anotherSet.getCapacityOfNegativeData());
+
+        long[] resultingSetNegativeData = new long[resultingSetNegativeDataSize];
+            for (int i = 0; i < resultingSetNegativeDataSize; i++) {
+                resultingSetNegativeData[i] = this.negativeData[i] & anotherSet.nonNegativeData[i];
+            }
+
+        return new IntSet(resultingSetNegativeData, resultingSetNonNegativeData);
     }
 
     public IntSet difference(IntSet anotherSet) {
