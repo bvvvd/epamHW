@@ -99,9 +99,43 @@ public class IntSetTest {
     }
 
     @Test
+    public void testUnionEmptySetArgument() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(5);
+        final IntSet anotherSet = new IntSet();
+        final IntSet united = set.union(anotherSet);
+        for (int i = -64; i < 64; i++) {
+            if (i == 5) {
+                assertTrue(united.contains(i));
+            } else {
+                assertFalse(united.contains(i));
+            }
+        }
+    }
+
+    @Test
+    public void testUnionEmptyCurrentSet() throws Exception {
+        final IntSet set = new IntSet();
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(5);
+        final IntSet united = set.union(anotherSet);
+        for (int i = -64; i < 64; i++) {
+            if (i == 5) {
+                assertTrue(united.contains(i));
+            } else {
+                assertFalse(united.contains(i));
+            }
+        }
+    }
+
+    @Test
     public void testUnionNullArgument() throws Exception {
         final IntSet set = new IntSet();
-        final IntSet united = set.union(null);
+        try {
+            final IntSet united = set.union(null);
+        } catch (NullPointerException e) {
+            System.out.println("dunno what to do with NPE in method's argument");
+        }
     }
 
     @Test

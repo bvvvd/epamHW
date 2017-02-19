@@ -105,7 +105,8 @@ public class IntSet {
     }
 
 
-    public IntSet union(IntSet anotherSet) {
+    public IntSet union( IntSet anotherSet) {
+
         final int resultingSetCopyOfNonNegativeDataSize =
                 Math.min(this.getCapacityOfNonNegativeData(), anotherSet.getCapacityOfNonNegativeData());
 
@@ -143,6 +144,7 @@ public class IntSet {
         }
 
         return new IntSet(resultingSetNegativeData, resultingSetNonNegativeData);
+
     }
 
     public IntSet intersection(IntSet anotherSet) {
