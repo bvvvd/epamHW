@@ -81,8 +81,27 @@ public class IntSetTest {
     }
 
     @Test
-    public void union() throws Exception {
+    public void testUnionCorrectArgument() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(-10);
+        set.add(10);
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(-100);
+        anotherSet.add(100);
+        final IntSet unitedSet = set.union(anotherSet);
+        for (int i = -100; i <= 100; i++) {
+            if (i == -100 || i == -10 || i == 10 || i == 100) {
+                assertTrue(unitedSet.contains(i));
+            } else {
+                assertFalse(unitedSet.contains(i));
+            }
+        }
+    }
 
+    @Test
+    public void testUnionNullArgument() throws Exception {
+        final IntSet set = new IntSet();
+        final IntSet united = set.union(null);
     }
 
     @Test
