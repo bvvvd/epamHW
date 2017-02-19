@@ -13,7 +13,7 @@ public class IntSet {
 
     private IntSet(long[] negativeData, long[] nonNegativeData) {
         this.negativeData = Arrays.copyOf(negativeData, negativeData.length);
-        this.nonNegativeData = Arrays.copyOf(nonNegativeData,nonNegativeData.length);
+        this.nonNegativeData = Arrays.copyOf(nonNegativeData, nonNegativeData.length);
     }
 
     public IntSet() {
@@ -28,9 +28,25 @@ public class IntSet {
             ensureCapacityOfNegativeData(frameOfValue + 1);
             final long mask = 1L << (absoluteValue - 1);
             negativeData[frameOfValue] |= mask;
-        }else {
-
+        } else {
+            int frameOfValue = value / 64;
+            ensureCapacityOfNonNegativeData(frameOfValue + 1);
+            final long mask = 1L << value;
+            nonNegativeData[frameOfValue] |= mask;
         }
+    }
+
+    private void ensureCapacityOfNonNegativeData(int requiredCapacityOfNonNegativeData) {
+        if (requiredCapacityOfNonNegativeData <= getCapacityOfNonNegativeData()) {
+            return;
+        }
+        final int newCapacityOfNonNegativeData = Math.
+                max(requiredCapacityOfNonNegativeData, (getCapacityOfNonNegativeData() * 3) / 2 + 1);
+        nonNegativeData = Arrays.copyOf(nonNegativeData, newCapacityOfNonNegativeData);
+    }
+
+    private int getCapacityOfNonNegativeData() {
+        return nonNegativeData.length;
     }
 
     private void ensureCapacityOfNegativeData(int requiredCapacityOfNegativeData) {
@@ -50,14 +66,20 @@ public class IntSet {
         if (value < 0) {
             int absoluteValue = Math.abs(value);
             int frameOfValue = (absoluteValue - 1) / 64;
-            if (frameOfValue > getCapacityOfNegativeData()) {
+            if (frameOfValue >= getCapacityOfNegativeData()) {
                 return false;
             }
             final long mask = 1L << (absoluteValue - 1);
             final long result = negativeData[frameOfValue] & mask;
             return result != 0;
-        }else {
-            return false;
+        } else {
+            final long mask = 1L << value;
+            int frameOfValue = value / 64;
+            if (frameOfValue >= nonNegativeData.length) {
+                return false;
+            }
+            final long result = nonNegativeData[frameOfValue] & mask;
+            return result != 0;
         }
     }
 
