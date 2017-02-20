@@ -239,8 +239,45 @@ public class IntSetTest {
     }
 
     @Test
-    public void isSubsetOf() throws Exception {
+    public void testIsSubsetOfCorrectArguments() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(-5);
+        set.add(-100);
+        set.add(100);
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(-5);
+        anotherSet.add(-100);
+        anotherSet.add(100);
+        anotherSet.add(200);
+        assertTrue(set.isSubsetOf(anotherSet));
+        assertFalse(anotherSet.isSubsetOf(set));
+    }
 
+    @Test
+    public void testIsSubsetOfEmptyArgument() throws Exception {
+        final IntSet set = new IntSet();
+        set.add(-5);
+        set.add(5);
+        final IntSet anotherSet = new IntSet();
+        assertFalse(set.isSubsetOf(anotherSet));
+    }
+
+    @Test
+    public void testIsSubsetOfEmptyCurrentSet() throws Exception {
+        final IntSet set = new IntSet();
+        final IntSet anotherSet = new IntSet();
+        anotherSet.add(5);
+        assertTrue(set.isSubsetOf(anotherSet));
+    }
+
+    @Test
+    public void testIsSubsetOfNullArgumentThrowsIllegalArgumentException() throws Exception {
+        final IntSet set = new IntSet();
+        try {
+            final boolean isSubset = set.isSubsetOf(null);
+        } catch (IllegalArgumentException e) {
+            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
+        }
     }
 
 }
