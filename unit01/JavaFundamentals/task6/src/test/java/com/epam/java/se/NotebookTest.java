@@ -51,7 +51,7 @@ public class NotebookTest {
         String testNote = "test note";
         Notebook notebook = new Notebook();
         notebook.addNote(testHeader, testNote);
-        assertEquals(notebook.getNote(0).entireNoteToString(), testHeader + " " + testNote);
+        assertEquals(notebook.getNote(0).entireNoteToString(), testHeader + ": " + testNote);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class NotebookTest {
         String testNote = "test note";
         Notebook notebook = new Notebook();
         notebook.addNote(new Note(testHeader, testNote));
-        assertEquals(notebook.getNote(0).entireNoteToString(), testHeader + " " + testNote);
+        assertEquals(notebook.getNote(0).entireNoteToString(), testHeader + ": " + testNote);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class NotebookTest {
         notebook.addNote("testHeader", " testNote");
         notebook.addNote("testHeader1", " testNote1");
         notebook.removeNote(0);
-        assertEquals(notebook.getNote(0).entireNoteToString(), "testHeader1  testNote1");
+        assertEquals(notebook.getNote(0).entireNoteToString(), "testHeader1:  testNote1");
         notebook.removeNote(0);
         assertEquals(notebook.getNote(0), null);
     }
@@ -92,7 +92,7 @@ public class NotebookTest {
         Notebook notebook = new Notebook();
         notebook.addNote("testHeader", "testNote");
         notebook.editNote(0, "testHeaderEdited", "testNoteEdited");
-        assertEquals(notebook.getNote(0).entireNoteToString(), "testHeaderEdited testNoteEdited");
+        assertEquals(notebook.getNote(0).entireNoteToString(), "testHeaderEdited: testNoteEdited");
     }
 
     @Test
@@ -109,7 +109,16 @@ public class NotebookTest {
         try {
             notebook.editNote(0, null, null);
         } catch (IllegalArgumentException e) {
-            
+
         }
+    }
+
+    @Test
+    public void testShowAllNotes() throws Exception {
+        Notebook notebook = new Notebook();
+        notebook.addNote("firstHeader", "firstNote");
+        notebook.addNote("secondHeader", "secondNote");
+        notebook.addNote("thirdHeader", "thirdNote");
+        notebook.showAllNotes();
     }
 }

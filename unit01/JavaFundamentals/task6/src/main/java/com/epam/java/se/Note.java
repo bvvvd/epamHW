@@ -3,17 +3,31 @@ package com.epam.java.se;
 import javax.annotation.Nonnull;
 
 /**
- * Created by chris on 20.02.2017.
+ * Stores a notes in format header + note
+ *
+ * @author Valeriy Burmistrov
  */
 public class Note {
 
+    /**
+     * String of notes header
+     */
     private String header;
 
-    private String note;
+    /**
+     * String of notes text
+     */
+    private String noteText;
 
+    /**
+     * Create new Note with specified header and note
+     *
+     * @param header specified header of the Note
+     * @param note specified text of the Note
+     */
     public Note(@Nonnull String header, @Nonnull String note) {
         this.header = header;
-        this.note = note;
+        this.noteText = note;
     }
 
     public String getHeaderText() {
@@ -21,10 +35,15 @@ public class Note {
     }
 
     public String getNoteText() {
-        return this.note;
+        return this.noteText;
     }
 
+    /**
+     * concatenate header and text of the note to a general string
+     *
+     * @return result of concatenation
+     */
     public String entireNoteToString() {
-        return getHeaderText() + " " + getNoteText();
+        return getHeaderText() + ": " + getNoteText();
     }
 }
