@@ -17,6 +17,15 @@ public class NotebookTest {
     }
 
     @Test
+    public void testAddNoteToNotebookByNoteNewNote() throws Exception {
+        String testHeader = "test header";
+        String testNote = "test note";
+        Notebook notebook = new Notebook();
+        Note note = new Note(testHeader, testNote);
+        notebook.addNote(note);
+    }
+
+    @Test
     public void removeNote() throws Exception {
 
     }
