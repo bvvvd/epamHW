@@ -66,4 +66,19 @@ public class NotebookTest {
         notebook.removeNote(15);
     }
 
+    @Test
+    public void testEditExistingNote() throws Exception {
+        Notebook notebook = new Notebook();
+        notebook.addNote("testHeader", "testNote");
+        notebook.editNote(0,"testHeaderEdited","testNoteEdited");
+        assertEquals(notebook.getNote(0).entireNoteToString(), "testHeaderEdited testNoteEdited");
+    }
+
+    @Test
+    public void testEditNotExistingNoteDoesNothing() throws Exception {
+        Notebook notebook = new Notebook();
+        notebook.editNote(15, "testHeaderEdited", "testNoteEdited");
+        notebook.editNote(0, "testHeaderEdited", "testNoteEdited");
+    }
+
 }

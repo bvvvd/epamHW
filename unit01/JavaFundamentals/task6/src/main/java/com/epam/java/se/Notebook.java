@@ -17,11 +17,6 @@ public class Notebook {
         size = 0;
     }
 
-    public Notebook(Note[] notes) {
-        this.notes = notes;
-        size = notes.length;
-    }
-
     public void addNote(Note note) {
         ensureCapacity(size + 1);
         notes[size] = note;
@@ -62,5 +57,12 @@ public class Notebook {
 
     private int getIndexOfTheLastElementSize() {
         return size - 1;
+    }
+
+    public void editNote(int index, String headerCorrection, String noteCorrection) {
+        if (index < 0 || index > size) {
+            return;
+        }
+        this.notes[index] = new Note(headerCorrection, noteCorrection);
     }
 }
