@@ -1,6 +1,7 @@
 package com.epam.java.se;
 
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
@@ -17,13 +18,13 @@ public class Notebook {
         size = 0;
     }
 
-    public void addNote(Note note) {
+    public void addNote(@Nonnull Note note) {
         ensureCapacity(size + 1);
         notes[size] = note;
         size += 1;
     }
 
-    public void addNote(String header, String note) {
+    public void addNote(@Nonnull String header, @Nonnull String note) {
         Note noteToAdd = new Note(header, note);
         this.addNote(noteToAdd);
     }
@@ -59,8 +60,8 @@ public class Notebook {
         return size - 1;
     }
 
-    public void editNote(int index, String headerCorrection, String noteCorrection) {
-        if (index < 0 || index > size) {
+    public void editNote(int index, @Nonnull String headerCorrection, @Nonnull String noteCorrection) {
+        if (index < 0 || index >= size) {
             return;
         }
         this.notes[index] = new Note(headerCorrection, noteCorrection);
