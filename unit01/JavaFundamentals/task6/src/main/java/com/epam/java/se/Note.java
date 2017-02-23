@@ -14,15 +14,15 @@ public class Note {
         this.note = note;
     }
 
-    public String getHeader() {
+    public String getHeaderText() {
         return this.header;
     }
 
-    public String getNote() {
+    public String getNoteText() {
         return this.note;
     }
 
     public String entireNoteToString() {
-        return getHeader() + " " + getNote();
+        return getHeaderText() + " " + getNoteText();
     }
 }

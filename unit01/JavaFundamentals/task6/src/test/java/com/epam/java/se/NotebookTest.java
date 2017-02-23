@@ -21,8 +21,25 @@ public class NotebookTest {
         String testHeader = "test header";
         String testNote = "test note";
         Notebook notebook = new Notebook();
-        Note note = new Note(testHeader, testNote);
-        notebook.addNote(note);
+        notebook.addNote(new Note(testHeader, testNote));
+    }
+
+    @Test
+    public void testNoteAddedByHeaderAndNoteIsContainedInNotebook() throws Exception {
+        String testHeader = "test header";
+        String testNote = "test note";
+        Notebook notebook = new Notebook();
+        notebook.addNote(testHeader, testNote);
+        assertEquals(notebook.getNote(0).entireNoteToString(), testHeader + " " + testNote);
+    }
+
+    @Test
+    public void testNoteAddedByNewNoteIsContainedInNotebook() throws Exception {
+        String testHeader = "test header";
+        String testNote = "test note";
+        Notebook notebook = new Notebook();
+        notebook.addNote(new Note(testHeader, testNote));
+        assertEquals(notebook.getNote(0).entireNoteToString(), testHeader + " " + testNote);
     }
 
     @Test

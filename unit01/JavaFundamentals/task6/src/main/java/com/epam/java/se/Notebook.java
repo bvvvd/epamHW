@@ -37,8 +37,8 @@ public class Notebook {
         if (requiredCapacity <= getCapacity()) {
             return;
         }
-        final int newCapacity = Math.max(requiredCapacity,(getCapacity() * 3) / 2 + 1);
-        notes = Arrays.copyOf(notes,newCapacity);
+        final int newCapacity = Math.max(requiredCapacity, (getCapacity() * 3) / 2 + 1);
+        notes = Arrays.copyOf(notes, newCapacity);
     }
 
     private int getCapacity() {
@@ -50,5 +50,9 @@ public class Notebook {
             this.notes[i] = this.notes[i + 1];
         }
         size -= 1;
+    }
+
+    public Note getNote(int index) {
+        return this.notes[index];
     }
 }
