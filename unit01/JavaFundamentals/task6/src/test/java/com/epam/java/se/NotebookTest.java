@@ -43,8 +43,27 @@ public class NotebookTest {
     }
 
     @Test
-    public void removeNote() throws Exception {
+    public void testRemoveAddedNote() throws Exception {
+        Notebook notebook = new Notebook();
+        notebook.addNote("testHeader", " testNote");
+        notebook.addNote("testHeader1", " testNote1");
+        notebook.removeNote(0);
+        assertEquals(notebook.getNote(0).entireNoteToString(), "testHeader1  testNote1");
+        notebook.removeNote(0);
+        assertEquals(notebook.getNote(0), null);
+    }
 
+    @Test
+    public void testTryingRemoveNoteFromEmptyNotebookDoesNothing() throws Exception {
+        Notebook notebook = new Notebook();
+        notebook.removeNote(0);
+    }
+
+    @Test
+    public void testRemoveNoteWithIndexMoreThanExistingTestDoesNothing() throws Exception {
+        Notebook notebook = new Notebook();
+        notebook.removeNote(1);
+        notebook.removeNote(15);
     }
 
 }

@@ -46,13 +46,21 @@ public class Notebook {
     }
 
     public void removeNote(int index) {
-        for (int i = index; i < size; i++) {
+        if (size == 0) {
+            return;
+        }
+        for (int i = index; i < getIndexOfTheLastElementSize(); i++) {
             this.notes[i] = this.notes[i + 1];
         }
+        this.notes[getIndexOfTheLastElementSize()] = null;
         size -= 1;
     }
 
     public Note getNote(int index) {
         return this.notes[index];
+    }
+
+    private int getIndexOfTheLastElementSize() {
+        return size - 1;
     }
 }
