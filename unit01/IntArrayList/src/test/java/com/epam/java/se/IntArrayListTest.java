@@ -15,4 +15,14 @@ public class IntArrayListTest {
         assertEquals(8, arrayList.binarySearchRecursive(Integer.MAX_VALUE));
     }
 
+    @Test
+    public void testBinarySearchRecursiveNotExistingElementReturnNegativeIndexToInsertMinusOne() {
+
+        final int[] intArraySorted = {Integer.MIN_VALUE, -10, 0, 1, 2, 3, 8, 15, Integer.MAX_VALUE};
+        final IntArrayList arrayList = new IntArrayList(intArraySorted);
+
+        assertEquals(-2,arrayList.binarySearchRecursive(-20));
+        assertEquals(-7, arrayList.binarySearchRecursive(5));
+    }
+
 }
