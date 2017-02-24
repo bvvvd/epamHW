@@ -137,4 +137,25 @@ public class IntArrayList {
         }
     }
 
+    public int binarySearchCyclical(int value) {
+        return binarySearchCyclicalExecution(value, 0, getSize(), data);
+    }
+
+    private int binarySearchCyclicalExecution(int value, int leftBoundInclusive, int rightBoundExclusive, int[] data) {
+        while (leftBoundInclusive != rightBoundExclusive) {
+
+            final int arrayFrame = rightBoundExclusive - leftBoundInclusive;
+            final int middle = leftBoundInclusive + arrayFrame / 2;
+
+            if (data[middle] == value) {
+                return middle;
+            } else if (data[middle] > value) {
+                rightBoundExclusive =middle;
+            } else {
+                leftBoundInclusive = middle + 1;
+            }
+        }
+
+        return -leftBoundInclusive - 1;
+    }
 }
