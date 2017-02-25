@@ -160,6 +160,41 @@ public class IntArrayList {
     }
 
     public void risingMergeSort() {
-        risingMergeSortExecution();
+        risingMergeSortExecution(data, 0, getSize());
+    }
+
+    private void risingMergeSortExecution(int[] data, int leftBoundInclusive, int rightBoundExclusive) {
+        final int arrayLenght = rightBoundExclusive - leftBoundInclusive;
+        if (arrayLenght <= 1) {
+            return;
+        }
+
+        final int[] free = new int[getSize()];
+
+        for (int currentFrameSize = 1; currentFrameSize < arrayLenght; currentFrameSize *= 2) {
+            for (int i = 0; i < arrayLenght; i += currentFrameSize * 2) {
+                risingMerge(data, i, currentFrameSize + i, currentFrameSize * 2 + i, free);
+            }
+        }
+    }
+
+    private void risingMerge(int[] data, int leftStartInclusive,int rightStartInclusive, int end, int[] free) {
+        int i = leftStartInclusive;
+        int j = rightStartInclusive;
+
+        if (j >= data.length){
+            return;
+        }
+
+        int frameToSortLength = Math.min(end - leftStartInclusive, data.length - leftStartInclusive);
+
+        for (int k = 0; k < frameToSortLength; k++){
+            if (i >= rightStartInclusive) free[k] = data[j++];
+            else if (j >= end || j >= data.length) free[k] = data[i++];
+            else if (data[i] < data[j]) free[k] = data[i++];
+            else free[k] = data[j++];
+        }
+
+        System.arraycopy(free, 0, data, leftStartInclusive, frameToSortLength);
     }
 }
