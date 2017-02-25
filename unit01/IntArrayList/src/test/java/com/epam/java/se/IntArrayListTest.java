@@ -123,7 +123,7 @@ public class IntArrayListTest {
         final int[] intArraySorted = {Integer.MIN_VALUE, -10, 0, 1, 2, 3, 8, 15, Integer.MAX_VALUE};
         final IntArrayList arrayList = new IntArrayList(intArraySorted);
 
-        arrayList.risingMergeSort();
+        arrayList.ascendingMergeSort();
 
         for (int i = 0; i < intArraySorted.length; i++) {
             assertEquals("i = " + i, intArraySorted[i], arrayList.get(i));
@@ -138,7 +138,7 @@ public class IntArrayListTest {
         final IntArrayList arrayList = new IntArrayList(intArraySorted);
 
         Arrays.sort(intArraySorted);
-        arrayList.risingMergeSort();
+        arrayList.ascendingMergeSort();
 
         for (int i = 0; i < intArraySorted.length; i++) {
             assertEquals("i = " + i, intArraySorted[i], arrayList.get(i));
@@ -152,7 +152,7 @@ public class IntArrayListTest {
         final IntArrayList arrayList = new IntArrayList(intArraySorted);
 
         Arrays.sort(intArraySorted);
-        arrayList.risingMergeSort();
+        arrayList.ascendingMergeSort();
 
         for (int i = 0; i < intArraySorted.length; i++) {
             assertEquals("i = " + i, intArraySorted[i], arrayList.get(i));
@@ -166,7 +166,7 @@ public class IntArrayListTest {
         final IntArrayList arrayList = new IntArrayList(intArraySorted);
 
         Arrays.sort(intArraySorted);
-        arrayList.risingMergeSort();
+        arrayList.ascendingMergeSort();
 
         for (int i = 0; i < intArraySorted.length; i++) {
             assertEquals("i = " + i, intArraySorted[i], arrayList.get(i));
@@ -180,7 +180,7 @@ public class IntArrayListTest {
         final IntArrayList arrayList = new IntArrayList(intArraySorted);
 
         Arrays.sort(intArraySorted);
-        arrayList.risingMergeSort();
+        arrayList.ascendingMergeSort();
 
         for (int i = 0; i < intArraySorted.length; i++) {
             assertEquals("i = " + i, intArraySorted[i], arrayList.get(i));

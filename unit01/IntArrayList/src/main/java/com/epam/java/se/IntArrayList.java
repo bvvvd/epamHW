@@ -3,6 +3,9 @@ package com.epam.java.se;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
+/**
+ * Stores integers. It uses an array to store.
+ */
 public class IntArrayList {
 
     private int[] data;
@@ -80,6 +83,12 @@ public class IntArrayList {
     }
 
 
+    /**
+     * Expects collection to be sorted. Uses recursive calculation.
+     *
+     * @param value value to find in collection
+     * @return index of the value or -indexToInsert - 1
+     */
     public int binarySearchRecursive(int value) {
         return binarySearchRecursiveExecution(value, 0, getSize(), data);
     }
@@ -102,6 +111,12 @@ public class IntArrayList {
         }
     }
 
+    /**
+     * Expects collection to be sorted. Uses loop for calculation.
+     *
+     * @param value value to find in collection
+     * @return index of the value or -indexToInsert - 1
+     */
     public int binarySearchCyclical(int value) {
         return binarySearchCyclicalExecution(value, 0, getSize(), data);
     }
@@ -124,7 +139,9 @@ public class IntArrayList {
         return -leftBoundInclusive - 1;
     }
 
-
+    /**
+     * Sort an array of numbers in ascending order. Uses the descending recursive merge sort algorithm
+     */
     public void descendingMergeSort() {
         descendingMergeSortExecution(data, 0, getSize(), new int[getSize()]);
     }
@@ -159,36 +176,39 @@ public class IntArrayList {
         }
     }
 
-    public void risingMergeSort() {
-        risingMergeSortExecution(data, 0, getSize());
+    /**
+     * Sort an array of numbers in ascending order. Uses the ascending merge sort algorithm
+     */
+    public void ascendingMergeSort() {
+        ascendingMergeSortExecution(data, 0, getSize());
     }
 
-    private void risingMergeSortExecution(int[] data, int leftBoundInclusive, int rightBoundExclusive) {
-        final int arrayLenght = rightBoundExclusive - leftBoundInclusive;
-        if (arrayLenght <= 1) {
+    private void ascendingMergeSortExecution(int[] data, int leftBoundInclusive, int rightBoundExclusive) {
+        final int arrayLength = rightBoundExclusive - leftBoundInclusive;
+        if (arrayLength <= 1) {
             return;
         }
 
         final int[] free = new int[getSize()];
 
-        for (int currentFrameSize = 1; currentFrameSize < arrayLenght; currentFrameSize *= 2) {
-            for (int i = 0; i < arrayLenght; i += currentFrameSize * 2) {
-                risingMerge(data, i, currentFrameSize + i, currentFrameSize * 2 + i, free);
+        for (int currentFrameSize = 1; currentFrameSize < arrayLength; currentFrameSize *= 2) {
+            for (int i = 0; i < arrayLength; i += currentFrameSize * 2) {
+                ascendingMerge(data, i, currentFrameSize + i, currentFrameSize * 2 + i, free);
             }
         }
     }
 
-    private void risingMerge(int[] data, int leftStartInclusive,int rightStartInclusive, int end, int[] free) {
+    private void ascendingMerge(int[] data, int leftStartInclusive, int rightStartInclusive, int end, int[] free) {
         int i = leftStartInclusive;
         int j = rightStartInclusive;
 
-        if (j >= data.length){
+        if (j >= data.length) {
             return;
         }
 
         int frameToSortLength = Math.min(end - leftStartInclusive, data.length - leftStartInclusive);
 
-        for (int k = 0; k < frameToSortLength; k++){
+        for (int k = 0; k < frameToSortLength; k++) {
             if (i >= rightStartInclusive) free[k] = data[j++];
             else if (j >= end || j >= data.length) free[k] = data[i++];
             else if (data[i] < data[j]) free[k] = data[i++];
