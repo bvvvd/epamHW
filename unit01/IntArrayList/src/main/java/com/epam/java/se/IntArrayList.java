@@ -60,47 +60,12 @@ public class IntArrayList {
         );
     }
 
-    public void sort() {
-        mergeSort(data, 0, getSize(), new int[getSize()]);
-    }
-
-
     /**
      * Expects collection to be sorted.
      *
      * @param value value to find in collection
      * @return index of the value or -indexToInsert - 1
      */
-    public int binarySearch(int value) {
-        throw new UnsupportedOperationException();
-    }
-
-    private static void mergeSort(int[] data, int startInclusive, int endExclusive, int[] free) {
-        final int length = endExclusive - startInclusive;
-        if (length <= 1) {
-            return;
-        }
-
-        final int mid = startInclusive + length / 2;
-
-        mergeSort(data, startInclusive, mid, free);
-        mergeSort(data, mid, endExclusive, free);
-
-        merger(data, startInclusive, mid, endExclusive, free);
-    }
-
-    private static void merger(int[] data, int startInclusive, int mid, int endExclusive, int[] free) {
-        System.arraycopy(data, startInclusive, free, startInclusive, endExclusive - startInclusive);
-
-        int i = startInclusive;
-        int j = mid;
-        for (int k = startInclusive; k < endExclusive; k++) {
-            if (i >= mid) data[k] = free[j++];
-            else if (j >= endExclusive) data[k] = free[i++];
-            else if (free[i] < free[j]) data[k] = free[i++];
-            else data[k] = free[j++];
-        }
-    }
 
     private void ensureCapacity(int requiredCapacity) {
         if (requiredCapacity <= getCapacity()) {
@@ -130,7 +95,7 @@ public class IntArrayList {
 
         if (data[middle] == value) {
             return middle;
-        }else if (data[middle] > value) {
+        } else if (data[middle] > value) {
             return binarySearchRecursiveExecution(value, leftBoundInclusive, middle, data);
         } else {
             return binarySearchRecursiveExecution(value, middle + 1, rightBoundExclusive, data);
@@ -150,12 +115,51 @@ public class IntArrayList {
             if (data[middle] == value) {
                 return middle;
             } else if (data[middle] > value) {
-                rightBoundExclusive =middle;
+                rightBoundExclusive = middle;
             } else {
                 leftBoundInclusive = middle + 1;
             }
         }
 
         return -leftBoundInclusive - 1;
+    }
+
+
+    public void descendingMergeSort() {
+        descendingMergeSortExecution(data, 0, getSize(), new int[getSize()]);
+    }
+
+    private void descendingMergeSortExecution(int[] data, int leftBoundInclusive,
+                                              int rightBoundExclusive, int[] free) {
+        final int arrayFrame = rightBoundExclusive - leftBoundInclusive;
+        if (arrayFrame <= 1) {
+            return;
+        }
+
+        final int middle = leftBoundInclusive + arrayFrame / 2;
+
+        descendingMergeSortExecution(data, leftBoundInclusive, middle, free);
+        descendingMergeSortExecution(data, middle, rightBoundExclusive, free);
+
+        merger(data, leftBoundInclusive, middle, rightBoundExclusive, free);
+    }
+
+    private static void merger(int[] data, int leftBoundInclusive, int middle,
+                               int rightBoundExclusive, int[] free) {
+        System.arraycopy(data, leftBoundInclusive, free,
+                leftBoundInclusive, rightBoundExclusive - leftBoundInclusive);
+
+        int i = leftBoundInclusive;
+        int j = middle;
+        for (int k = leftBoundInclusive; k < rightBoundExclusive; k++) {
+            if (i >= middle) data[k] = free[j++];
+            else if (j >= rightBoundExclusive) data[k] = free[i++];
+            else if (free[i] < free[j]) data[k] = free[i++];
+            else data[k] = free[j++];
+        }
+    }
+
+    public void risingMergeSort() {
+        risingMergeSortExecution();
     }
 }
