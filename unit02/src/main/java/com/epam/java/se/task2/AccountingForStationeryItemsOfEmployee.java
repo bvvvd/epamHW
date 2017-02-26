@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 
 /**
  * Provide an opportunity to account total cost of employee's stationery items
+ *
+ * @author Valeriy Burmistrov
  */
 public class AccountingForStationeryItemsOfEmployee {
 

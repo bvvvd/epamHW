@@ -6,7 +6,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Created by chris on 26.02.2017.
+ * Created by chris on 26.02.2017
  */
 public class AccountingForStationeryItemsOfEmployeeTest {
 

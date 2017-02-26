@@ -26,7 +26,7 @@ public class Pen {
      * @param inkColor ink color of pen
      * @param inkThickness thickness of ink trace, measured in mm
      * @param type type of pen
-     * @param cost cost, measured in dollars
+     * @param cost cost, measured in cents
      * @param manufacturer the name of the company manufacturer
      */
     public Pen(@Nonnull String inkColor, @Nonnegative int inkThickness,
