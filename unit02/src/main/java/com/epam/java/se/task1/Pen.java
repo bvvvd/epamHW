@@ -10,7 +10,7 @@ public class Pen {
 
     private final String inkColor;
 
-    private final double inkThickness;
+    private final int inkThickness;
 
     private final PenType type;
 
@@ -18,7 +18,7 @@ public class Pen {
 
     private final String manufacturer;
 
-    public Pen(@Nonnull String inkColor, @Nonnegative double inkThickness,
+    public Pen(@Nonnull String inkColor, @Nonnegative int inkThickness,
                @Nonnull PenType type, @Nonnegative int cost, @Nonnull String manufacturer) {
         this.inkColor = inkColor;
         this.inkThickness = inkThickness;
@@ -48,5 +48,16 @@ public class Pen {
         }
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 13;
+        hash += hash * 13 + inkColor.hashCode();
+        hash += hash * 13 + inkThickness;
+        hash += hash * 13 + type.hashCode();
+        hash += hash * 13 + cost;
+        hash += hash * 13 + manufacturer.hashCode();
+        return hash;
     }
 }
