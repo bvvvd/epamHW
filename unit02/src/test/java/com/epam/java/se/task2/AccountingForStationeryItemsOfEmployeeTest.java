@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class AccountingForStationeryItemsOfEmployeeTest {
 
     @Test
-    public void testGetTotalCostOfStationeryItems() {
+    public void testGetTotalCostOfStationeryItems() throws Exception {
         final Employee employee = new Employee("mark");
         employee.addItem("pen", 5000);
         employee.addItem("stapler", 20000);
@@ -22,5 +22,21 @@ public class AccountingForStationeryItemsOfEmployeeTest {
         final int totalCost = 61000;
 
         assertThat(AccountingForStationeryItemsOfEmployee.getTotalCost(employee), is(totalCost));
+    }
+
+    @Test
+    public void testGetTotalCostOfStationeryItemsOfFreeEmployeeReturn0() throws Exception {
+        final Employee employee = new Employee("mark");
+
+        assertThat(AccountingForStationeryItemsOfEmployee.getTotalCost(employee), is(0));
+    }
+
+    @Test
+    public void testGetTotalCostOfStationeryItemsOfNullArgumentThrowsIllegalArgumentExeption() throws Exception {
+        try {
+            AccountingForStationeryItemsOfEmployee.getTotalCost(null);
+        }catch (IllegalArgumentException e){
+
+        }
     }
 }

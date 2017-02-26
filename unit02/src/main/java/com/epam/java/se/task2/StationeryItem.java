@@ -1,21 +1,24 @@
 package com.epam.java.se.task2;
 
-/**
- * Created by chris on 26.02.2017.
- */
-public class StationeryItem {
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
 
+public class StationeryItem {
 
     private final String name;
 
     private final int cost;
 
-    public StationeryItem(String itemName, int itemCost) {
+    public StationeryItem(@Nonnull String itemName,@Nonnegative int itemCost) {
         this.name = itemName;
         this.cost = itemCost;
     }
 
     public int getCost() {
         return cost;
+    }
+
+    public String getName() {
+        return name;
     }
 }
