@@ -4,7 +4,9 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 /**
- * Created by chris on 26.02.2017.
+ * The {@code Pen} class describe writing pen.
+ *
+ * @author Valeriy Burmistrov
  */
 public class Pen {
 
@@ -18,6 +20,15 @@ public class Pen {
 
     private final String manufacturer;
 
+    /**
+     * Create a new exemplar of Pen, with specified parameters.
+     *
+     * @param inkColor ink color of pen
+     * @param inkThickness thickness of ink trace, measured in mm
+     * @param type type of pen
+     * @param cost cost, measured in dollars
+     * @param manufacturer the name of the company manufacturer
+     */
     public Pen(@Nonnull String inkColor, @Nonnegative int inkThickness,
                @Nonnull PenType type, @Nonnegative int cost, @Nonnull String manufacturer) {
         this.inkColor = inkColor;
@@ -60,4 +71,13 @@ public class Pen {
         hash += hash * 13 + manufacturer.hashCode();
         return hash;
     }
+
+    @Override
+    public String toString() {
+        String result = "%s. Type: %s, color of ink: %s, thickness of ink: %d, cost: $%d.%02d, manufactured by: %s";
+
+        return String.format(result, this.getClass().getSimpleName(), type.toString(),
+                inkColor, inkThickness, cost / 100, cost % 100, manufacturer);
+    }
+
 }
