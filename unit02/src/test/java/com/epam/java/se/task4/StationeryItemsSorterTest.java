@@ -27,4 +27,18 @@ public class StationeryItemsSorterTest {
         assertTrue(sortedList.get(2) instanceof Pen);
         assertTrue(sortedList.get(3) instanceof Blocknote);
     }
+
+    @Test
+    public void testSortByManufacturer() throws Exception {
+        final NewbieKit newbieKit = new NewbieKit();
+
+        newbieKit.sortItemsByManufacturer();
+
+        final List<StationeryItem> sortedList = newbieKit.getItemList();
+
+        assertTrue(sortedList.get(0) instanceof Pencil);
+        assertTrue(sortedList.get(1) instanceof Blocknote);
+        assertTrue(sortedList.get(2) instanceof Pen);
+        assertTrue(sortedList.get(3) instanceof Eraser);
+    }
 }
