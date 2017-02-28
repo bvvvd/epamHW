@@ -1,5 +1,6 @@
 package com.epam.java.se.task5;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,12 +15,14 @@ public class Student {
     private final String name;
     private final String subName;
     private final Gender gender;
+    private final int age;
     private Map<Discipline, Rating> disciplineMap;
 
-    public Student(@Nonnull String name,@Nonnull String subName,@Nonnull Gender gender) {
+    public Student(@Nonnull String name, @Nonnull String subName, @Nonnull Gender gender, @Nonnegative int age) {
         this.name = name;
         this.subName = name;
         this.gender = gender;
+        this.age = age;
         disciplineMap = new HashMap<>();
     }
 

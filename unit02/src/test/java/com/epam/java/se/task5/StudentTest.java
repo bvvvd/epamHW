@@ -14,7 +14,7 @@ public class StudentTest {
 
     @Test
     public void testAddDiscipline() throws Exception {
-        final Student student = new Student("Jason", "Richardson", Gender.MALE);
+        final Student student = new Student("Jason", "Richardson", Gender.MALE, 25);
 
         student.addDiscipline(Discipline.MATH, new Rating(3.4));
         student.addDiscipline(Discipline.ENGLISH, new Rating(5));
@@ -31,7 +31,7 @@ public class StudentTest {
     @Test
     public void testAddDisciplineWrongRatingTypeForDisciplineThrowsIllegalArgumentException() throws Exception {
 
-        final Student student = new Student("Jason", "Richardson", Gender.MALE);
+        final Student student = new Student("Jason", "Richardson", Gender.MALE, 25);
 
         try {
             student.addDiscipline(Discipline.MUSIC, new Rating(15.5));
@@ -47,7 +47,7 @@ public class StudentTest {
 
     @Test
     public void testAddDisciplineWithNullArgumentsThrowsIllegalArgumentException() throws Exception {
-        final Student student = new Student("Steven", "Hawking", Gender.MALE);
+        final Student student = new Student("Steven", "Hawking", Gender.MALE, 70);
 
         try {
             student.addDiscipline(null, null);
