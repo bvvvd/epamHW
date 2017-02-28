@@ -3,6 +3,11 @@ package com.epam.java.se.task6andtask7;
 /**
  * Created by chris on 28.02.2017.
  */
+@Schooner(
+        author = "Valeriy Burmisrov",
+        date = "28.02.2017",
+        version = "0.00000001"
+)
 public class AtomicSubmarine {
 
     private String status;
