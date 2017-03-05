@@ -1,5 +1,6 @@
 package com.epam.java.se.task1;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -74,4 +75,22 @@ public class CrazyLoggerTest {
         assertThat(logger.toString(), is(expected));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatExtractNullLogThrowsIllegalArgumentException() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.extractLogsByString(null);
+    }
+
+    @Test
+    public void testExtractSingleLogByString() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log("first log");
+        logger.log("second log");
+        logger.log("third log");
+        logger.log("fourth log");
+
+        final String extractedLogs = logger.extractLogsByString("third log");
+
+        assertThat(extractedLogs.contains("third log"), is(true));
+    }
 }

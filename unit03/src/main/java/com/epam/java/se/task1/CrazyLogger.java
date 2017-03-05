@@ -34,6 +34,10 @@ public class CrazyLogger {
         return logDateAndTime.format(formatter);
     }
 
+    public String extractLogsByString(@Nonnull String stringToExtract) {
+        return null;
+    }
+
     @Override
     public String toString() {
         return logWarehouse.toString();
