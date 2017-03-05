@@ -3,6 +3,7 @@ package com.epam.java.se.task1;
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.StringTokenizer;
 
 public class CrazyLogger {
     private final StringBuilder logWarehouse = new StringBuilder();
@@ -34,7 +35,22 @@ public class CrazyLogger {
             return "";
         }
 
-        return null;
+        return createResultOfExtractionString(stringToExtract);
+    }
+
+    private String createResultOfExtractionString(@Nonnull String stringToExtract) {
+        final StringBuilder result = new StringBuilder();
+
+        StringTokenizer tokenizer = new StringTokenizer(logWarehouse.toString(), lineSeparator);
+
+        while (tokenizer.hasMoreTokens()) {
+            final String token = tokenizer.nextToken();
+            if (token.contains(stringToExtract)) {
+                result.append(token);
+            }
+        }
+
+        return result.toString();
     }
 
     private String ensureMessageDoesNotContainLineSeparators(String message) {

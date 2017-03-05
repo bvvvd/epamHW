@@ -123,4 +123,5 @@ public class CrazyLoggerTest {
 
         assertThat(extractedLogs.contains("third log"), is(true));
     }
+
 }
