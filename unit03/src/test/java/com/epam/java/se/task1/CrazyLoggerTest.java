@@ -1,6 +1,5 @@
 package com.epam.java.se.task1;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -99,6 +98,17 @@ public class CrazyLoggerTest {
 
         final String expected = logger.toString();
         assertThat(logger.extractLogsByString(lineSeparator), is(expected));
+    }
+
+    @Test
+    public void testExtractingStringNotContainingInLogReturnsEmptyString() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log("first log");
+        logger.log("second log");
+        logger.log("third log");
+        logger.log("fourth log");
+
+        assertThat(logger.extractLogsByString("i will return empty string"), is(""));
     }
 
     @Test

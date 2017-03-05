@@ -25,21 +25,25 @@ public class CrazyLogger {
                 .append(lineSeparator);
     }
 
-    private String ensureMessageDoesNotContainLineSeparators(String message) {
-       return message.replaceAll(lineSeparator, " ").replaceAll("  ", " ");
-    }
-
-    private String formatLogDateAndTime() {
-        final LocalDateTime logDateAndTime = LocalDateTime.now();
-        return logDateAndTime.format(formatter);
-    }
-
     public String extractLogsByString(@Nonnull String stringToExtract) {
         if (stringToExtract.isEmpty() || stringToExtract.equals(lineSeparator)) {
             return toString();
         }
 
+        if (!logWarehouse.toString().contains(stringToExtract)) {
+            return "";
+        }
+
         return null;
+    }
+
+    private String ensureMessageDoesNotContainLineSeparators(String message) {
+        return message.replaceAll(lineSeparator, " ").replaceAll("  ", " ");
+    }
+
+    private String formatLogDateAndTime() {
+        final LocalDateTime logDateAndTime = LocalDateTime.now();
+        return logDateAndTime.format(formatter);
     }
 
     @Override
