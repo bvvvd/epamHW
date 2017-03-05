@@ -75,4 +75,28 @@ public class Quiz {
                     "Wrong number of answer. Number must be from 1 to %s", numberOfAnswers));
         }
     }
+
+    public void printQuestionOffer() {
+        printOffer(locale);
+    }
+
+    private void printOffer(Locale locale) {
+        if (locale.equals(new Locale("en"))) {
+            System.out.println("Choose number of question, if you want to end game - type stop");
+        } else {
+            System.out.println("Введите номер вопроса, если вы хотите закончить игру - введите stop");
+        }
+    }
+
+    public void printTypingRequirements() {
+        printRequirements(locale);
+    }
+
+    private void printRequirements(Locale locale) {
+        if (locale.equals(new Locale("en"))) {
+            System.out.println("Number of question must be a integer number");
+        }else {
+            System.out.println("Номер вопрса может состоять только из целого числа");
+        }
+    }
 }

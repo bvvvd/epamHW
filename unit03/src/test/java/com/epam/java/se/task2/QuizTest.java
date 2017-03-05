@@ -3,7 +3,6 @@ package com.epam.java.se.task2;
 import org.junit.Test;
 
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -138,6 +137,6 @@ public class QuizTest {
     public void testThatGettingNotExistingEnglishAnswerThrowsIllegalArgumentException() {
         final Quiz quiz = new Quiz("en");
 
-        quiz.getAnswer(50);
+        quiz.getAnswer(15);
     }
 }
