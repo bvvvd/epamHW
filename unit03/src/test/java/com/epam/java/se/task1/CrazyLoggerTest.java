@@ -112,7 +112,7 @@ public class CrazyLoggerTest {
     }
 
     @Test
-    public void testExtractSingleLogByString() {
+    public void testExtractSingleLogByMessageText() {
         final CrazyLogger logger = new CrazyLogger();
         logger.log("first log");
         logger.log("second log");

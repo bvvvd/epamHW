@@ -5,11 +5,22 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.StringTokenizer;
 
+/**
+ * Stores logs in format: date and time - message
+ *
+ * @author Valeriy Burmistrov
+ */
 public class CrazyLogger {
     private final StringBuilder logWarehouse = new StringBuilder();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY : HH-mm");
     private final String lineSeparator = System.getProperty("line.separator");
 
+    /**
+     * Adds the specified message to the log. Uses {@code LocalDateAndTime.now()} to calculate date and time of log
+     *
+     * @param message string of message needed to add
+     * @throws IllegalArgumentException if {@param message} is null
+     */
     public void log(@Nonnull String message) {
         if (message.isEmpty()) {
             return;
@@ -19,6 +30,25 @@ public class CrazyLogger {
 
         final String formattedLogDateAndTime = formatLogDateAndTime();
 
+        addMessageToLog(editedMessage, formattedLogDateAndTime);
+    }
+
+    /**
+     * Extract logs that contain the specified string
+     *
+     * @param stringToFind string needed to contain in log
+     * @return string that contains all necessary logs or an epty string if these are not found
+     * @throws IllegalArgumentException if {@param stringToFind} is null
+     */
+    public String extractLogsByString(@Nonnull String stringToFind) {
+        if (stringToFind.isEmpty() || stringToFind.equals(lineSeparator)) {
+            return toString();
+        }
+
+        return createResultOfExtractionString(stringToFind);
+    }
+
+    private void addMessageToLog(String editedMessage, String formattedLogDateAndTime) {
         logWarehouse.append(formattedLogDateAndTime)
                 .append(" - ")
                 .append(editedMessage)
@@ -26,25 +56,13 @@ public class CrazyLogger {
                 .append(lineSeparator);
     }
 
-    public String extractLogsByString(@Nonnull String stringToExtract) {
-        if (stringToExtract.isEmpty() || stringToExtract.equals(lineSeparator)) {
-            return toString();
-        }
-
-        if (!logWarehouse.toString().contains(stringToExtract)) {
-            return "";
-        }
-
-        return createResultOfExtractionString(stringToExtract);
-    }
-
     private String createResultOfExtractionString(@Nonnull String stringToExtract) {
         final StringBuilder result = new StringBuilder();
 
-        StringTokenizer tokenizer = new StringTokenizer(logWarehouse.toString(), lineSeparator);
+        StringTokenizer logWarehouseTokenizer = new StringTokenizer(logWarehouse.toString(), lineSeparator);
 
-        while (tokenizer.hasMoreTokens()) {
-            final String token = tokenizer.nextToken();
+        while (logWarehouseTokenizer.hasMoreTokens()) {
+            final String token = logWarehouseTokenizer.nextToken();
             if (token.contains(stringToExtract)) {
                 result.append(token).append(lineSeparator);
             }
