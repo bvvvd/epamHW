@@ -35,6 +35,10 @@ public class CrazyLogger {
     }
 
     public String extractLogsByString(@Nonnull String stringToExtract) {
+        if (stringToExtract.isEmpty() || stringToExtract.equals(lineSeparator)) {
+            return toString();
+        }
+
         return null;
     }
 

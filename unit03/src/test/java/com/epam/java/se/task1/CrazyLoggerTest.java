@@ -82,6 +82,26 @@ public class CrazyLoggerTest {
     }
 
     @Test
+    public void testThatExtractingEmptyStringReturnsEntireLog() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log("first log");
+        logger.log("second log");
+
+        final String expected = logger.toString();
+        assertThat(logger.extractLogsByString(""), is(expected));
+    }
+
+    @Test
+    public void testThatExtractingStringContainingLineSeparatorReturnsEntireLog() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log("first log");
+        logger.log("second log");
+
+        final String expected = logger.toString();
+        assertThat(logger.extractLogsByString(lineSeparator), is(expected));
+    }
+
+    @Test
     public void testExtractSingleLogByString() {
         final CrazyLogger logger = new CrazyLogger();
         logger.log("first log");
