@@ -5,13 +5,22 @@ import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * This class provide simple quiz. Supports russian and english interface and data.
+ *
+ * @author Valeriy Burmistrov
+ */
 public class Quiz {
     private static final ResourceBundle availableLanguages = ResourceBundle.getBundle("languages");
     private final Locale locale;
-    private final String lineSeparator = System.getProperty("line.separator");
     private ResourceBundle questions;
     private ResourceBundle answers;
 
+    /**
+     * Create new {@code Quiz} with specified language
+     *
+     * @param language language of quiz' interface
+     */
     public Quiz(String language) {
         Objects.requireNonNull(language);
         checkLanguageAvailability(language);
