@@ -1,18 +1,23 @@
 package com.epam.java.se.task2;
 
-import javax.annotation.Nonnull;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Quiz {
     private static final ResourceBundle availableLanguages = ResourceBundle.getBundle("languages");
     private final Locale locale;
     private final String lineSeparator = System.getProperty("line.separator");
+    private ResourceBundle questions;
+    private ResourceBundle answers;
 
-    public Quiz(@Nonnull String language) {
+    public Quiz(String language) {
+        Objects.requireNonNull(language);
         checkLanguageAvailability(language);
 
-        this.locale = new Locale(language);
+        locale = new Locale(language);
+        questions = ResourceBundle.getBundle("questions", new Locale(language));
+        answers = ResourceBundle.getBundle("answers", new Locale(language));
     }
 
     public Locale getLocale() {
@@ -38,5 +43,13 @@ public class Quiz {
         availableLanguages.keySet().forEach((languageKey) -> result.append(languageKey).append(" "));
 
         return result.toString();
+    }
+
+    public ResourceBundle getQuestions() {
+        return questions;
+    }
+
+    public ResourceBundle getAnswers() {
+        return answers;
     }
 }
