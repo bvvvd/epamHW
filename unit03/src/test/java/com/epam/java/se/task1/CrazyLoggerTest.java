@@ -7,39 +7,71 @@ import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class CrazyLoggerTest {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY : HH-mm");
+    private final String lineSeparator = System.getProperty("line.separator");
 
     @Test
-    public void testThatWeCanAddLogsInCrazyLogger() throws Exception {
+    public void testThatWeCanAddLogsInCrazyLogger() {
         final CrazyLogger logger = new CrazyLogger();
         logger.log("first log");
 
         final LocalDateTime logDateAndTime = LocalDateTime.now();
         final String formattedLogDateAndTime = logDateAndTime.format(formatter);
-        final String expected = formattedLogDateAndTime.concat(" - first log;|");
+        final String expected = formattedLogDateAndTime.concat(" - first log;").concat(lineSeparator);
 
-        assertThat(logger.entireLogToString(), is(expected));
+        assertThat(logger.toString(), is(expected));
     }
 
     @Test
-    public void testThatWeCanAddLogsInNotEmptyCrazyLogger() throws Exception {
+    public void testThatWeCanAddLogsInNotEmptyCrazyLogger() {
         final CrazyLogger logger = new CrazyLogger();
         logger.log("first log");
 
         final LocalDateTime firstLogDateAndTime = LocalDateTime.now();
         final String formattedFirstLogDateAndTime = firstLogDateAndTime.format(formatter);
-        final String expectedFirstLog = formattedFirstLogDateAndTime.concat(" - first log;|");
+        final String expectedFirstLog = formattedFirstLogDateAndTime.concat(" - first log;").concat(lineSeparator);
 
         logger.log("second log");
 
         final LocalDateTime secondLogDateAndTime = LocalDateTime.now();
         final String formattedSecondLogDateAndTime = secondLogDateAndTime.format(formatter);
-        final String expected = expectedFirstLog.concat(formattedSecondLogDateAndTime).concat(" - second log;|");
+        final String expected = expectedFirstLog.concat(formattedSecondLogDateAndTime).
+                concat(" - second log;").concat(lineSeparator);
 
-        assertThat(logger.entireLogToString(), is(expected));
-
+        assertThat(logger.toString(), is(expected));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatLoggingNullStringMessageThrowsIllegalArgumentException() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log(null);
+    }
+
+    @Test
+    public void testThatAddingEmptyMessageDoesNotChangeLog() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log("first log");
+        logger.log("");
+
+        final LocalDateTime logDateAndTime = LocalDateTime.now();
+        final String formattedLogDateAndTime = logDateAndTime.format(formatter);
+        final String expected = formattedLogDateAndTime.concat(" - first log;").concat(lineSeparator);
+
+        assertThat(logger.toString(), is(expected));
+    }
+
+    @Test
+    public void testAddingStringContainsLineSeparator() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log("first" + lineSeparator + " log");
+
+        final LocalDateTime logDateAndTime = LocalDateTime.now();
+        final String formattedLogDateAndTime = logDateAndTime.format(formatter);
+        final String expected = formattedLogDateAndTime.concat(" - first log;").concat(lineSeparator);
+
+        assertThat(logger.toString(), is(expected));
+    }
+
 }
