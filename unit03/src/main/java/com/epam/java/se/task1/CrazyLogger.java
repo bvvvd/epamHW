@@ -19,7 +19,7 @@ public class CrazyLogger {
      * Adds the specified message to the log. Uses {@code LocalDateAndTime.now()} to calculate date and time of log
      *
      * @param message string of message needed to add
-     * @throws IllegalArgumentException if {@param message} is null
+     * @throws IllegalArgumentException if {@code message} is null
      */
     public void log(@Nonnull String message) {
         if (message.isEmpty()) {
@@ -38,7 +38,7 @@ public class CrazyLogger {
      *
      * @param stringToFind string needed to contain in log
      * @return string that contains all necessary logs or an epty string if these are not found
-     * @throws IllegalArgumentException if {@param stringToFind} is null
+     * @throws IllegalArgumentException if {@code stringToFind} is null
      */
     public String extractLogsByString(@Nonnull String stringToFind) {
         if (stringToFind.isEmpty() || stringToFind.equals(lineSeparator)) {
