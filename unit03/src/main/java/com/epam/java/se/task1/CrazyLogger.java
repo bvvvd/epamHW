@@ -46,7 +46,7 @@ public class CrazyLogger {
         while (tokenizer.hasMoreTokens()) {
             final String token = tokenizer.nextToken();
             if (token.contains(stringToExtract)) {
-                result.append(token);
+                result.append(token).append(lineSeparator);
             }
         }
 

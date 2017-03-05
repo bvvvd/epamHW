@@ -124,4 +124,15 @@ public class CrazyLoggerTest {
         assertThat(extractedLogs.contains("third log"), is(true));
     }
 
+    @Test
+    public void testExtractMultipleLogsByString() {
+        final CrazyLogger logger = new CrazyLogger();
+        logger.log("first log");
+        logger.log("not a first log");
+
+        final String extractedLogs = logger.extractLogsByString("first log");
+
+        assertThat(extractedLogs.equals(logger.toString()), is(true));
+    }
+
 }
