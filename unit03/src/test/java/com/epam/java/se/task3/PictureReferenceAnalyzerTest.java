@@ -3,7 +3,6 @@ package com.epam.java.se.task3;
 import org.junit.Test;
 
 import java.io.*;
-import java.nio.charset.Charset;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -30,10 +29,6 @@ public class PictureReferenceAnalyzerTest {
         final StringBuilder realHtmlText = new StringBuilder();
         bufferedReader.lines().forEach(realHtmlText::append);
 
-        BufferedWriter bufferedWriter = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream("outputSource.html"), "windows-1251"));
-        bufferedWriter.write(realHtmlText.toString());
-
-        assertThat(parsedHtmlTextByAnalyzer.equals(realHtmlText), is(true));
+        assertThat(parsedHtmlTextByAnalyzer.equals(realHtmlText.toString()), is(true));
     }
 }
