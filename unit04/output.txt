@@ -1,0 +1,11 @@
+super 1
+private 2
+package 1
+extends 1
+public 4
+final 2
+this 2
+abstract 1
+class 1
+int 3
+return 2

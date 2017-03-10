@@ -2,6 +2,7 @@ package com.epam.java.se;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -79,7 +80,18 @@ public class JavaKeyWordsAnalyzer {
         this.keywords = keywordList;
     }
 
-    private void makeOutput() {
+    private void makeOutput() throws IOException {
+        final FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
+        final StringBuilder outputStringBuilder = new StringBuilder();
 
+        for (Map.Entry<String, Integer> entry : analyzedMap.entrySet()) {
+            outputStringBuilder
+                    .append(entry.getKey())
+                    .append(" ")
+                    .append(entry.getValue())
+                    .append(System.getProperty("line.separator"));
+        }
+
+        fileOutputStream.write(outputStringBuilder.toString().getBytes());
     }
 }
