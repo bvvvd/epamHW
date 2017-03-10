@@ -16,5 +16,5 @@ public class RecoderTest {
         final Recoder recoder = new Recoder("utf8.txt", "UTF-8");
         recoder.rewriteWithNewCode("outputTask3.txt", "UTF-16");
     }
-    
+
 }
