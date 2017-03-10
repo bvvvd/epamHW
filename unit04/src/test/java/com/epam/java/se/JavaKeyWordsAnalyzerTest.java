@@ -3,6 +3,8 @@ package com.epam.java.se;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JavaKeyWordsAnalyzerTest {
     private final String inputFileName = "WritingStationeryItem.java";
