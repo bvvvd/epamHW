@@ -28,6 +28,11 @@ public class Nautilus {
     }
 
     private void changeDirectory(String destinationDirectoryName) throws FileNotExistException {
+        if (destinationDirectoryName.equals("..")) {
+            levelUpDirectory();
+            return;
+        }
+
         final File destination = new File(destinationDirectoryName);
 
         if (!destination.exists()) {
@@ -35,6 +40,12 @@ public class Nautilus {
         }
 
         currentDirectory = destinationDirectoryName;
+    }
+
+    private void levelUpDirectory() {
+        final File currentPosition = new File(currentDirectory);
+
+        currentDirectory = currentPosition.getParent();
     }
 
     private void checkDestinationDirectoryIsDirectory(String destinationDirectoryName) throws IllegalArgumentException {
