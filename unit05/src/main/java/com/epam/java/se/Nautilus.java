@@ -5,7 +5,7 @@ import com.epam.java.se.exceptions.FileNotExistException;
 import java.io.File;
 
 public class Nautilus {
-    private String homeDirectory = System.getProperty("user.home");
+    private final String homeDirectory = System.getProperty("user.home");
     private String currentDirectory;
 
     public Nautilus() {
@@ -14,6 +14,7 @@ public class Nautilus {
 
     public File[] ls() {
         final File directoryToGetContent = new File(currentDirectory);
+
         return directoryToGetContent.listFiles();
     }
 
@@ -48,6 +49,7 @@ public class Nautilus {
 
     private void levelUpDirectory() {
         final File currentPosition = new File(currentDirectory);
+
         if (currentPosition.getParent() != null) {
             currentDirectory = currentPosition.getParent();
         }
