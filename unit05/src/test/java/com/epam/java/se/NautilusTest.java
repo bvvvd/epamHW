@@ -4,7 +4,6 @@ import com.epam.java.se.exceptions.FileNotExistException;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -12,6 +11,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class NautilusTest {
+    private String homeDirectory = System.getProperty("user.home");
 
     @Test
     public void testThatWeCanCreateCatalogOfDirectoryContent() throws IOException {
@@ -55,6 +55,15 @@ public class NautilusTest {
         final Nautilus nautilus = new Nautilus();
 
         nautilus.cd("C:\\asdasdasd");
+    }
 
+    @Test
+    public void testThatCdMethodWithNullArgumentChangeDirectoryToHomeDirectory() throws FileNotExistException {
+        final Nautilus nautilus = new Nautilus();
+
+        nautilus.cd("C:\\test\\");
+        nautilus.cd();
+
+        assertThat(nautilus.pwd().equals(homeDirectory), is(true));
     }
 }

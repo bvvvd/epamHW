@@ -3,14 +3,13 @@ package com.epam.java.se;
 import com.epam.java.se.exceptions.FileNotExistException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class Nautilus {
-
+    private String homeDirectory = System.getProperty("user.home");
     private String currentDirectory;
 
     public Nautilus() {
-        this.currentDirectory = System.getProperty("user.home");
+        currentDirectory = homeDirectory;
     }
 
     public File[] ls() {
@@ -22,6 +21,10 @@ public class Nautilus {
         checkDestinationDirectoryIsDirectory(destinationDirectoryName);
 
         changeDirectory(destinationDirectoryName);
+    }
+
+    public void cd() {
+        currentDirectory = homeDirectory;
     }
 
     private void changeDirectory(String destinationDirectoryName) throws FileNotExistException {
@@ -40,5 +43,9 @@ public class Nautilus {
         if (fileToCheck.isFile()) {
             throw new IllegalArgumentException(destinationDirectoryName + " is not a directory");
         }
+    }
+
+    public String pwd() {
+        return currentDirectory;
     }
 }
