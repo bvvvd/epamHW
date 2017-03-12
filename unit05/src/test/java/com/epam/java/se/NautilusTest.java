@@ -72,9 +72,17 @@ public class NautilusTest {
         final Nautilus nautilus = new Nautilus();
 
         nautilus.cd("C:\\test\\");
-//        System.out.println(nautilus.pwd());
         nautilus.cd("..");
-//        System.out.println(nautilus.pwd());
+
+        assertThat(nautilus.pwd().equals("C:\\"), is(true));
+    }
+
+    @Test
+    public void testThatCdMethodWithTwoPointsArgumentDoesNotChangeDirectoryIfDirectoryIsRootDirectory() throws FileNotExistException {
+        final Nautilus nautilus = new Nautilus();
+
+        nautilus.cd("C:\\");
+        nautilus.cd("..");
 
         assertThat(nautilus.pwd().equals("C:\\"), is(true));
     }

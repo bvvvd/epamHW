@@ -33,19 +33,24 @@ public class Nautilus {
             return;
         }
 
+        checkDestinationDirectoryExist(destinationDirectoryName);
+
+        currentDirectory = destinationDirectoryName;
+    }
+
+    private void checkDestinationDirectoryExist(String destinationDirectoryName) throws FileNotExistException {
         final File destination = new File(destinationDirectoryName);
 
         if (!destination.exists()) {
             throw new FileNotExistException(destinationDirectoryName + " does not exist");
         }
-
-        currentDirectory = destinationDirectoryName;
     }
 
     private void levelUpDirectory() {
         final File currentPosition = new File(currentDirectory);
-
-        currentDirectory = currentPosition.getParent();
+        if (currentPosition.getParent() != null) {
+            currentDirectory = currentPosition.getParent();
+        }
     }
 
     private void checkDestinationDirectoryIsDirectory(String destinationDirectoryName) throws IllegalArgumentException {
