@@ -1,5 +1,6 @@
 package com.epam.java.se;
 
+import com.epam.java.se.exceptions.FileNotExistException;
 import org.junit.Test;
 
 import java.io.File;
@@ -15,7 +16,25 @@ public class FileEditorTest {
         final FileEditor editor = new FileEditor();
         editor.touch("C:\\test\\test.txt");
 
-        final File fileToCheckExistance = new File("C:\\test\\test.txt");
-        assertThat(fileToCheckExistance.exists(), is(true));
+        final File fileToCheckExistence = new File("C:\\test\\test.txt");
+        assertThat(fileToCheckExistence.exists(), is(true));
+    }
+
+    @Test
+    public void testThatWeCanRemoveFile() throws FileNotExistException, IOException {
+        final FileEditor editor = new FileEditor();
+
+        editor.touch("C:\\test\\test.txt");
+        editor.rm("C:\\test\\test.txt");
+
+        final File fileToCheckExistence = new File("C:\\test\\test.txt");
+        assertThat(fileToCheckExistence.exists(), is(false));
+    }
+
+    @Test(expected = FileNotExistException.class)
+    public void testThatTryingToRemoveNotExistingFileOrDirectoryThrowsFileNotExistException() throws FileNotExistException {
+        final FileEditor editor = new FileEditor();
+
+        editor.rm("C:\\test\\test.txt");
     }
 }
