@@ -24,6 +24,19 @@ public class FileEditorTest {
         editor.rm("C:\\test\\test1.txt");
     }
 
+    @Test(expected = FileAlreadyExistsException.class)
+    public void testTryingToCreateExistingFileThrowsFileAlreadyExistsException()
+            throws IOException, FileNotExistException, DirectoryRemovingException {
+        final FileEditor editor = new FileEditor();
+        editor.touch("C:\\test\\test.txt");
+        try {
+            editor.touch("C:\\test\\test.txt");
+        } catch (FileAlreadyExistsException e) {
+            editor.rm("C:\\test\\test.txt");
+            throw e;
+        }
+    }
+
     @Test
     public void testThatWeCanRemoveFile() throws FileNotExistException, IOException, DirectoryRemovingException {
         final FileEditor editor = new FileEditor();
@@ -88,5 +101,54 @@ public class FileEditorTest {
         final FileEditor editor = new FileEditor();
 
         editor.touch("C:\\test.txt");
+    }
+
+    @Test(expected = FileAlreadyExistsException.class)
+    public void testTryingToCreateExistingDirectoryThrowsFileAlreadyExistsException()
+            throws IOException, FileNotExistException, DirectoryRemovingException {
+        final FileEditor editor = new FileEditor();
+        editor.touch("C:\\test\\test\\");
+        try {
+            editor.touch("C:\\test\\test\\");
+        } catch (FileAlreadyExistsException e) {
+            editor.rm("C:\\test\\test\\");
+            throw e;
+        }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToCreateFileWithNullArgumentThrowsNPE() throws IOException {
+        final FileEditor editor = new FileEditor();
+
+        editor.touch(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToRemoveFileWithNullArgumentThrowsNPE() throws IOException, FileNotExistException, DirectoryRemovingException {
+        final FileEditor editor = new FileEditor();
+
+        editor.rm(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToCreateDirectoryWithNullArgumentThrowsNPE() throws IOException {
+        final FileEditor editor = new FileEditor();
+
+        editor.mkdir(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatTryingToCreateDirectoryWithNotExistingParentThrowsIllegalArgumentException() throws FileAlreadyExistsException {
+        final FileEditor editor = new FileEditor();
+
+        editor.mkdir("C:\\notexistingparent\\try");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatTryingToCreateDirectoryWithExistingParentWhichIsAFileThrowsIllegalArgumentException() throws IOException {
+        final FileEditor editor = new FileEditor();
+
+        editor.touch("C:\\existingparent.txt\\");
+        editor.mkdir("C:\\existingparent.txt\\try");
     }
 }

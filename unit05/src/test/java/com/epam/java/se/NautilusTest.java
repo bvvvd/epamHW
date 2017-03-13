@@ -86,4 +86,11 @@ public class NautilusTest {
 
         assertThat(nautilus.pwd().equals("C:\\"), is(true));
     }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToChangeDirectoryWithNullArgumentThrowsNPE() throws FileNotExistException {
+        final Nautilus nautilus = new Nautilus();
+
+        nautilus.cd(null);
+    }
 }

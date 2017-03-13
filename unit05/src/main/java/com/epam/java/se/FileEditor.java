@@ -6,10 +6,13 @@ import com.epam.java.se.exceptions.FileNotExistException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.util.Objects;
 
 public class FileEditor {
 
     public void touch(String fileToCreateName) throws IOException {
+        Objects.requireNonNull(fileToCreateName);
+
         final File fileToCreate = new File(fileToCreateName);
 
         if (!fileToCreate.createNewFile()) {
@@ -18,6 +21,8 @@ public class FileEditor {
     }
 
     public void rm(String fileToRemoveName) throws FileNotExistException, DirectoryRemovingException {
+        Objects.requireNonNull(fileToRemoveName);
+
         final File fileToDelete = new File(fileToRemoveName);
 
         checkThatFileToDeleteExists(fileToDelete);
@@ -44,10 +49,37 @@ public class FileEditor {
     }
 
     public void mkdir(String directoryToCreateName) throws FileAlreadyExistsException {
-        final File fileToCreate = new File(directoryToCreateName);
+        Objects.requireNonNull(directoryToCreateName);
 
-        if (!fileToCreate.mkdir()) {
+        final File directoryToCreate = new File(directoryToCreateName);
+
+        checkExistingDirectoryParent(directoryToCreate);
+
+        checkParentIsDirectory(directoryToCreate);
+
+        if (!directoryToCreate.mkdir()) {
             throw new FileAlreadyExistsException(directoryToCreateName + " is already exists");
+        }
+    }
+
+    private void checkParentIsDirectory(File directoryToCreate) {
+        final File parent = new File(directoryToCreate.getParent());
+
+        if (parent.isFile()) {
+            throw new IllegalArgumentException("cannot create directory, "
+                    + directoryToCreate.getAbsolutePath()
+                    + " the parent is not directory");
+        }
+    }
+
+    private void checkExistingDirectoryParent(File directoryToCreate) {
+        final File parent = new File(directoryToCreate.getParent());
+
+        if (!parent.exists()) {
+            throw new IllegalArgumentException(
+                    "cannot create directory, "
+                            + directoryToCreate.getAbsolutePath()
+                            + " hierarсhy is too deep, you need to create upper directories firstly");
         }
     }
 }

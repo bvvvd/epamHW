@@ -3,6 +3,7 @@ package com.epam.java.se;
 import com.epam.java.se.exceptions.FileNotExistException;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Nautilus {
     private final String homeDirectory = System.getProperty("user.home");
@@ -19,6 +20,8 @@ public class Nautilus {
     }
 
     public void cd(String destinationDirectoryName) throws IllegalArgumentException, FileNotExistException {
+        Objects.requireNonNull(destinationDirectoryName);
+
         checkDestinationDirectoryIsDirectory(destinationDirectoryName);
 
         changeDirectory(destinationDirectoryName);

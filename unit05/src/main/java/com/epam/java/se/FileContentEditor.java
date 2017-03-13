@@ -1,8 +1,6 @@
 package com.epam.java.se;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 
 public class FileContentEditor {
     private String lineSeparator = System.getProperty("line.separator");
@@ -14,5 +12,24 @@ public class FileContentEditor {
         reader.lines().forEach((currentLine) -> stringFileContentBuilder.append(currentLine).append(lineSeparator));
 
         return stringFileContentBuilder.toString();
+    }
+
+    public void cat(String fileToWriteContentName, String content) throws IOException {
+        final BufferedWriter writer = new BufferedWriter(new FileWriter(fileToWriteContentName));
+
+        writer.write(content);
+        writer.flush();
+        writer.close();
+    }
+
+    public void catt(String fileToAppendName, String contentToAppend) throws IOException {
+
+        final BufferedWriter writer = new BufferedWriter(new FileWriter(fileToAppendName, true));
+
+        writer.append(lineSeparator)
+                .append(contentToAppend);
+
+        writer.flush();
+        writer.close();
     }
 }
