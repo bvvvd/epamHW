@@ -7,7 +7,7 @@ import java.util.Properties;
 public class UniversalPropertiesReader {
 
     private final String propertiesFileName;
-    private Properties propertiesFile;
+    private Properties properties;
 
     public UniversalPropertiesReader(String propertiesFileName) throws NoSuchPropertiesFileException, IOException {
         Objects.requireNonNull(propertiesFileName);
@@ -22,7 +22,7 @@ public class UniversalPropertiesReader {
     private void loadProperties(String propertiesFileName) throws IOException {
         final Properties properties = new Properties();
         properties.load(new FileReader(".\\src\\resources\\task2resources_en.properties"));
-        propertiesFile = properties;
+        this.properties = properties;
     }
 
     private void checkPropertiesFileExists(String propertiesFileName) throws NoSuchPropertiesFileException {
@@ -36,6 +36,16 @@ public class UniversalPropertiesReader {
     }
 
     public Properties getProperties() {
-        return (Properties) propertiesFile.clone();
+        return (Properties) properties.clone();
+    }
+
+    public String getValue(String key) throws NoSuchKeyInPropertiesFileException {
+        Objects.requireNonNull(key);
+
+        if (!properties.containsKey(key)) {
+            throw new NoSuchKeyInPropertiesFileException(propertiesFileName + " does not contain such key: " + key);
+        }
+
+        return (String) properties.get(key);
     }
 }
