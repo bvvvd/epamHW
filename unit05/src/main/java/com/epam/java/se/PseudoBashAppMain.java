@@ -3,10 +3,10 @@ package com.epam.java.se;
 import com.epam.java.se.exceptions.DirectoryRemovingException;
 import com.epam.java.se.exceptions.FileNotExistException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -21,42 +21,46 @@ public class PseudoBashAppMain {
             printWorkingDirectory();
             try {
                 recognizeUserAnswer(readUserAnswer());
-            } catch (IOException | DirectoryRemovingException | FileNotExistException e) {
+            } catch (IOException | DirectoryRemovingException | FileNotExistException |
+                    UnsupportedOperationException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+            }catch (NoSuchElementException e){
+                System.out.println("enter a command");
             }
         }
     }
 
-    private static void recognizeUserAnswer(String stringWithAnswer) throws IOException, FileNotExistException, DirectoryRemovingException {
+    private static void recognizeUserAnswer(String stringWithAnswer)
+            throws IOException, FileNotExistException, DirectoryRemovingException, NoSuchElementException {
         StringTokenizer tokenizer = new StringTokenizer(stringWithAnswer, " ");
-        StringTokenizer tokenizerToMethods = tokenizer;
         String token = tokenizer.nextToken();
+
         switch (token) {
-            case "ls":
+            case "ls"://+
                 printDirectoryContent();
                 break;
-            case "pwd":
+            case "pwd"://+
                 printWorkingDirectory();
                 break;
-            case "cd":
-                changeDirectory(tokenizerToMethods);
+            case "cd"://+
+                changeDirectory(tokenizer);
                 break;
-            case "touch":
-                createNewFile(tokenizerToMethods);
+            case "touch"://+
+                createNewFile(tokenizer);
                 break;
-            case "mkdir":
-                createNewDirectory(tokenizerToMethods);
+            case "mkdir"://+
+                createNewDirectory(tokenizer);
                 break;
-            case "cat":
-                writeFileContent(tokenizerToMethods);
+            case "cat"://+
+                writeFileContent(tokenizer);
                 break;
-            case "catt":
-                appendFileContent(tokenizerToMethods);
+            case "catt"://+
+                appendFileContent(tokenizer);
                 break;
-            case "rm":
-                remove(tokenizerToMethods);
+            case "rm"://+
+                remove(tokenizer);
                 break;
-            case "exit":
+            case "exit"://+
                 System.exit(0);
             default:
                 throw new UnsupportedOperationException("Inserted operation is not supported");
@@ -65,7 +69,6 @@ public class PseudoBashAppMain {
 
     private static void appendFileContent(StringTokenizer tokenizer) throws IOException {
         final String currentDirectory = nautilus.pwd();
-        tokenizer.nextToken();
 
         final String fileName = tokenizer.nextToken();
         final String fullFileName = makeFullFileName(currentDirectory, fileName);
@@ -80,11 +83,15 @@ public class PseudoBashAppMain {
 
     private static void writeFileContent(StringTokenizer tokenizer) throws IOException {
         final String currentDirectory = nautilus.pwd();
-        tokenizer.nextToken();
 
         final String fileName = tokenizer.nextToken();
         final String fullFileName = makeFullFileName(currentDirectory, fileName);
         final StringBuilder content = new StringBuilder();
+
+        if (!tokenizer.hasMoreTokens()) {
+            System.out.println(contentEditor.cat(fullFileName));
+            return;
+        }
 
         while (tokenizer.hasMoreTokens()) {
             content.append(tokenizer.nextToken());
@@ -95,9 +102,24 @@ public class PseudoBashAppMain {
 
     private static void changeDirectory(StringTokenizer tokenizer) throws FileNotExistException {
         final String currentDirectory = nautilus.pwd();
-        tokenizer.nextToken();
+
+        if (!tokenizer.hasMoreTokens()) {
+            nautilus.cd();
+            return;
+        }
 
         final String fileName = tokenizer.nextToken();
+
+        if (fileName.equals("..")) {
+            nautilus.cd("..");
+            return;
+        }
+
+
+        if (fileName.contains(":\\")) {
+            nautilus.cd(fileName);
+            return;
+        }
 
         final String fullFileName = makeFullFileName(currentDirectory, fileName);
 
@@ -107,7 +129,6 @@ public class PseudoBashAppMain {
 
     private static void remove(StringTokenizer tokenizer) throws FileNotExistException, DirectoryRemovingException {
         final String currentDirectory = nautilus.pwd();
-        tokenizer.nextToken();
 
         while (tokenizer.hasMoreTokens()) {
             final String fileName = tokenizer.nextToken();
@@ -120,7 +141,6 @@ public class PseudoBashAppMain {
 
     private static void createNewDirectory(StringTokenizer tokenizer) throws FileAlreadyExistsException {
         final String currentDirectory = nautilus.pwd();
-        tokenizer.nextToken();
 
         while (tokenizer.hasMoreTokens()) {
             final String directoryName = tokenizer.nextToken();
@@ -133,7 +153,6 @@ public class PseudoBashAppMain {
 
     private static void createNewFile(StringTokenizer tokenizer) throws IOException {
         final String currentDirectory = nautilus.pwd();
-        tokenizer.nextToken();
 
         while (tokenizer.hasMoreTokens()) {
             final String fileName = tokenizer.nextToken();
