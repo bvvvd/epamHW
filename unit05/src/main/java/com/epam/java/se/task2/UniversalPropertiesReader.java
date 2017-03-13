@@ -4,11 +4,23 @@ import java.io.*;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * Class allows to read and get value from any properties file
+ *
+ * @author Valeriy Burmistrov
+ */
 public class UniversalPropertiesReader {
-
     private final String propertiesFileName;
     private Properties properties;
 
+    /**
+     * Creates new properties reader for properties file with specified fileName
+     *
+     * @param propertiesFileName name of file to get properties
+     * @throws NoSuchPropertiesFileException if file with given name does not exist
+     * @throws IOException
+     * @throws NullPointerException if {@code propertiesFileName} is null
+     */
     public UniversalPropertiesReader(String propertiesFileName) throws NoSuchPropertiesFileException, IOException {
         Objects.requireNonNull(propertiesFileName);
 
@@ -39,6 +51,13 @@ public class UniversalPropertiesReader {
         return (Properties) properties.clone();
     }
 
+    /**
+     * Gets a value casted to {@code String} from properties by key
+     *
+     * @param key a key of value needed to get
+     * @return value casted to {@code String} by key
+     * @throws NoSuchKeyInPropertiesFileException if there is no such key in properties
+     */
     public String getValue(String key) throws NoSuchKeyInPropertiesFileException {
         Objects.requireNonNull(key);
 
