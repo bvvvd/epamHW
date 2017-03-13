@@ -1,5 +1,7 @@
 package com.epam.java.se;
 
+import com.epam.java.se.exceptions.DirectoryRemovingException;
+import com.epam.java.se.exceptions.FileNotExistException;
 import org.junit.Test;
 
 import java.io.*;
@@ -32,7 +34,7 @@ public class FileContentEditorTest {
     }
 
     @Test
-    public void testWeCanWriteContentInExistingFile() throws IOException {
+    public void testWeCanWriteContentInExistingFile() throws IOException, FileNotExistException, DirectoryRemovingException {
         final FileContentEditor contentEditor = new FileContentEditor();
 
         contentEditor.cat("C:\\test\\cat1test.txt", "im trying to write this");
@@ -42,11 +44,14 @@ public class FileContentEditorTest {
         final StringBuilder builder = new StringBuilder();
         reader.lines().forEach((line) -> builder.append(line).append(lineSeparator));
 
+        final FileEditor editor = new FileEditor();
+        editor.rm("C:\\test\\cat1test.txt");
         assertThat(fileContent.equals(builder.toString()), is(true));
+
     }
 
     @Test
-    public void testWeCanAppendContentInExistingFile() throws IOException {
+    public void testWeCanAppendContentInExistingFile() throws IOException, FileNotExistException, DirectoryRemovingException {
 
         final FileContentEditor contentEditor = new FileContentEditor();
 
@@ -58,7 +63,40 @@ public class FileContentEditorTest {
         final StringBuilder builder = new StringBuilder();
         reader.lines().forEach((line) -> builder.append(line).append(lineSeparator));
 
+        final FileEditor editor = new FileEditor();
+        editor.rm("C:\\test\\cat2test.txt");
         assertThat(fileContent.equals(builder.toString()), is(true));
+
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToWriteContentToFileWithNullFileNameThrowsNPE() throws IOException {
+        final FileContentEditor contentEditor = new FileContentEditor();
+
+        contentEditor.cat(null, "C:\\WritingStationeryItem.java");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToWriteContentToFileWithNullContentThrowsNPE() throws IOException {
+        final FileContentEditor contentEditor = new FileContentEditor();
+
+        contentEditor.cat("C:\\WritingStationeryItem.java", null);
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToAppendContentToFileWithNullFileNameThrowsNPE() throws IOException {
+        final FileContentEditor contentEditor = new FileContentEditor();
+
+        contentEditor.catt(null, "C:\\WritingStationeryItem.java");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatTryingToAppendContentToFileWithNullContentThrowsNPE() throws IOException {
+        final FileContentEditor contentEditor = new FileContentEditor();
+
+        contentEditor.catt("C:\\WritingStationeryItem.java", null);
     }
 
 }

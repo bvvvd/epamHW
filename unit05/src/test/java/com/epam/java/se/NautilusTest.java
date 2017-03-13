@@ -27,13 +27,14 @@ public class NautilusTest {
 
         try {
             try {
-                nautilus.cd("C:\\test\\");
+                nautilus.cd("C:\\emptyDirectory\\");
             } catch (FileNotExistException e) {
                 e.printStackTrace();
             }
         } catch (IllegalArgumentException e) {
 
         }
+
         final File[] catalogOfContent = nautilus.ls();
 
         assertThat(catalogOfContent.length, is(0));

@@ -109,7 +109,7 @@ public class FileEditorTest {
         final FileEditor editor = new FileEditor();
         editor.touch("C:\\test\\test\\");
         try {
-            editor.touch("C:\\test\\test\\");
+            editor.mkdir("C:\\test\\test\\");
         } catch (FileAlreadyExistsException e) {
             editor.rm("C:\\test\\test\\");
             throw e;
@@ -145,10 +145,15 @@ public class FileEditorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testThatTryingToCreateDirectoryWithExistingParentWhichIsAFileThrowsIllegalArgumentException() throws IOException {
+    public void testThatTryingToCreateDirectoryWithExistingParentWhichIsAFileThrowsIllegalArgumentException() throws IOException, FileNotExistException, DirectoryRemovingException {
         final FileEditor editor = new FileEditor();
 
-        editor.touch("C:\\existingparent.txt\\");
-        editor.mkdir("C:\\existingparent.txt\\try");
+        editor.touch("C:\\test\\existingparent.txt");
+        try {
+            editor.mkdir("C:\\test\\existingparent.txt\\try");
+        }catch (IllegalArgumentException e) {
+            editor.rm("C:\\test\\existingparent.txt");
+            throw e;
+        }
     }
 }
