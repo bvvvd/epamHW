@@ -1,0 +1,1 @@
+My blocknote class realisation.
