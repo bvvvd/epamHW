@@ -1,3 +1,1 @@
-Generating and printing a matrix type of: 1 0 1
-                                          0 1 0
-                                          1 0 1
+Generating and printing a matrix filled with 0 and 1 in diagonals.
