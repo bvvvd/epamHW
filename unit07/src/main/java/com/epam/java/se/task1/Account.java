@@ -22,7 +22,7 @@ public class Account {
         return balance;
     }
 
-    public void deposit(long amount) {
+    public synchronized void deposit(long amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("amount of deposit can not be negative: " + amount);
         }
@@ -30,7 +30,7 @@ public class Account {
         balance += amount;
     }
 
-    public void withdraw(int amount) {
+    public synchronized void withdraw(int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("amount of withdrawing can not be negative: " + amount);
         }

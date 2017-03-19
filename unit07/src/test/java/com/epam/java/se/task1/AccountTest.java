@@ -1,17 +1,24 @@
 package com.epam.java.se.task1;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AccountTest {
+    private Account account;
+    private Account anotherAccount;
+
+    @Before
+    public void initAccount() {
+        this.account = new Account(0,100);
+        this.anotherAccount = new Account(0,100);
+    }
 
     @Test
     public void testCreateAccountWithSpecifiedIdAndBalance() {
-        final Account account = new Account(0, 10000);
-
-        assertThat(account.getID() == 0 && account.getBalance() == 10000, is(true));
+        assertThat(account.getID() == 0 && account.getBalance() == 100, is(true));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -21,86 +28,62 @@ public class AccountTest {
 
     @Test
     public void testDepositMethodWorksCorrectly() {
-        final Account account = new Account(0, 0);
-
         account.deposit(10000);
 
-        assertThat(account.getID() == 0 && account.getBalance() == 10000, is(true));
+        assertThat(account.getID() == 0 && account.getBalance() == 10100, is(true));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testDepositMethodWithNegativeAmountThrowsIllegalArgumentException() {
-        final Account account = new Account(0, 0);
-
         account.deposit(-100);
     }
 
     @Test
     public void testWithdrawMethodWorksCorrectly() {
-        final Account account = new Account(0, 10000);
-
-        account.withdraw(10000);
+        account.withdraw(100);
 
         assertThat(account.getID() == 0 && account.getBalance() == 0, is(true));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testWithdrawMethodWithNegativeAmountThrowsIllegalArgumentException() {
-        final Account account = new Account(0, 0);
-
         account.deposit(-100);
     }
 
     @Test
     public void testEqualsWithEqualsAccounts() {
-        final Account account1 = new Account(0, 0);
-        final Account account2 = new Account(0, 0);
-
-        assertThat(account1.equals(account2), is(true));
+        assertThat(account.equals(anotherAccount), is(true));
     }
 
     @Test
     public void testEqualsAccountsHaveEqualsHashCodes() {
-        final Account account1 = new Account(0, 0);
-        final Account account2 = new Account(0, 0);
-
-        assertThat(account1.hashCode() == account2.hashCode(), is(true));
+        assertThat(account.hashCode() == anotherAccount.hashCode(), is(true));
     }
 
     @Test
     public void testEqualsAndHashCodeWithEqualsAccounts() {
-        final Account account1 = new Account(0, 0);
-        final Account account2 = new Account(0, 0);
-
-        assertThat(account1.equals(account2) && (account1.hashCode() == account2.hashCode()), is(true));
+        assertThat(account.equals(anotherAccount) && (account.hashCode() == anotherAccount.hashCode()), is(true));
     }
 
     @Test
     public void testEqualsWithNotEqualsAccounts() {
-        final Account account1 = new Account(0,0);
-        final Account account2 = new Account(0,2);
+        account.deposit(10);
 
-        assertThat(account1.equals(account2), is(false));
+        assertThat(account.equals(anotherAccount), is(false));
     }
 
     @Test
     public void testAccountIsSelfEquals() {
-        final Account account = new Account(0,0);
-
         assertThat(account.equals(account), is(true));
     }
 
     @Test
     public void testEqualsWithNullArgument() {
-        final Account account = new Account(0,0);
-
         assertThat(account.equals(null), is(false));
     }
 
     @Test
     public void testEqualsWithWrongClassObjectArgument() {
-        final Account account = new Account(0,0);
-
         assertThat(account.equals(new Object()), is(false));
     }
 
