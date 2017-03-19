@@ -5,10 +5,7 @@ import com.epam.java.se.task1.exceptions.FileNotExistException;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class PseudoBashAppMain {
     final static Scanner scanner = new Scanner(System.in);
@@ -24,7 +21,7 @@ public class PseudoBashAppMain {
             } catch (IOException | DirectoryRemovingException | FileNotExistException |
                     UnsupportedOperationException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
-            }catch (NoSuchElementException e){
+            } catch (NoSuchElementException e) {
                 System.out.println("enter a command");
             }
         }
@@ -168,7 +165,7 @@ public class PseudoBashAppMain {
     }
 
     private static void printWorkingDirectory() {
-        System.out.println(nautilus.pwd());
+        System.out.print(nautilus.pwd());
     }
 
     private static void printDirectoryContent() {

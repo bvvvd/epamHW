@@ -2,7 +2,10 @@ package com.epam.java.se.task1;
 
 import com.epam.java.se.task1.exceptions.DirectoryRemovingException;
 import com.epam.java.se.task1.exceptions.FileNotExistException;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.*;
 
@@ -12,14 +15,27 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class FileContentEditorTest {
 
     private String lineSeparator = System.getProperty("line.separator");
+    private FileContentEditor contentEditor;
+    private String temporaryDirectoryPath;
+
+    @Before
+    public void init() {
+        this.contentEditor = new FileContentEditor();
+        this.temporaryDirectoryPath = temporaryTestDirectory.getRoot().getAbsolutePath();
+    }
+
+    @Rule
+    public TemporaryFolder temporaryTestDirectory = new TemporaryFolder();
 
     @Test
-    public void testWeCanExtractContentFromExistingFile() throws FileNotFoundException {
-        final FileContentEditor contentEditor = new FileContentEditor();
+    public void testWeCanExtractContentFromExistingFile() throws IOException {
+        temporaryTestDirectory.newFile("test.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(temporaryDirectoryPath.concat("\\test.txt")));
+        writer.write("some testing text".concat(lineSeparator).concat("still some testing test"));
 
-        final String fileContent = contentEditor.cat("C:\\WritingStationeryItem.java");
+        final String fileContent = contentEditor.cat(temporaryDirectoryPath.concat("\\test.txt"));
 
-        final BufferedReader reader = new BufferedReader(new FileReader("C:\\WritingStationeryItem.java"));
+        final BufferedReader reader = new BufferedReader(new FileReader(temporaryDirectoryPath.concat("\\test.txt")));
         final StringBuilder builder = new StringBuilder();
         reader.lines().forEach((line) -> builder.append(line).append(lineSeparator));
 
@@ -28,75 +44,53 @@ public class FileContentEditorTest {
 
     @Test(expected = FileNotFoundException.class)
     public void testTryingToExtractContentFromNotExistingFileThrowsFileNotFoundException() throws FileNotFoundException {
-        final FileContentEditor contentEditor = new FileContentEditor();
-
-        final String fileContent = contentEditor.cat("C:\\notexistingfile");
+        final String fileContent = contentEditor.cat(temporaryDirectoryPath.concat("\\notexistingfile.txt"));
     }
 
     @Test
     public void testWeCanWriteContentInExistingFile() throws IOException, FileNotExistException, DirectoryRemovingException {
-        final FileContentEditor contentEditor = new FileContentEditor();
+        contentEditor.cat(temporaryDirectoryPath.concat("\\cat1test.txt"), "im trying to write this");
+        final String fileContent = contentEditor.cat(temporaryDirectoryPath.concat("\\cat1test.txt"));
 
-        contentEditor.cat("C:\\test\\cat1test.txt", "im trying to write this");
-        final String fileContent = contentEditor.cat("C:\\test\\cat1test.txt");
-
-        final BufferedReader reader = new BufferedReader(new FileReader("C:\\test\\cat1test.txt"));
+        final BufferedReader reader = new BufferedReader(new FileReader(temporaryDirectoryPath.concat("\\cat1test.txt")));
         final StringBuilder builder = new StringBuilder();
         reader.lines().forEach((line) -> builder.append(line).append(lineSeparator));
 
-        final FileEditor editor = new FileEditor();
-        editor.rm("C:\\test\\cat1test.txt");
         assertThat(fileContent.equals(builder.toString()), is(true));
-
     }
 
     @Test
     public void testWeCanAppendContentInExistingFile() throws IOException, FileNotExistException, DirectoryRemovingException {
+        contentEditor.cat(temporaryDirectoryPath.concat("\\cat2test.txt"), "im trying to write this");
+        contentEditor.catt(temporaryDirectoryPath.concat("\\cat2test.txt"), "im trying to write this one more time");
+        final String fileContent = contentEditor.cat(temporaryDirectoryPath.concat("\\cat2test.txt"));
 
-        final FileContentEditor contentEditor = new FileContentEditor();
-
-        contentEditor.cat("C:\\test\\cat2test.txt", "im trying to write this");
-        contentEditor.catt("C:\\test\\cat2test.txt", "im trying to write this one more time");
-        final String fileContent = contentEditor.cat("C:\\test\\cat2test.txt");
-
-        final BufferedReader reader = new BufferedReader(new FileReader("C:\\test\\cat2test.txt"));
+        final BufferedReader reader = new BufferedReader(new FileReader(temporaryDirectoryPath.concat("\\cat2test.txt")));
         final StringBuilder builder = new StringBuilder();
         reader.lines().forEach((line) -> builder.append(line).append(lineSeparator));
 
-        final FileEditor editor = new FileEditor();
-        editor.rm("C:\\test\\cat2test.txt");
         assertThat(fileContent.equals(builder.toString()), is(true));
-
-
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatTryingToWriteContentToFileWithNullFileNameThrowsNPE() throws IOException {
-        final FileContentEditor contentEditor = new FileContentEditor();
-
-        contentEditor.cat(null, "C:\\WritingStationeryItem.java");
+        contentEditor.cat(null, temporaryDirectoryPath.concat("test.txt"));
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatTryingToWriteContentToFileWithNullContentThrowsNPE() throws IOException {
-        final FileContentEditor contentEditor = new FileContentEditor();
-
-        contentEditor.cat("C:\\WritingStationeryItem.java", null);
+        contentEditor.cat(temporaryDirectoryPath.concat("test.txt"), null);
     }
 
 
     @Test(expected = NullPointerException.class)
     public void testThatTryingToAppendContentToFileWithNullFileNameThrowsNPE() throws IOException {
-        final FileContentEditor contentEditor = new FileContentEditor();
-
-        contentEditor.catt(null, "C:\\WritingStationeryItem.java");
+        contentEditor.catt(null, temporaryDirectoryPath.concat("test.txt"));
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatTryingToAppendContentToFileWithNullContentThrowsNPE() throws IOException {
-        final FileContentEditor contentEditor = new FileContentEditor();
-
-        contentEditor.catt("C:\\WritingStationeryItem.java", null);
+        contentEditor.catt(temporaryDirectoryPath.concat("test.txt"), null);
     }
 
 }

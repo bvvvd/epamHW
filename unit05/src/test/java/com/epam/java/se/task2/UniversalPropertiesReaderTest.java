@@ -1,5 +1,7 @@
 package com.epam.java.se.task2;
 
+import com.epam.java.se.task2.exceptions.NoSuchKeyInPropertiesFileException;
+import com.epam.java.se.task2.exceptions.NoSuchPropertiesFileException;
 import org.junit.Test;
 
 import java.io.FileReader;
