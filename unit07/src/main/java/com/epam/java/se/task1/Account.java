@@ -31,10 +31,35 @@ public class Account {
     }
 
     public void withdraw(int amount) {
-        if (amount < 0 ) {
+        if (amount < 0) {
             throw new IllegalArgumentException("amount of withdrawing can not be negative: " + amount);
         }
 
         balance -= amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Account account = (Account) o;
+
+        if (id != account.id) {
+            return false;
+        }
+
+        return balance == account.balance;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (int) (balance ^ (balance >>> 32));
+        return result;
     }
 }

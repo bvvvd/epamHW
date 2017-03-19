@@ -51,6 +51,28 @@ public class AccountTest {
         account.deposit(-100);
     }
 
+    @Test
+    public void testEqualsWithEqualsAccounts() {
+        final Account account1 = new Account(0, 0);
+        final Account account2 = new Account(0, 0);
 
-    // TODO: 19.03.2017 equals() and hashcode()
+        assertThat(account1.equals(account2), is(true));
+    }
+
+    @Test
+    public void testEqualsAccountsHaveEqualsHashCodes() {
+        final Account account1 = new Account(0, 0);
+        final Account account2 = new Account(0, 0);
+
+        assertThat(account1.hashCode() == account2.hashCode(), is(true));
+    }
+
+    @Test
+    public void testEqualsAndHashCodeWithEqualsAccounts() {
+        final Account account1 = new Account(0, 0);
+        final Account account2 = new Account(0, 0);
+
+        assertThat(account1.equals(account2) && (account1.hashCode() == account2.hashCode()), is(true));
+    }
+
 }
