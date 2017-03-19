@@ -75,4 +75,33 @@ public class AccountTest {
         assertThat(account1.equals(account2) && (account1.hashCode() == account2.hashCode()), is(true));
     }
 
+    @Test
+    public void testEqualsWithNotEqualsAccounts() {
+        final Account account1 = new Account(0,0);
+        final Account account2 = new Account(0,2);
+
+        assertThat(account1.equals(account2), is(false));
+    }
+
+    @Test
+    public void testAccountIsSelfEquals() {
+        final Account account = new Account(0,0);
+
+        assertThat(account.equals(account), is(true));
+    }
+
+    @Test
+    public void testEqualsWithNullArgument() {
+        final Account account = new Account(0,0);
+
+        assertThat(account.equals(null), is(false));
+    }
+
+    @Test
+    public void testEqualsWithWrongClassObjectArgument() {
+        final Account account = new Account(0,0);
+
+        assertThat(account.equals(new Object()), is(false));
+    }
+
 }
