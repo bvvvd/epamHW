@@ -19,9 +19,29 @@ public class BankMachineTest {
     }
 
     @Test
-    public void testTransferCashBetweenTwoAccounts() {
+    public void testTransferCashBetweenTwoAccounts() throws InvalidTransferAmountException, InterruptedException {
         machine.transfer(firstAccount, secondAccount, 10000);
 
         assertThat(firstAccount.getBalance() == 0 && secondAccount.getBalance() == 60000, is(true));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTransferCashBetweenTwoAccountsWithNegativeAmountOfTransferThrowsIllegalArgumentException() throws InvalidTransferAmountException, InterruptedException {
+        machine.transfer(firstAccount, secondAccount, -1);
+    }
+
+    @Test(expected = InvalidTransferAmountException.class)
+    public void testTransferCashBetweenTwoAccountsWithAmountOfTransferMoreThanAccountOfWithdrawBalanceThrowsInvalidTransferAmountException() throws InvalidTransferAmountException, InterruptedException {
+        machine.transfer(firstAccount, secondAccount, 1000000);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testTransferWithNullFirstAccountThrowsNPE() throws InvalidTransferAmountException, InterruptedException {
+        machine.transfer(null, secondAccount, 0);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testTransferWithNullSecondAccountThrowsNPE() throws InvalidTransferAmountException, InterruptedException {
+        machine.transfer(firstAccount, null, 0);
     }
 }

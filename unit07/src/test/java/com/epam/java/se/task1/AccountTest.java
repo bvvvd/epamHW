@@ -13,7 +13,7 @@ public class AccountTest {
     @Before
     public void initAccount() {
         this.account = new Account(0,100);
-        this.anotherAccount = new Account(0,100);
+        this.anotherAccount = new Account(1,100);
     }
 
     @Test
@@ -27,47 +27,57 @@ public class AccountTest {
     }
 
     @Test
-    public void testDepositMethodWorksCorrectly() {
+    public void testDepositMethodWorksCorrectly() throws InterruptedException {
         account.deposit(10000);
 
         assertThat(account.getID() == 0 && account.getBalance() == 10100, is(true));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDepositMethodWithNegativeAmountThrowsIllegalArgumentException() {
+    public void testDepositMethodWithNegativeAmountThrowsIllegalArgumentException() throws InterruptedException {
         account.deposit(-100);
     }
 
     @Test
-    public void testWithdrawMethodWorksCorrectly() {
+    public void testWithdrawMethodWorksCorrectly() throws InterruptedException {
         account.withdraw(100);
 
         assertThat(account.getID() == 0 && account.getBalance() == 0, is(true));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithdrawMethodWithNegativeAmountThrowsIllegalArgumentException() {
-        account.deposit(-100);
+    public void testWithdrawMethodWithNegativeAmountThrowsIllegalArgumentException() throws InterruptedException {
+        account.withdraw(-100);
     }
 
     @Test
     public void testEqualsWithEqualsAccounts() {
-        assertThat(account.equals(anotherAccount), is(true));
+        final Account equalsAccount = new Account(0, 100);
+
+        assertThat(account.equals(equalsAccount), is(true));
     }
 
     @Test
     public void testEqualsAccountsHaveEqualsHashCodes() {
-        assertThat(account.hashCode() == anotherAccount.hashCode(), is(true));
+        final Account equalsAccount = new Account(0, 100);
+
+        assertThat(account.hashCode() == equalsAccount.hashCode(), is(true));
     }
 
     @Test
     public void testEqualsAndHashCodeWithEqualsAccounts() {
-        assertThat(account.equals(anotherAccount) && (account.hashCode() == anotherAccount.hashCode()), is(true));
+        final Account equalsAccount = new Account(0, 100);
+
+        assertThat(account.equals(equalsAccount) && (account.hashCode() == equalsAccount.hashCode()), is(true));
     }
 
     @Test
-    public void testEqualsWithNotEqualsAccounts() {
+    public void testEqualsWithNotEqualsAccounts() throws InterruptedException {
         account.deposit(10);
+
+        assertThat(account.equals(anotherAccount), is(false));
+
+        account.withdraw(10);
 
         assertThat(account.equals(anotherAccount), is(false));
     }

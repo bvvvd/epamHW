@@ -30,7 +30,7 @@ public class Account {
         balance += amount;
     }
 
-    public synchronized void withdraw(int amount) {
+    public synchronized void withdraw(long amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("amount of withdrawing can not be negative: " + amount);
         }

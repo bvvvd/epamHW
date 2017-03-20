@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <transactions>
     <transaction>
-
+        <fromID>0</fromID>
+        <toID>2</toID>
+        <amountOfTransfer>1000</amountOfTransfer>
+    </transaction>
+    <transaction>
+        <fromID>0</fromID>
+        <toID>2</toID>
+        <amountOfTransfer>1000</amountOfTransfer>
+    </transaction>
+    <transaction>
+        <fromID>1</fromID>
+        <toID>5</toID>
+        <amountOfTransfer>100</amountOfTransfer>
+    </transaction>
+    <transaction>
+        <fromID>7</fromID>
+        <toID>2</toID>
+        <amountOfTransfer>150</amountOfTransfer>
+    </transaction>
+    <transaction>
+        <fromID>4</fromID>
+        <toID>8</toID>
+        <amountOfTransfer>700</amountOfTransfer>
+    </transaction>
+    <transaction>
+        <fromID>100</fromID>
+        <toID>2</toID>
+        <amountOfTransfer>88800</amountOfTransfer>
+    </transaction>
+    <transaction>
+        <fromID>2</fromID>
+        <toID>0</toID>
+        <amountOfTransfer>1500</amountOfTransfer>
     </transaction>
 </transactions>
