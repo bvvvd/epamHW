@@ -1,4 +1,7 @@
-package com.epam.java.se;
+package com.epam.java.se.task2;
+
+import com.epam.java.se.task2.exceptions.NoSuchKeyInPropertiesFileException;
+import com.epam.java.se.task2.exceptions.NoSuchPropertiesFileException;
 
 import java.io.*;
 import java.util.*;
