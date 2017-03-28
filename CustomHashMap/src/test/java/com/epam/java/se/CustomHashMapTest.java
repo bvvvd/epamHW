@@ -22,4 +22,9 @@ public class CustomHashMapTest {
     public void testThatWeCanCreate() {
         assertThat(customMap, is(notNullValue()));
     }
+
+    @Test
+    public void testThatNewMapIsEmpty() {
+        assertThat(customMap.isEmpty(), is(true));
+    }
 }
