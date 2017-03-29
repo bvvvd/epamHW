@@ -136,7 +136,15 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Set keySet() {
-        return null;
+        Set result = new HashSet();
+        for (int i = 0; i < CAPACITY; i++) {
+            CustomEntry currentEntry = buckets[i];
+            while (currentEntry != null) {
+                result.add(currentEntry.key);
+                currentEntry = currentEntry.next;
+            }
+        }
+        return result;
     }
 
     @Override

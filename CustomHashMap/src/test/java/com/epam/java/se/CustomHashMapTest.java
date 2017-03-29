@@ -3,7 +3,7 @@ package com.epam.java.se;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -237,6 +237,25 @@ public class CustomHashMapTest {
         assertTrue(customMap.containsKey(33));
     }
 
+    @Test
+    public void testThatKeySetReturnsEmptySetOnEmptyMap() {
+        Set set = customMap.keySet();
+
+        assertTrue(set.isEmpty());
+    }
+
+    @Test
+    public void testThatKeySetWorksProperly() {
+        Set expectedSet = new HashSet();
+
+        IntStream.range(0,20).forEach(
+                expectedSet::add
+        );
+
+        fillMap(20);
+
+        assertThat(customMap.keySet(), is(equalTo(expectedSet)));
+    }
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))
