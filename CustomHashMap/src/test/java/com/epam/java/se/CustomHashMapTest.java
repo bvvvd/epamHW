@@ -283,6 +283,19 @@ public class CustomHashMapTest {
     }
 
     @Test
+    public void testThatRemovesKeyFromMapRemovesItFromSetKeySet() {
+        int key = 10;
+
+        fillMap(20);
+
+        Set set = customMap.keySet();
+        assertThat(set.contains(key), is(true));
+
+        customMap.remove(key);
+        assertThat(set.contains(key), is(false));
+    }
+
+    @Test
     public void testThatKeySetClearMethodClearsMap() {
         fillMap(20);
 
@@ -291,6 +304,15 @@ public class CustomHashMapTest {
         set.clear();
 
         assertThat(customMap.isEmpty(), is(true));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatKeySetContainsMethodThrowsNPEIfArgumentIsNull() {
+        fillMap(20);
+
+        Set set = customMap.keySet();
+
+        set.contains(null);
     }
 
     @Test
@@ -302,6 +324,83 @@ public class CustomHashMapTest {
         customMap.remove(15);
 
         assertThat(customMap.size(), is(19));
+    }
+
+    @Test
+    public void testThatKeySetIteratorWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Set set = customMap.keySet();
+
+        Iterator iterator = set.iterator();
+
+        int count = 0;
+        while (iterator.hasNext()) {
+            assertThat(customMap.containsKey(iterator.next()), is(true));
+            count += 1;
+        }
+
+        assertEquals(count, size);
+    }
+
+    @Test
+    public void testThatKeySetSizeIsTheSameAsMapSize() {
+        fillMap(20);
+
+        Set set = customMap.keySet();
+
+        assertEquals(set.size(), customMap.size());
+    }
+
+    @Test
+    public void testThatKeySetIteratorCanRemoveKeys() {
+        fillMap(20);
+
+        Set set = customMap.keySet();
+
+        Iterator iterator = set.iterator();
+
+        while (iterator.hasNext()) {
+            if ((int) iterator.next() / 2 == 0) {
+                iterator.remove();
+            }
+        }
+
+        IntStream.range(0, 20).forEach(
+                i -> {
+                    if (i / 2 == 0) {
+                        assertThat(set.contains(i), is(false));
+                    }else {
+                        assertThat(set.contains(i), is(true));
+                    }
+                }
+        );
+    }
+
+    @Test
+    public void testThatRemovingElementsByKeyIteratorRemovesThemFromMap() {
+        fillMap(20);
+
+        Set set = customMap.keySet();
+
+        Iterator iterator = set.iterator();
+
+        while (iterator.hasNext()) {
+            if ((int) iterator.next() / 2 == 0) {
+                iterator.remove();
+            }
+        }
+
+        IntStream.range(0, 20).forEach(
+                i -> {
+                    if (i / 2 == 0) {
+                        assertThat(customMap.containsKey(i), is(false));
+                    }else {
+                        assertThat(customMap.containsKey(i), is(true));
+                    }
+                }
+        );
     }
 
     private void fillMap(int endExclusive) {

@@ -1,6 +1,7 @@
 package com.epam.java.se;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class CustomHashMap<K, V> implements Map<K, V> {
     private int CAPACITY = 16;
@@ -168,16 +169,16 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         }
     }
 
-    private class KeySet extends AbstractSet<K>{
+    private class KeySet extends AbstractSet<K> {
 
         @Override
         public Iterator<K> iterator() {
-            return null;
+            return new KeyIterator();
         }
 
         @Override
         public int size() {
-            return 0;
+            return size;
         }
 
         @Override
@@ -186,13 +187,57 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         }
 
         @Override
-        public boolean remove(Object o){
+        public boolean remove(Object o) {
             return CustomHashMap.this.remove(o) != null;
         }
 
         @Override
         public void clear() {
             CustomHashMap.this.clear();
+        }
+    }
+
+    private abstract class CustomIterator implements Iterator {
+        protected CustomEntry[] mapEntries = new CustomEntry[size];
+        protected int index = 0;
+
+        public CustomIterator() {
+            fillMapEntriesArray();
+
+            index = -1;
+        }
+
+        private void fillMapEntriesArray() {
+            for (int i = 0; i < buckets.length; i++) {
+                CustomEntry currentEntry = buckets[i];
+
+                while (currentEntry != null) {
+                    mapEntries[index] = currentEntry;
+                    index += 1;
+                    currentEntry = currentEntry.next;
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < mapEntries.length - 1;
+        }
+
+        @Override
+        public abstract Object next();
+
+        @Override
+        public void remove() {
+            CustomHashMap.this.remove(mapEntries[index].key);
+        }
+    }
+
+    private class KeyIterator extends CustomIterator{
+        @Override
+        public Object next() {
+            index +=1;
+            return mapEntries[index].key;
         }
     }
 }
