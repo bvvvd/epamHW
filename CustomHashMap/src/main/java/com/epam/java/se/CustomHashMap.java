@@ -100,6 +100,26 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(Object key) {
+        int numberOfBucket = key.hashCode() % CAPACITY;
+        CustomEntry currentEntry = buckets[numberOfBucket];
+
+        while (currentEntry != null) {
+            if (currentEntry.key.equals(key)) {
+                CustomEntry accessoryEntry = buckets[numberOfBucket];
+
+                if (accessoryEntry == currentEntry) {
+                    buckets[numberOfBucket] = currentEntry.next;
+                    return (V) currentEntry.value;
+                }
+
+                while (accessoryEntry.next != currentEntry) {
+                    accessoryEntry = accessoryEntry.next;
+                }
+                accessoryEntry.next = currentEntry.next;
+                return (V) currentEntry.value;
+            }
+            currentEntry = currentEntry.next;
+        }
         return null;
     }
 

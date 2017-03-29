@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -197,6 +198,43 @@ public class CustomHashMapTest {
         fillMap(20);
 
         assertThat(customMap.get("nosuchvalue"), is(nullValue()));
+    }
+
+    @Test
+    public void testThatMapDoesNotContainPairAfterRemovingIt() {
+        fillMap(20);
+        int key = 18;
+        customMap.remove(key);
+
+        assertFalse(customMap.containsKey(key));
+    }
+
+    @Test
+    public void testThatRemoveMethodReturnsNullIfMapDoesNotContainKey() {
+        assertThat(customMap.remove(1), is(nullValue()));
+    }
+
+    @Test
+    public void testThatRemoveMethodReturnsPreviousValue() {
+        fillMap(20);
+        int key = 15;
+
+        assertThat(customMap.remove(key), is(equalTo(String.valueOf(key))));
+    }
+
+    @Test
+    public void testThatRemoveWorksProperlyOnTheTailOfTheBucket() {
+        customMap.put(1, "a");
+        customMap.put(17, "aa");
+        customMap.put(33, "aaa");
+        customMap.put(49, "aaaa");
+
+        customMap.remove(1);
+
+        assertFalse(customMap.containsKey(1));
+        assertTrue(customMap.containsKey(17));
+        assertTrue(customMap.containsKey(49));
+        assertTrue(customMap.containsKey(33));
     }
 
     private void fillMap(int endExclusive) {
