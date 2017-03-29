@@ -4,6 +4,7 @@ import java.util.*;
 
 public class CustomHashMap<K, V> implements Map<K, V> {
     private CustomEntry<K, V>[] buckets = new CustomEntry[16];
+    private int size;
 
     @Override
     public int size() {
@@ -12,7 +13,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
-        return true;
+        return size == 0;
     }
 
     @Override
@@ -41,6 +42,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         if (buckets[0] == null) {
             buckets[0] = new CustomEntry<>(key, value);
+            size += 1;
             return null;
         } else {
             V previousValue = buckets[0].value;

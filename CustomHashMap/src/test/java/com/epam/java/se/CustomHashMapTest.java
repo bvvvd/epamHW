@@ -73,6 +73,13 @@ public class CustomHashMapTest {
         assertFalse(customMap.containsKey(1));
     }
 
+    @Test
+    public void testThatMapIsNotEmptyAfterWePutSomePairs() {
+        customMap.put(1, "a");
+
+        assertFalse(customMap.isEmpty());
+    }
+
 //    @Test
 //    public void testThatMapCanStore20Entries() {
 //        fillMap(20);
