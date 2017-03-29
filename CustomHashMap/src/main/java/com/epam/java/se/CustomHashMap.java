@@ -17,7 +17,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        CustomEntry<K,V> bucket = buckets[0];
+        CustomEntry<K, V> bucket = buckets[0];
         if (bucket != null) {
             return bucket.key.equals(key);
         }
@@ -38,9 +38,15 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     @Override
     public V put(K key, V value) {
         Objects.requireNonNull(key);
-        
-        buckets[0] = new CustomEntry<>(key, value);
-        return null;
+
+        if (buckets[0] == null) {
+            buckets[0] = new CustomEntry<>(key, value);
+            return null;
+        } else {
+            V previousValue = buckets[0].value;
+            buckets[0] = new CustomEntry<>(key, value);
+            return previousValue;
+        }
     }
 
     @Override
