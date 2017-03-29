@@ -42,11 +42,9 @@ public class CustomHashMapTest {
         customMap.put(null, "someValue");
     }
 
-    @Test
-    public void testThatWeCanPutNullValue() {
+    @Test(expected = NullPointerException.class)
+    public void testThatWeCanNotPutNullValue() {
         customMap.put(1, null);
-
-        assertThat(customMap.containsKey(1), is(true));
     }
 
     @Test
@@ -147,11 +145,6 @@ public class CustomHashMapTest {
         assertThat(customMap.containsValue("value"), is(false));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testThatContainsValueThrowsNPEIfArgumentIsNull() {
-        customMap.containsValue(null);
-    }
-
     @Test
     public void testThatMapDoesNotContainPuttedPairsAfterClear() {
         fillMap(10);
@@ -183,6 +176,15 @@ public class CustomHashMapTest {
         customMap.clear();
 
         assertTrue(customMap.isEmpty());
+    }
+
+    @Test
+    public void testThatWeCanGetValueByPresentedKey() {
+        String value = "value";
+        int key = 1;
+        customMap.put(key, value);
+
+        assertThat(customMap.get(key), is(equalTo(value)));
     }
 
     private void fillMap(int endExclusive) {

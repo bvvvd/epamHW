@@ -34,8 +34,6 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
-        Objects.requireNonNull(value);
-
         for (int i = 0; i < CAPACITY; i++) {
             CustomEntry currentEntry = buckets[i];
             while (currentEntry != null) {
@@ -50,12 +48,24 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
+        int numberOfBucket = key.hashCode() % CAPACITY;
+
+        CustomEntry currentEntry = buckets[numberOfBucket];
+
+        while (currentEntry != null) {
+            if (currentEntry.key.equals(key)) {
+                return (V) currentEntry.value;
+            }
+            currentEntry = currentEntry.next;
+        }
+
         return null;
     }
 
     @Override
     public V put(K key, V value) {
         Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
 
         int numberOfBucket = key.hashCode() % CAPACITY;
 
