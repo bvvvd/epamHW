@@ -20,16 +20,10 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     @Override
     public boolean containsKey(Object key) {
         int numberOfBucket = getNumberOfBucket(key);
-        CustomEntry<K, V> currentEntry = buckets[numberOfBucket];
 
-        while (currentEntry != null) {
-            if (currentEntry.key.equals(key)) {
-                return true;
-            }
-            currentEntry = currentEntry.next;
-        }
+        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key, numberOfBucket);
 
-        return false;
+        return entry != null;
     }
 
     @Override
@@ -83,7 +77,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             CustomEntry currentEntry = findEntryWithTheSameKey(key, numberOfBucket);
 
             if (currentEntry == null) {
-                CustomEntry<K,V> newEntry = new CustomEntry<>(key, value);
+                CustomEntry<K, V> newEntry = new CustomEntry<>(key, value);
                 newEntry.next = buckets[numberOfBucket];
                 buckets[numberOfBucket] = newEntry;
                 size += 1;
