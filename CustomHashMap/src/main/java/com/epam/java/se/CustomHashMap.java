@@ -19,9 +19,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        int numberOfBucket = getNumberOfBucket(key);
-
-        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key, numberOfBucket);
+        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key);
 
         return entry != null;
     }
@@ -44,9 +42,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V get(Object key) {
         Objects.requireNonNull(key);
 
-        int numberOfBucket = getNumberOfBucket(key);
-
-        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key, numberOfBucket);
+        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key);
 
         return entry == null ? null : entry.value;
     }
@@ -67,7 +63,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             size += 1;
         } else {
 
-            CustomEntry currentEntry = findEntryWithTheSameKey(key, numberOfBucket);
+            CustomEntry currentEntry = findEntryWithTheSameKey(key);
 
             if (currentEntry == null) {
                 CustomEntry<K, V> newEntry = new CustomEntry<>(key, value);
@@ -84,7 +80,9 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    private CustomEntry findEntryWithTheSameKey(K key, int numberOfBucket) {
+    private CustomEntry findEntryWithTheSameKey(K key) {
+        int numberOfBucket = getNumberOfBucket(key);
+
         CustomEntry entry = buckets[numberOfBucket];
 
         while (entry != null) {
@@ -101,7 +99,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V remove(Object key) {
         int numberOfBucket = getNumberOfBucket(key);
 
-        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key, numberOfBucket);
+        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key);
 
         if (entry != null) {
             CustomEntry<K, V> accessoryEntry = buckets[numberOfBucket];
@@ -136,15 +134,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Set keySet() {
-        Set result = new HashSet();
-        for (int i = 0; i < CAPACITY; i++) {
-            CustomEntry currentEntry = buckets[i];
-            while (currentEntry != null) {
-                result.add(currentEntry.key);
-                currentEntry = currentEntry.next;
-            }
-        }
-        return result;
+        return new KeySet();
     }
 
     @Override
@@ -169,12 +159,40 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         @Override
         public boolean hasNext() {
-            return false;
+            return next != null;
         }
 
         @Override
         public CustomEntry<K, V> next() {
+            return next;
+        }
+    }
+
+    private class KeySet extends AbstractSet<K>{
+
+        @Override
+        public Iterator<K> iterator() {
             return null;
+        }
+
+        @Override
+        public int size() {
+            return 0;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return CustomHashMap.this.containsKey(o);
+        }
+
+        @Override
+        public boolean remove(Object o){
+            return CustomHashMap.this.remove(o) != null;
+        }
+
+        @Override
+        public void clear() {
+            CustomHashMap.this.clear();
         }
     }
 }

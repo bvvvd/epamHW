@@ -246,15 +246,51 @@ public class CustomHashMapTest {
 
     @Test
     public void testThatKeySetWorksProperly() {
-        Set expectedSet = new HashSet();
+        fillMap(20);
 
-        IntStream.range(0,20).forEach(
-                expectedSet::add
+        Set set = customMap.keySet();
+
+        IntStream.range(0, 20).forEach(
+                set::contains
         );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatKeySetRemoveMethodThrowsNPEWithNullArgument() {
+        Set set = customMap.keySet();
+
+        set.remove(null);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testThatKeySetAddThrowsUnsupportedOperationException() {
+        Set set = customMap.keySet();
+
+        set.add(1);
+    }
+
+    @Test
+    public void testThatKeySetRemoveMethodRemovesKeyFromMap() {
+        int key = 15;
 
         fillMap(20);
 
-        assertThat(customMap.keySet(), is(equalTo(expectedSet)));
+        Set set = customMap.keySet();
+
+        set.remove(key);
+
+        assertFalse(customMap.containsKey(key));
+    }
+
+    @Test
+    public void testThatKeySetClearMethodClearsMap() {
+        fillMap(20);
+
+        Set set = customMap.keySet();
+
+        set.clear();
+
+        assertThat(customMap.isEmpty(), is(true));
     }
 
     @Test
