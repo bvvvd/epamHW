@@ -256,6 +256,18 @@ public class CustomHashMapTest {
 
         assertThat(customMap.keySet(), is(equalTo(expectedSet)));
     }
+
+    @Test
+    public void testThatMapSizeDecrementingIfSomePairRemoved() {
+        fillMap(20);
+
+        assertThat(customMap.size(), is(20));
+
+        customMap.remove(15);
+
+        assertThat(customMap.size(), is(19));
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))

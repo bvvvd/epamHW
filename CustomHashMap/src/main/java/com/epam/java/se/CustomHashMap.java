@@ -19,7 +19,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        int numberOfBucket = key.hashCode() % CAPACITY;
+        int numberOfBucket = getNumberOfBucket(key);
         CustomEntry<K, V> currentEntry = buckets[numberOfBucket];
 
         while (currentEntry != null) {
@@ -50,7 +50,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V get(Object key) {
         Objects.requireNonNull(key);
 
-        int numberOfBucket = key.hashCode() % CAPACITY;
+        int numberOfBucket = getNumberOfBucket(key);
+
         CustomEntry currentEntry = buckets[numberOfBucket];
 
         while (currentEntry != null) {
@@ -63,44 +64,49 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
+    private int getNumberOfBucket(Object key) {
+        return key.hashCode() % CAPACITY;
+    }
+
     @Override
     public V put(K key, V value) {
         Objects.requireNonNull(key);
         Objects.requireNonNull(value);
 
-        int numberOfBucket = key.hashCode() % CAPACITY;
+        int numberOfBucket = getNumberOfBucket(key);
 
         if (buckets[numberOfBucket] == null) {
             buckets[numberOfBucket] = new CustomEntry<>(key, value);
             size += 1;
             return null;
         } else {
+
             CustomEntry currentEntry = buckets[numberOfBucket];
             while (currentEntry != null) {
                 if (currentEntry.key.equals(key)) {
-                    break;
+
+                    V previousValue = (V) currentEntry.value;
+                    currentEntry.value = value;
+                    return previousValue;
+
                 }
+
                 currentEntry = currentEntry.next;
             }
 
-            if (currentEntry == null) {
-                V previousValue = buckets[numberOfBucket].value;
-                CustomEntry newEntry = new CustomEntry<>(key, value);
-                newEntry.next = buckets[numberOfBucket];
-                buckets[numberOfBucket] = newEntry;
-                size += 1;
-                return previousValue;
-            } else {
-                V previousValue = (V) currentEntry.value;
-                currentEntry.value = value;
-                return previousValue;
-            }
+            V previousValue = buckets[numberOfBucket].value;
+            CustomEntry newEntry = new CustomEntry<>(key, value);
+            newEntry.next = buckets[numberOfBucket];
+            buckets[numberOfBucket] = newEntry;
+            size += 1;
+            return previousValue;
+
         }
     }
 
     @Override
     public V remove(Object key) {
-        int numberOfBucket = key.hashCode() % CAPACITY;
+        int numberOfBucket = getNumberOfBucket(key);
         CustomEntry currentEntry = buckets[numberOfBucket];
 
         while (currentEntry != null) {
@@ -109,6 +115,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
                 if (accessoryEntry == currentEntry) {
                     buckets[numberOfBucket] = currentEntry.next;
+                    size -= 1;
                     return (V) currentEntry.value;
                 }
 
@@ -116,6 +123,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
                     accessoryEntry = accessoryEntry.next;
                 }
                 accessoryEntry.next = currentEntry.next;
+                size -= 1;
                 return (V) currentEntry.value;
             }
             currentEntry = currentEntry.next;
