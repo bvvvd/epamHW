@@ -89,6 +89,54 @@ public class CustomHashMapTest {
         );
     }
 
+    @Test
+    public void testThatMapCanStoreKeysWithEqualsHashcodes() {
+        Object key1 = "a";
+        Object key2 = 97;
+
+        assertThat(key1.hashCode(), is(equalTo(key2.hashCode())));
+
+        CustomHashMap<Object, String> customHashMap = new CustomHashMap<>();
+
+        customHashMap.put(key1, String.valueOf(key1));
+        customHashMap.put(key2, String.valueOf(key2));
+
+        assertThat(customHashMap.containsKey(key1), is(true));
+        assertThat(customHashMap.containsKey(key2), is(true));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatContainsKeyMethodThrowsNPEIfArgumentIsNull() {
+        customMap.containsKey(null);
+    }
+
+    @Test
+    public void testThatSizeOfNewMapIsZero() {
+        assertThat(customMap.size(), is(0));
+    }
+
+    @Test
+    public void testThatMapSizeIncrementingOnPuttingNewPairs() {
+        assertThat(customMap.size(), is(0));
+
+        fillMap(20);
+
+        assertThat(customMap.size(), is(20));
+    }
+
+    @Test
+    public void testThatMapDoesNotStoreDuplicateKeysPairs() {
+        String oldValue = "oldValue";
+        String newValue = "newValue";
+        Integer key = 1;
+
+        customMap.put(key, oldValue);
+        customMap.put(key, newValue);
+
+        assertThat(customMap.containsValue(newValue), is(true));
+        assertThat(customMap.containsValue(oldValue), is(false));
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))

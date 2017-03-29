@@ -1,6 +1,7 @@
 package com.epam.java.se;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class CustomHashMap<K, V> implements Map<K, V> {
     private int CAPACITY = 16;
@@ -9,7 +10,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
@@ -38,6 +39,15 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
+        for (int i = 0; i < CAPACITY; i++) {
+            CustomEntry currentEntry = buckets[i];
+            while (currentEntry != null) {
+                if (currentEntry.value.equals(value)) {
+                    return true;
+                }
+                currentEntry = currentEntry.next;
+            }
+        }
         return false;
     }
 
@@ -57,11 +67,26 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             size += 1;
             return null;
         } else {
-            V previousValue = buckets[numberOfBucket].value;
-            CustomEntry newEntry = new CustomEntry<>(key, value);
-            newEntry.next = buckets[numberOfBucket];
-            buckets[numberOfBucket] = newEntry;
-            return previousValue;
+            CustomEntry currentEntry = buckets[numberOfBucket];
+            while (currentEntry != null) {
+                if (currentEntry.key.equals(key)) {
+                    break;
+                }
+                currentEntry = currentEntry.next;
+            }
+
+            if (currentEntry == null) {
+                V previousValue = buckets[numberOfBucket].value;
+                CustomEntry newEntry = new CustomEntry<>(key, value);
+                newEntry.next = buckets[numberOfBucket];
+                buckets[numberOfBucket] = newEntry;
+                size += 1;
+                return previousValue;
+            } else {
+                V previousValue = (V) currentEntry.value;
+                currentEntry.value = value;
+                return previousValue;
+            }
         }
     }
 
