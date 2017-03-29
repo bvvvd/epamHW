@@ -99,7 +99,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-
+        buckets = new CustomEntry[CAPACITY];
+        size = 0;
     }
 
     @Override

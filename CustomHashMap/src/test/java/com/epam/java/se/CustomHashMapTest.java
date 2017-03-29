@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CustomHashMapTest {
 
-    private Map<Integer, String> customMap;
+    private Map<Object, Object> customMap;
 
     @Before
     public void init() {
@@ -96,13 +96,11 @@ public class CustomHashMapTest {
 
         assertThat(key1.hashCode(), is(equalTo(key2.hashCode())));
 
-        CustomHashMap<Object, String> customHashMap = new CustomHashMap<>();
+        customMap.put(key1, String.valueOf(key1));
+        customMap.put(key2, String.valueOf(key2));
 
-        customHashMap.put(key1, String.valueOf(key1));
-        customHashMap.put(key2, String.valueOf(key2));
-
-        assertThat(customHashMap.containsKey(key1), is(true));
-        assertThat(customHashMap.containsKey(key2), is(true));
+        assertThat(customMap.containsKey(key1), is(true));
+        assertThat(customMap.containsKey(key2), is(true));
     }
 
     @Test(expected = NullPointerException.class)
@@ -152,6 +150,39 @@ public class CustomHashMapTest {
     @Test(expected = NullPointerException.class)
     public void testThatContainsValueThrowsNPEIfArgumentIsNull() {
         customMap.containsValue(null);
+    }
+
+    @Test
+    public void testThatMapDoesNotContainPuttedPairsAfterClear() {
+        fillMap(10);
+
+        customMap.clear();
+
+        IntStream.range(0, 10).forEach(
+                i -> assertFalse(customMap.containsKey(i))
+        );
+    }
+
+    @Test
+    public void testThatMapSizeIsZeroAfterClear() {
+        int size = 10;
+
+        fillMap(size);
+
+        assertThat(customMap.size(), is(size));
+
+        customMap.clear();
+
+        assertThat(customMap.size(), is(0));
+    }
+
+    @Test
+    public void testThatMapIsEmptyAfterClear() {
+        fillMap(10);
+
+        customMap.clear();
+
+        assertTrue(customMap.isEmpty());
     }
 
     private void fillMap(int endExclusive) {
