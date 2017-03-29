@@ -6,10 +6,10 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CustomHashMapTest {
 
@@ -37,7 +37,6 @@ public class CustomHashMapTest {
         assertThat(customMap.containsKey(1), is(true));
     }
 
-
     @Test(expected = NullPointerException.class)
     public void testThatWeCanNotPutNullKey() {
         customMap.put(null, "someValue");
@@ -55,6 +54,23 @@ public class CustomHashMapTest {
         customMap.put(1, "a");
 
         assertThat(customMap.put(1, "b"), is(equalTo("a")));
+    }
+
+    @Test
+    public void testThatPutMethodReturnsNullOnPuttingNewKey() {
+        assertThat(customMap.put(1, "a"), is(nullValue()));
+    }
+
+    @Test
+    public void testThatContainsKeyReturnsTrueOnPuttedKey() {
+        customMap.put(1, "a");
+
+        assertTrue(customMap.containsKey(1));
+    }
+
+    @Test
+    public void testThatContainsKeyReturnsFalseOnNotPuttedKey() {
+        assertFalse(customMap.containsKey(1));
     }
 
 //    @Test
