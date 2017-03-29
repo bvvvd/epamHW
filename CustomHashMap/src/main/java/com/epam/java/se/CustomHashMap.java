@@ -46,16 +46,9 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         int numberOfBucket = getNumberOfBucket(key);
 
-        CustomEntry currentEntry = buckets[numberOfBucket];
+        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key, numberOfBucket);
 
-        while (currentEntry != null) {
-            if (currentEntry.key.equals(key)) {
-                return (V) currentEntry.value;
-            }
-            currentEntry = currentEntry.next;
-        }
-
-        return null;
+        return entry == null ? null : entry.value;
     }
 
     private int getNumberOfBucket(Object key) {
