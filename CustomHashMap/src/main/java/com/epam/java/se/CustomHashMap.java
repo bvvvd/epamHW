@@ -1,7 +1,6 @@
 package com.epam.java.se;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class CustomHashMap<K, V> implements Map<K, V> {
     private int CAPACITY = 16;
@@ -23,10 +22,6 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         int numberOfBucket = key.hashCode() % CAPACITY;
         CustomEntry<K, V> currentEntry = buckets[numberOfBucket];
 
-        if (currentEntry == null) {
-            return false;
-        }
-
         while (currentEntry != null) {
             if (currentEntry.key.equals(key)) {
                 return true;
@@ -39,6 +34,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
+        Objects.requireNonNull(value);
+
         for (int i = 0; i < CAPACITY; i++) {
             CustomEntry currentEntry = buckets[i];
             while (currentEntry != null) {

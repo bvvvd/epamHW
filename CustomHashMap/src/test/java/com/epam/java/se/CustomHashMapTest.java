@@ -137,6 +137,23 @@ public class CustomHashMapTest {
         assertThat(customMap.containsValue(oldValue), is(false));
     }
 
+    @Test
+    public void testThatContainsValueMethodReturnsTrueOnPuttedValue() {
+        customMap.put(1, "value");
+
+        assertThat(customMap.containsValue("value"), is(true));
+    }
+
+    @Test
+    public void testThatContainsValueMethodReturnsFalseOnNotPuttedValue() {
+        assertThat(customMap.containsValue("value"), is(false));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatContainsValueThrowsNPEIfArgumentIsNull() {
+        customMap.containsValue(null);
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))
