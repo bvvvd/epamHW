@@ -80,18 +80,18 @@ public class CustomHashMapTest {
         assertFalse(customMap.isEmpty());
     }
 
-//    @Test
-//    public void testThatMapCanStore20Entries() {
-//        fillMap(20);
-//
-//        IntStream.range(0, 20).forEach(
-//                i -> assertThat(customMap.containsKey(i), is(true))
-//        );
-//    }
-//
-//    private void fillMap(int endExclusive) {
-//        IntStream.range(0, endExclusive).forEach(
-//                i -> customMap.put(i, String.valueOf(i))
-//        );
-//    }
+    @Test
+    public void testThatMapCanStore20Entries() {
+        fillMap(20);
+
+        IntStream.range(0, 20).forEach(
+                i -> assertThat(customMap.containsKey(i), is(true))
+        );
+    }
+
+    private void fillMap(int endExclusive) {
+        IntStream.range(0, endExclusive).forEach(
+                i -> customMap.put(i, String.valueOf(i))
+        );
+    }
 }

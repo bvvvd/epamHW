@@ -3,7 +3,8 @@ package com.epam.java.se;
 import java.util.*;
 
 public class CustomHashMap<K, V> implements Map<K, V> {
-    private CustomEntry<K, V>[] buckets = new CustomEntry[16];
+    private int CAPACITY = 16;
+    private CustomEntry<K, V>[] buckets = new CustomEntry[CAPACITY];
     private int size;
 
     @Override
@@ -18,9 +19,18 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        CustomEntry<K, V> bucket = buckets[0];
-        if (bucket != null) {
-            return bucket.key.equals(key);
+        int numberOfBucket = key.hashCode() % CAPACITY;
+        CustomEntry<K, V> currentEntry = buckets[numberOfBucket];
+
+        if (currentEntry == null) {
+            return false;
+        }
+
+        while (currentEntry != null) {
+            if (currentEntry.key.equals(key)) {
+                return true;
+            }
+            currentEntry = currentEntry.next;
         }
 
         return false;
@@ -40,13 +50,17 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         Objects.requireNonNull(key);
 
-        if (buckets[0] == null) {
-            buckets[0] = new CustomEntry<>(key, value);
+        int numberOfBucket = key.hashCode() % CAPACITY;
+
+        if (buckets[numberOfBucket] == null) {
+            buckets[numberOfBucket] = new CustomEntry<>(key, value);
             size += 1;
             return null;
         } else {
-            V previousValue = buckets[0].value;
-            buckets[0] = new CustomEntry<>(key, value);
+            V previousValue = buckets[numberOfBucket].value;
+            CustomEntry newEntry = new CustomEntry<>(key, value);
+            newEntry.next = buckets[numberOfBucket];
+            buckets[numberOfBucket] = newEntry;
             return previousValue;
         }
     }
