@@ -78,30 +78,35 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         if (buckets[numberOfBucket] == null) {
             buckets[numberOfBucket] = new CustomEntry<>(key, value);
             size += 1;
-            return null;
         } else {
 
-            CustomEntry currentEntry = buckets[numberOfBucket];
-            while (currentEntry != null) {
-                if (currentEntry.key.equals(key)) {
+            CustomEntry currentEntry = findEntryWithTheSameKey(key, numberOfBucket);
 
-                    V previousValue = (V) currentEntry.value;
-                    currentEntry.value = value;
-                    return previousValue;
-
-                }
-
-                currentEntry = currentEntry.next;
+            if (currentEntry == null) {
+                CustomEntry<K,V> newEntry = new CustomEntry<>(key, value);
+                newEntry.next = buckets[numberOfBucket];
+                buckets[numberOfBucket] = newEntry;
+                size += 1;
+            } else {
+                V previousValue = (V) currentEntry.value;
+                currentEntry.value = value;
+                return previousValue;
             }
-
-            V previousValue = buckets[numberOfBucket].value;
-            CustomEntry newEntry = new CustomEntry<>(key, value);
-            newEntry.next = buckets[numberOfBucket];
-            buckets[numberOfBucket] = newEntry;
-            size += 1;
-            return previousValue;
-
         }
+
+        return null;
+    }
+
+    private CustomEntry findEntryWithTheSameKey(K key, int numberOfBucket) {
+        CustomEntry entry = buckets[numberOfBucket];
+        while (entry != null) {
+            if (entry.key.equals(key)) {
+                return entry;
+            }
+            entry = entry.next;
+        }
+
+        return null;
     }
 
     @Override
