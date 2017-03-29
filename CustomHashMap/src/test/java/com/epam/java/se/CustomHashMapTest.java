@@ -27,4 +27,17 @@ public class CustomHashMapTest {
     public void testThatNewMapIsEmpty() {
         assertThat(customMap.isEmpty(), is(true));
     }
+
+    @Test
+    public void testThatWeCanAddKeyValuePairAndCheckIt() {
+        customMap.put(1, "a");
+
+        assertThat(customMap.containsKey(1), is(true));
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void testThatWeCanNotPutNullKey() {
+        customMap.put(null, "someValue");
+    }
 }

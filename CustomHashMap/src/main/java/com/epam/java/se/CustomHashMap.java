@@ -1,10 +1,10 @@
 package com.epam.java.se;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CustomHashMap<K, V> implements Map<K, V> {
+    private CustomEntry<K, V>[] buckets = new CustomEntry[16];
+
     @Override
     public int size() {
         return 0;
@@ -17,6 +17,11 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
+        CustomEntry<K,V> bucket = buckets[0];
+        if (bucket != null) {
+            return bucket.key.equals(key);
+        }
+
         return false;
     }
 
@@ -31,7 +36,10 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Object put(Object key, Object value) {
+    public V put(K key, V value) {
+        Objects.requireNonNull(key);
+        
+        buckets[0] = new CustomEntry<>(key, value);
         return null;
     }
 
@@ -63,5 +71,26 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
         return null;
+    }
+
+    private class CustomEntry<K, V> implements Iterator<CustomEntry<K, V>> {
+        private final K key;
+        private V value;
+        private CustomEntry<K, V> next = null;
+
+        public CustomEntry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public CustomEntry<K, V> next() {
+            return null;
+        }
     }
 }
