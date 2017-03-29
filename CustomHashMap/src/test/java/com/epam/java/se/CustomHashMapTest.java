@@ -187,6 +187,18 @@ public class CustomHashMapTest {
         assertThat(customMap.get(key), is(equalTo(value)));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testThatGetMethodThrowsNPEIfArgumentIsNull() {
+        customMap.get(null);
+    }
+
+    @Test
+    public void testThatGetMethodReturnsNullIfMapDoesNotContainKey() {
+        fillMap(20);
+
+        assertThat(customMap.get("nosuchvalue"), is(nullValue()));
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))

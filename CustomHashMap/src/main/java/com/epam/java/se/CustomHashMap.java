@@ -48,8 +48,9 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
-        int numberOfBucket = key.hashCode() % CAPACITY;
+        Objects.requireNonNull(key);
 
+        int numberOfBucket = key.hashCode() % CAPACITY;
         CustomEntry currentEntry = buckets[numberOfBucket];
 
         while (currentEntry != null) {
