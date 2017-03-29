@@ -52,7 +52,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     }
 
     private int getNumberOfBucket(Object key) {
-        return key.hashCode() % CAPACITY;
+        return Math.abs(key.hashCode()) % CAPACITY;
     }
 
     @Override
@@ -86,6 +86,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     private CustomEntry findEntryWithTheSameKey(K key, int numberOfBucket) {
         CustomEntry entry = buckets[numberOfBucket];
+
         while (entry != null) {
             if (entry.key.equals(key)) {
                 return entry;
@@ -99,27 +100,26 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     @Override
     public V remove(Object key) {
         int numberOfBucket = getNumberOfBucket(key);
-        CustomEntry currentEntry = buckets[numberOfBucket];
 
-        while (currentEntry != null) {
-            if (currentEntry.key.equals(key)) {
-                CustomEntry accessoryEntry = buckets[numberOfBucket];
+        CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key, numberOfBucket);
 
-                if (accessoryEntry == currentEntry) {
-                    buckets[numberOfBucket] = currentEntry.next;
-                    size -= 1;
-                    return (V) currentEntry.value;
-                }
+        if (entry != null) {
+            CustomEntry<K, V> accessoryEntry = buckets[numberOfBucket];
 
-                while (accessoryEntry.next != currentEntry) {
-                    accessoryEntry = accessoryEntry.next;
-                }
-                accessoryEntry.next = currentEntry.next;
+            if (accessoryEntry == entry) {
+                buckets[numberOfBucket] = entry.next;
                 size -= 1;
-                return (V) currentEntry.value;
+                return accessoryEntry.value;
             }
-            currentEntry = currentEntry.next;
+
+            while (accessoryEntry.next != entry) {
+                accessoryEntry = accessoryEntry.next;
+            }
+            accessoryEntry.next = entry.next;
+            size -= 1;
+            return entry.value;
         }
+
         return null;
     }
 
