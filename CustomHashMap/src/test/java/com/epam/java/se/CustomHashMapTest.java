@@ -765,6 +765,21 @@ public class CustomHashMapTest {
         customMap.putAll(null);
     }
 
+    @Test
+    public void testThatEntrySetContainsMethodReturnFalseOnNotPresentedEntry(){
+        int size = 20;
+        fillMap(size);
+
+        Set<Map.Entry<Integer,String>> entrySet = customMap.entrySet();
+
+        Map<Integer,String> otherMap = new HashMap<>();
+        otherMap.put(40,"40");
+
+        for (Map.Entry<Integer,String> entry : otherMap.entrySet()){
+            assertThat(entrySet.contains(entry), is(false));
+        }
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))
