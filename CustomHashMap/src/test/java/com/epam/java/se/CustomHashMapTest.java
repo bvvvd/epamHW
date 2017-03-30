@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CustomHashMapTest {
 
-    private Map<Object, Object> customMap;
+    private Map<Integer, String> customMap;
 
     @Before
     public void init() {
@@ -96,11 +96,13 @@ public class CustomHashMapTest {
 
         assertThat(key1.hashCode(), is(equalTo(key2.hashCode())));
 
-        customMap.put(key1, String.valueOf(key1));
-        customMap.put(key2, String.valueOf(key2));
+        CustomHashMap<Object, Object> map = new CustomHashMap<>();
 
-        assertThat(customMap.containsKey(key1), is(true));
-        assertThat(customMap.containsKey(key2), is(true));
+        map.put(key1, String.valueOf(key1));
+        map.put(key2, String.valueOf(key2));
+
+        assertThat(map.containsKey(key1), is(true));
+        assertThat(map.containsKey(key2), is(true));
     }
 
     @Test(expected = NullPointerException.class)
@@ -469,6 +471,13 @@ public class CustomHashMapTest {
         values.contains(null);
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testThatValueCollectionDoesNotSupportAddOperation() {
+        Collection values = customMap.values();
+
+        values.add(new Object());
+    }
+
     @Test
     public void testThatValueIteratorWorksProperly() {
         int size = 20;
@@ -531,10 +540,25 @@ public class CustomHashMapTest {
     }
 
     @Test
-    public void testThatEntrySetReturnsEmptySetOnEmptyMap(){
+    public void testThatEntrySetReturnsEmptySetOnEmptyMap() {
         Set entrySet = customMap.entrySet();
 
         assertTrue(entrySet.isEmpty());
+    }
+
+    @Test
+    public void testThatEntrySetWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Set<Map.Entry<Integer, String>> entrySet = customMap.entrySet();
+
+        assertThat(entrySet.size(), is(equalTo(size)));
+
+        for (Map.Entry<Integer, String> entry : entrySet) {
+            assertThat(customMap.containsKey(entry.getKey()), is(true));
+            assertThat(customMap.get(entry.getKey()), is(entry.getValue()));
+        }
     }
 
     private void fillMap(int endExclusive) {

@@ -149,7 +149,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return new EntrySet();
     }
 
-    private class CustomEntry<K, V> implements Iterator<CustomEntry<K, V>> {
+    private class CustomEntry<K, V> implements Map.Entry<K,V> {
         private final K key;
         private V value;
         private CustomEntry<K, V> next = null;
@@ -160,13 +160,38 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         }
 
         @Override
-        public boolean hasNext() {
-            return next != null;
+        public K getKey() {
+            return key;
         }
 
         @Override
-        public CustomEntry<K, V> next() {
-            return next;
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V value) {
+            V previousValue = this.value;
+            this.value = value;
+            return previousValue;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CustomEntry<?, ?> that = (CustomEntry<?, ?>) o;
+
+            if (!key.equals(that.key)) return false;
+            return value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = key.hashCode();
+            result = 31 * result + value.hashCode();
+            return result;
         }
     }
 
@@ -199,7 +224,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     }
 
     private abstract class CustomIterator implements Iterator {
-        protected CustomEntry[] mapEntries = new CustomEntry[size];
+        protected CustomEntry<K,V>[] mapEntries = new CustomEntry[size];
         protected int index = 0;
 
         public CustomIterator() {
@@ -276,7 +301,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     private class EntrySet extends AbstractSet<Entry<K, V>> {
         @Override
         public Iterator<Entry<K, V>> iterator() {
-            return new EntrySetIterator();
+            return new EntryIterator();
         }
 
         @Override
@@ -300,7 +325,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         }
     }
 
-    private class EntrySetIterator extends CustomIterator {
+    private class EntryIterator extends CustomIterator {
         @Override
         public Object next() {
             index += 1;
