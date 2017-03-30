@@ -741,6 +741,30 @@ public class CustomHashMapTest {
         entrySet.remove(null);
     }
 
+    @Test
+    public void testThatPutAllWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Map<Integer, String> otherMap = new HashMap<>();
+        IntStream.range(size, size * 2).forEach(
+                i -> otherMap.put(i, String.valueOf(i))
+        );
+
+        customMap.putAll(otherMap);
+
+        assertThat(customMap.size(), is(equalTo(size * 2)));
+
+        IntStream.range(0, size * 2).forEach(
+                i -> assertThat(customMap.containsKey(i), is(true))
+        );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatPutAllThrowsNPEIfArgumentIsNull() {
+        customMap.putAll(null);
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))

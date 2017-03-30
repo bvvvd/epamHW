@@ -124,8 +124,10 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public void putAll(Map m) {
-
+    public void putAll(Map<? extends K, ? extends V> m) {
+        for (Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     @Override
@@ -149,7 +151,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return new EntrySet();
     }
 
-    private class CustomEntry<K, V> implements Map.Entry<K,V> {
+    private class CustomEntry<K, V> implements Map.Entry<K, V> {
         private final K key;
         private V value;
         private CustomEntry<K, V> next = null;
@@ -224,7 +226,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     }
 
     private abstract class CustomIterator implements Iterator {
-        protected CustomEntry<K,V>[] mapEntries = new CustomEntry[size];
+        protected CustomEntry<K, V>[] mapEntries = new CustomEntry[size];
         protected int index = 0;
 
         public CustomIterator() {
@@ -317,7 +319,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
                 CustomEntry<K, V> entryToCheck = (CustomEntry<K, V>) o;
                 K entryToCheckKey = entryToCheck.key;
 
-                CustomEntry<K,V> entryWithThisKeyFromMap = new CustomEntry<>(entryToCheckKey, CustomHashMap.this.get(entryToCheckKey));
+                CustomEntry<K, V> entryWithThisKeyFromMap = new CustomEntry<>(entryToCheckKey, CustomHashMap.this.get(entryToCheckKey));
 
                 return entryToCheck.equals(entryWithThisKeyFromMap);
             }
@@ -326,7 +328,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         @Override
         public boolean remove(Object o) {
-            return CustomHashMap.this.remove(((CustomEntry<K,V>) o).key) != null;
+            return CustomHashMap.this.remove(((CustomEntry<K, V>) o).key) != null;
         }
 
         @Override
