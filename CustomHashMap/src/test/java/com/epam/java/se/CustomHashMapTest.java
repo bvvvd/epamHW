@@ -688,6 +688,59 @@ public class CustomHashMapTest {
         assertThat(count, is(equalTo(size)));
     }
 
+    @Test
+    public void testThatEntrySetIteratorCanRemoveEntries() {
+        int size = 20;
+        fillMap(size);
+
+        Set<Map.Entry<Integer,String>> entrySet = customMap.entrySet();
+
+        Iterator<Map.Entry<Integer,String>> entryIterator = entrySet.iterator();
+
+        int count = 0;
+        while (entryIterator.hasNext()) {
+            count += 1;
+            entryIterator.next();
+            entryIterator.remove();
+        }
+
+        assertThat(count, is(equalTo(size)));
+        assertThat(entrySet.isEmpty(), is(true));
+    }
+
+    @Test
+    public void testThatEntrySetIteratorCanRemovesEntriesFromMap() {
+        int size = 20;
+        fillMap(size);
+
+        Set<Map.Entry<Integer,String>> entrySet = customMap.entrySet();
+
+        Iterator<Map.Entry<Integer,String>> entryIterator = entrySet.iterator();
+
+        int count = 0;
+        while (entryIterator.hasNext()) {
+            count += 1;
+            entryIterator.next();
+            entryIterator.remove();
+        }
+
+        assertThat(customMap.isEmpty(), is(true));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatEntrySetContainsMethodThrowsNPEIfArgumentIsNull() {
+        Set entrySet = customMap.entrySet();
+
+        entrySet.contains(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatEntrySetRemoveMethodThrowsNPEIfArgumentIsNull() {
+        Set entrySet = customMap.entrySet();
+
+        entrySet.remove(null);
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))

@@ -311,6 +311,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         @Override
         public boolean contains(Object o) {
+            Objects.requireNonNull(o);
+
             if (o instanceof CustomEntry) {
                 CustomEntry<K, V> entryToCheck = (CustomEntry<K, V>) o;
                 K entryToCheckKey = entryToCheck.key;
