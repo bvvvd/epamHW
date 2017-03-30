@@ -1,7 +1,6 @@
 package com.epam.java.se;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class CustomHashMap<K, V> implements Map<K, V> {
     private int CAPACITY = 16;
@@ -27,6 +26,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
+        Objects.requireNonNull(value);
+
         for (int i = 0; i < CAPACITY; i++) {
             CustomEntry currentEntry = buckets[i];
             while (currentEntry != null) {
@@ -140,12 +141,12 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection values() {
-        return null;
+        return new Values();
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        return new EntrySet();
     }
 
     private class CustomEntry<K, V> implements Iterator<CustomEntry<K, V>> {
@@ -233,11 +234,77 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         }
     }
 
-    private class KeyIterator extends CustomIterator{
+    private class KeyIterator extends CustomIterator {
         @Override
         public Object next() {
-            index +=1;
+            index += 1;
             return mapEntries[index].key;
+        }
+    }
+
+    private class Values extends AbstractCollection<V> {
+        @Override
+
+        public Iterator<V> iterator() {
+            return new ValueIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return CustomHashMap.this.containsValue(o);
+        }
+
+        @Override
+        public void clear() {
+            CustomHashMap.this.clear();
+        }
+    }
+
+    private class ValueIterator extends CustomIterator {
+        @Override
+        public Object next() {
+            index += 1;
+            return mapEntries[index].value;
+        }
+    }
+
+    private class EntrySet extends AbstractSet<Entry<K, V>> {
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return new EntrySetIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return false;
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return false;
+        }
+
+        @Override
+        public void clear() {
+            CustomHashMap.this.clear();
+        }
+    }
+
+    private class EntrySetIterator extends CustomIterator {
+        @Override
+        public Object next() {
+            index += 1;
+            return mapEntries[index];
         }
     }
 }

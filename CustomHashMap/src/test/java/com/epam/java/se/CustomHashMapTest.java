@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -105,6 +106,11 @@ public class CustomHashMapTest {
     @Test(expected = NullPointerException.class)
     public void testThatContainsKeyMethodThrowsNPEIfArgumentIsNull() {
         customMap.containsKey(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatContainsValueMethodThrowsNPEIfArgumentIsNull() {
+        customMap.containsValue(null);
     }
 
     @Test
@@ -362,16 +368,16 @@ public class CustomHashMapTest {
         Iterator iterator = set.iterator();
 
         while (iterator.hasNext()) {
-            if ((int) iterator.next() / 2 == 0) {
+            if ((int) iterator.next() % 2 == 0) {
                 iterator.remove();
             }
         }
 
         IntStream.range(0, 20).forEach(
                 i -> {
-                    if (i / 2 == 0) {
+                    if (i % 2 == 0) {
                         assertThat(set.contains(i), is(false));
-                    }else {
+                    } else {
                         assertThat(set.contains(i), is(true));
                     }
                 }
@@ -387,20 +393,148 @@ public class CustomHashMapTest {
         Iterator iterator = set.iterator();
 
         while (iterator.hasNext()) {
-            if ((int) iterator.next() / 2 == 0) {
+            if ((int) iterator.next() % 2 == 0) {
                 iterator.remove();
             }
         }
 
         IntStream.range(0, 20).forEach(
                 i -> {
-                    if (i / 2 == 0) {
+                    if (i % 2 == 0) {
                         assertThat(customMap.containsKey(i), is(false));
-                    }else {
+                    } else {
                         assertThat(customMap.containsKey(i), is(true));
                     }
                 }
         );
+    }
+
+    @Test
+    public void testThatValuesCollectionIsEmptyOnEmptyMap() {
+        assertThat(customMap.values().isEmpty(), is(true));
+    }
+
+    @Test
+    public void testThatValuesCollectionWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Collection values = customMap.values();
+        assertThat(values.size(), is(size));
+
+        IntStream.range(0, 20).forEach(
+                i -> assertThat(values.contains(String.valueOf(i)), is(true))
+        );
+    }
+
+    @Test
+    public void testThatValuesClearMethodClearsMap() {
+        fillMap(20);
+
+        Collection values = customMap.values();
+        values.clear();
+
+        assertTrue(customMap.isEmpty());
+    }
+
+    @Test
+    public void testThatClearingMapClearsValueCollection() {
+        fillMap(20);
+
+        Collection values = customMap.values();
+
+        customMap.clear();
+
+        assertTrue(values.isEmpty());
+    }
+
+    @Test
+    public void testThatRemovingElementFromMapRemovesValueFromValueCollection() {
+        int size = 20;
+        fillMap(size);
+
+        Collection values = customMap.values();
+
+        IntStream.range(0, 10).forEach(
+                customMap::remove
+        );
+
+        assertThat(values.size(), is(equalTo(size / 2)));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatValuesContainsMethodThrowsNPEIfArgumentIsNull() {
+        Collection values = customMap.values();
+
+        values.contains(null);
+    }
+
+    @Test
+    public void testThatValueIteratorWorksProperly() {
+        int size = 20;
+
+        fillMap(size);
+
+        Collection values = customMap.values();
+
+        Iterator iterator = values.iterator();
+
+        int count = 0;
+        while (iterator.hasNext()) {
+            assertTrue(customMap.containsValue(iterator.next()));
+            count += 1;
+        }
+
+        assertThat(count, is(size));
+    }
+
+    @Test
+    public void testThatValueIteratorRemovesElements() {
+        int size = 20;
+        fillMap(size);
+
+        Collection values = customMap.values();
+
+        Iterator iterator = values.iterator();
+
+        int index = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            if (index < 10) {
+                iterator.remove();
+            }
+            index += 1;
+        }
+
+        assertThat(values.size(), is(size / 2));
+    }
+
+    @Test
+    public void testThatValueIteratorRemovesElementsFromMap() {
+        int size = 20;
+        fillMap(size);
+
+        Collection values = customMap.values();
+
+        Iterator iterator = values.iterator();
+
+        int index = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            if (index < 10) {
+                iterator.remove();
+            }
+            index += 1;
+        }
+
+        assertThat(customMap.size(), is(size / 2));
+    }
+
+    @Test
+    public void testThatEntrySetReturnsEmptySetOnEmptyMap(){
+        Set entrySet = customMap.entrySet();
+
+        assertTrue(entrySet.isEmpty());
     }
 
     private void fillMap(int endExclusive) {
