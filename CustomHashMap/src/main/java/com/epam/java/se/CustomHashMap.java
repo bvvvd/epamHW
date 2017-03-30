@@ -2,28 +2,59 @@ package com.epam.java.se;
 
 import java.util.*;
 
+/**
+ * Custom implementation of HashMap.
+ * Stores key-value pairs as <code>CustomEntry</code>.
+ * Number of buckets is <code>CAPACITY</code>.
+ * This Map does not permit storage {@code null} keys and {@code null} values.
+ *
+ * @param <K> type of keys
+ * @param <V> type of mapped values
+ * @author Valeriy Burmistrov
+ */
 public class CustomHashMap<K, V> implements Map<K, V> {
     private int CAPACITY = 16;
     private CustomEntry<K, V>[] buckets = new CustomEntry[CAPACITY];
     private int size;
 
+    /**
+     * @return number of mappings in this map
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * @return true if this map does not contain any mappings, otherwise return false
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Checks that map contains mapping for specified key
+     *
+     * @param key key to find in map
+     * @return true if map contain mapping for specified key
+     * @throws NullPointerException if key is {@code null}
+     */
     @Override
     public boolean containsKey(Object key) {
+        Objects.requireNonNull(key);
         CustomEntry<K, V> entry = findEntryWithTheSameKey((K) key);
 
         return entry != null;
     }
 
+    /**
+     * Check that map contains key or keys, mapped to specified value
+     *
+     * @param value value to check presence in map
+     * @return true if map contains mapping or mappings to specified value
+     * @throws NullPointerException if value is {@code null}
+     */
     @Override
     public boolean containsValue(Object value) {
         Objects.requireNonNull(value);
@@ -40,6 +71,15 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return false;
     }
 
+    /**
+     * Returns value to which specified key is mapped, or {@code null} if this
+     * map contains no mappings for this key.
+     *
+     * @param key key associated value needed to be returned
+     * @return value to which specified key is mapped, or {@code null} if this
+     * map contains no mappings for specified key.
+     * @throws NullPointerException if specified key is {@code null}
+     */
     @Override
     public V get(Object key) {
         Objects.requireNonNull(key);
@@ -53,6 +93,15 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return Math.abs(key.hashCode()) % CAPACITY;
     }
 
+    /**
+     * Associates the specified key with the specified value. Replaces value, if this map
+     * contained a mapping for specified key previously.
+     * @param key key which needed to be mapped to specified value
+     * @param value value to be mapping for specified key
+     * @return previous value mapped to specified key, if this map contained a mapping previously,
+     * otherwise returns {@code null}
+     * @throws NullPointerException if specified key is {@code null} or value is {@code null}
+     */
     @Override
     public V put(K key, V value) {
         Objects.requireNonNull(key);
@@ -97,6 +146,13 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
+    /**
+     * Removes mapping for specified key from this map if map contained it.
+     *
+     * @param key key whose mapping needed to be removed
+     * @return previous value, mapped to specified key, or null if there was no mapping
+     * @throws NullPointerException if specified key if {@code null}
+     */
     @Override
     public V remove(Object key) {
         int numberOfBucket = getNumberOfBucket(key);
@@ -123,6 +179,11 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
+    /**
+     * Copies all entries from specified map to this map.
+     * @param m map of entries to be copied in this map
+     * @throws NullPointerException if specified map is {@code null}
+     */
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
         for (Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
@@ -130,27 +191,58 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         }
     }
 
+    /**
+     * Removes all the mappings from this map
+     */
     @Override
     public void clear() {
         buckets = new CustomEntry[CAPACITY];
         size = 0;
     }
 
+    /**
+     * Returns set of keys, stored in this map. Set does not support adding operation.
+     * Set supports remove and clear operations, that affect the map.
+     * Supports Iterator
+     *
+     * @return set of keys, stored in this map
+     */
     @Override
     public Set keySet() {
         return new KeySet();
     }
 
+    /**
+     * Returns collection of values, stored in this map. Collection does not support adding operation.
+     * Collection supports remove and clear operations, that affect the map.
+     * Supports Iterator
+     *
+     * @return Collection of values, stored in this map
+     */
     @Override
     public Collection values() {
         return new Values();
     }
 
+    /**
+     * Returns set of entries, stored in this map. Set does not support adding operation.
+     * Set supports remove and clear operations, that affect the map.
+     * Supports Iterator
+     *
+     * @return set of entries, stored in this map
+     */
     @Override
     public Set<Entry<K, V>> entrySet() {
         return new EntrySet();
     }
 
+
+    /**
+     * Custom entry to store key-value mappings
+     *
+     * @param <K> type of key
+     * @param <V> type of value
+     */
     private class CustomEntry<K, V> implements Map.Entry<K, V> {
         private final K key;
         private V value;

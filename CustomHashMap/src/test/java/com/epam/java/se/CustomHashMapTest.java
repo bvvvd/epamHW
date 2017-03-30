@@ -68,6 +68,11 @@ public class CustomHashMapTest {
         assertTrue(customMap.containsKey(1));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testThatContainsKeyThrowsNPEIfArgumentIsNull() {
+        customMap.containsKey(null);
+    }
+
     @Test
     public void testThatContainsKeyReturnsFalseOnNotPuttedKey() {
         assertFalse(customMap.containsKey(1));
