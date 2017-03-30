@@ -668,6 +668,26 @@ public class CustomHashMapTest {
         }
     }
 
+    @Test
+    public void testThatEntrySetIteratorWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Set<Map.Entry<Integer,String>> entrySet = customMap.entrySet();
+
+        Iterator<Map.Entry<Integer,String>> entryIterator = entrySet.iterator();
+
+        int count = 0;
+        while (entryIterator.hasNext()) {
+            count += 1;
+            Map.Entry<Integer, String> currentEntry = entryIterator.next();
+            assertThat(customMap.containsKey(currentEntry.getKey()), is(true));
+            assertThat(customMap.get(currentEntry.getKey()), is(equalTo(currentEntry.getValue())));
+        }
+
+        assertThat(count, is(equalTo(size)));
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))
