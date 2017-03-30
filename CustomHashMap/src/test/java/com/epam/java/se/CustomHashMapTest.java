@@ -561,6 +561,113 @@ public class CustomHashMapTest {
         }
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testThatEntrySetDoesNotSupportAddOperation() {
+        Set entrySet = customMap.entrySet();
+
+        entrySet.add(new Object());
+    }
+
+    @Test
+    public void testThatEntrySetRemovesMethodRemovesEntryFromMap() {
+        int size = 20;
+        fillMap(size);
+
+        Set<Map.Entry<Integer, String>> entrySet = customMap.entrySet();
+
+        for (Map.Entry<Integer, String> entry : entrySet) {
+            entrySet.remove(entry);
+        }
+
+        assertThat(customMap.isEmpty(), is(true));
+    }
+
+    @Test
+    public void testThatRemovingEntriesFromMapRemovesThemFromEntrySet() {
+        int size = 5;
+        fillMap(size);
+
+        Set<Map.Entry<Integer, String>> entrySet = customMap.entrySet();
+
+        assertThat(entrySet.size(), is(size));
+
+        IntStream.range(0, size).forEach(
+                i -> customMap.remove(i)
+        );
+
+        assertTrue(entrySet.isEmpty());
+    }
+
+    @Test
+    public void testThatClearMethodOnMapClearsEntrySet() {
+        int size = 5;
+        fillMap(size);
+
+        Set<Map.Entry<Integer, String>> entrySet = customMap.entrySet();
+
+        assertThat(entrySet.size(), is(size));
+
+        customMap.clear();
+
+        assertTrue(entrySet.isEmpty());
+    }
+
+    @Test
+    public void testThatClearMethodOnEntrySetClearsMap() {
+        int size = 5;
+        fillMap(size);
+
+        Set<Map.Entry<Integer, String>> entrySet = customMap.entrySet();
+
+        assertThat(entrySet.size(), is(size));
+
+        entrySet.clear();
+
+        assertTrue(customMap.isEmpty());
+    }
+
+    @Test
+    public void testThatEntrySetRemovesMethodReturnsCorrectResult() {
+        int size = 20;
+        fillMap(size);
+
+
+        Set<Map.Entry<Integer, String>> entrySet = customMap.entrySet();
+
+        CustomHashMap<Integer, String> otherMap = new CustomHashMap<>();
+        otherMap.put(20, "20");
+        otherMap.put(5, "5");
+        Set<Map.Entry<Integer, String>> otherMapEntrySet = otherMap.entrySet();
+
+        for (Map.Entry<Integer, String> entry : otherMapEntrySet) {
+            if (entry.getKey() == size) {
+                assertThat(entrySet.remove(entry), is(false));
+            } else {
+                assertThat(entrySet.remove(entry), is(true));
+            }
+        }
+    }
+
+    @Test
+    public void testThatEntrySetContainsMethodWorksProperly() {
+        int size = 20;
+        fillMap(size);
+        Set<Map.Entry<Integer,String>> entrySet = customMap.entrySet();
+
+        CustomHashMap<Integer, String> otherMap = new CustomHashMap<>();
+        otherMap.put(100, "100");
+        otherMap.put(-100, "100");
+        otherMap.put(10, "10");
+
+        for (Map.Entry<Integer,String> entry : otherMap.entrySet()) {
+            if (entry.getKey() == 10) {
+                assertThat(entrySet.contains(entry), is(true));
+            }else {
+                assertThat(entrySet.contains(entry), is(false));
+            }
+        }
+    }
+
     private void fillMap(int endExclusive) {
         IntStream.range(0, endExclusive).forEach(
                 i -> customMap.put(i, String.valueOf(i))

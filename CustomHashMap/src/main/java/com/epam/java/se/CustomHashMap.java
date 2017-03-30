@@ -311,12 +311,20 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         @Override
         public boolean contains(Object o) {
+            if (o instanceof CustomEntry) {
+                CustomEntry<K, V> entryToCheck = (CustomEntry<K, V>) o;
+                K entryToCheckKey = entryToCheck.key;
+
+                CustomEntry<K,V> entryWithThisKeyFromMap = new CustomEntry<>(entryToCheckKey, CustomHashMap.this.get(entryToCheckKey));
+
+                return entryToCheck.equals(entryWithThisKeyFromMap);
+            }
             return false;
         }
 
         @Override
         public boolean remove(Object o) {
-            return false;
+            return CustomHashMap.this.remove(((CustomEntry<K,V>) o).key) != null;
         }
 
         @Override
