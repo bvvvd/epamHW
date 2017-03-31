@@ -139,6 +139,40 @@ public class CustomTreeMapTest {
         assertThat(map.size(), is(equalTo(1)));
     }
 
+    @Test
+    public void testThatMapDoesNotContainsPuttedPairsAfterClear() {
+        int size = 20;
+        fillMap(size);
+
+        map.clear();
+
+        IntStream.range(0, size).forEach(
+                i -> assertThat(map.containsKey((int) (i * Math.pow(-1, i))), is(false))
+        );
+    }
+
+    @Test
+    public void testThatMapSizeIs0AfterClear() {
+        int size = 20;
+
+        fillMap(size);
+
+        assertThat(map.size(), is(size));
+
+        map.clear();
+
+        assertThat(map.size(), is(0));
+    }
+
+    @Test
+    public void testThatMapIsEmptyAfterClear() {
+        fillMap(20);
+
+        map.clear();
+
+        assertThat(map.isEmpty(), is(true));
+    }
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))
