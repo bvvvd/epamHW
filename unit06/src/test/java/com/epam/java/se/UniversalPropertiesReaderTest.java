@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -22,7 +23,7 @@ public class UniversalPropertiesReaderTest {
     private UniversalPropertiesReader propertiesReader;
 
     @Before
-    public void init() throws FileNotFoundException, NoSuchPropertiesFileException {
+    public void init() throws IOException, NoSuchPropertiesFileException {
         this.propertiesReader = new UniversalPropertiesReader(".\\src\\resources\\task2resources_en.properties");
     }
 
@@ -32,12 +33,12 @@ public class UniversalPropertiesReaderTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreatingPropertiesReaderWithNullArgumentThrowsNPE() throws FileNotFoundException, NoSuchPropertiesFileException {
+    public void testCreatingPropertiesReaderWithNullArgumentThrowsNPE() throws IOException, NoSuchPropertiesFileException {
         final UniversalPropertiesReader propertiesReader = new UniversalPropertiesReader(null);
     }
 
     @Test(expected = NoSuchPropertiesFileException.class)
-    public void testCreatingPropertiesReaderWithNotExistingPropertiesFileAsArgumentThrowsIllegalArgumentException() throws FileNotFoundException, NoSuchPropertiesFileException {
+    public void testCreatingPropertiesReaderWithNotExistingPropertiesFileAsArgumentThrowsIllegalArgumentException() throws IOException, NoSuchPropertiesFileException {
         final UniversalPropertiesReader propertiesReader = new UniversalPropertiesReader("notexisting.file");
     }
 
