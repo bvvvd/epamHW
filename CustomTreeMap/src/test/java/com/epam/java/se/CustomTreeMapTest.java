@@ -85,6 +85,8 @@ public class CustomTreeMapTest {
 
     @Test
     public void testThatContainsKeyMethodReturnsFalseOnNotPresentedKey() {
+        map.put(-20, "asdas");
+
         assertThat(map.containsKey(1), is(false));
     }
 
@@ -106,13 +108,40 @@ public class CustomTreeMapTest {
         fillMap(size);
 
         IntStream.range(0, size).forEach(
-                i -> assertThat(map.containsKey(i), is(true))
+                i -> assertThat(map.containsKey((int) (i * Math.pow(-1, i))), is(true))
         );
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testThatContainsValueMethodThrowsNPEIfArgumentIsNull() {
+        map.containsValue(null);
+    }
+
+    @Test
+    public void testThatSizeOfEmptyMapIs0() {
+        assertThat(map.size(), is(equalTo(0)));
+    }
+
+    @Test
+    public void testThatSizeIncrementsWithAddingNewKeys() {
+        map.put(1, "a");
+        assertThat(map.size(), is(equalTo(1)));
+
+        map.put(2, "b");
+        assertThat(map.size(), is(equalTo(2)));
+    }
+
+    @Test
+    public void testThatSizeDoesNotIncrementsIfWeAddPresentedKey() {
+        map.put(1, "a");
+        map.put(1, "b");
+
+        assertThat(map.size(), is(equalTo(1)));
+    }
+
     private void fillMap(int amount) {
-        IntStream.range(0,amount).forEach(
-                i -> map.put(i, String.valueOf(i))
+        IntStream.range(0, amount).forEach(
+                i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))
         );
     }
 }
