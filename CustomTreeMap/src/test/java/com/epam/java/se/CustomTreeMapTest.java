@@ -173,6 +173,26 @@ public class CustomTreeMapTest {
         assertThat(map.isEmpty(), is(true));
     }
 
+    @Test
+    public void testThatWeCanGetValueBySpecifiedKey() {
+        String value = "value";
+        int key = 45;
+
+        map.put(key, value);
+
+        assertThat(map.get(key), is(equalTo(value)));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatGetMethodThrowsNPEIfArgumentIsNull() {
+        map.get(null);
+    }
+
+    @Test
+    public void testThatGetMethodReturnsNullIfMapDoesNotContainNodeWithSpecifiedKey() {
+        assertThat(map.get(1), is(nullValue()));
+    }
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))
