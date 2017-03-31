@@ -1,7 +1,5 @@
 package com.epam.java.se;
 
-import sun.awt.EventQueueItem;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -10,6 +8,7 @@ import java.util.Set;
 public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     private Node<K, V> root;
+    private V previousValue;
 
     @Override
     public int size() {
@@ -23,12 +22,40 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        return root.key.equals(key);
+        Objects.requireNonNull(key);
+
+        if (root != null) {
+            return find(root, (K) key) != null;
+        }
+        return false;
     }
+
+    private Node<K, V> find(Node<K, V> node, K key) {
+        if (node == null) {
+            return null;
+        }
+
+        if (node.key.compareTo(key) == 0) {
+            return node;
+        }
+
+        if (node.key.compareTo(key) < 0) {
+            node.right = find(node.right, key);
+        } else {
+            node.left = find(node.left, key);
+        }
+
+        return node;
+    }
+
 
     @Override
     public boolean containsValue(Object value) {
-        return root.value.equals(value);
+        if (root != null) {
+            return root.value.equals(value);
+        }
+
+        return false;
     }
 
     @Override
@@ -41,14 +68,28 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         Objects.requireNonNull(key);
         Objects.requireNonNull(value);
 
-        if (root!=null){
-            V previousValue = root.value;
-            root.value = value;
-            return previousValue;
-        }else {
-            root = new Node(key, value);
+        root = put(root, key, value);
+
+        return previousValue;
+    }
+
+    private Node<K, V> put(Node<K, V> node, K key, V value) {
+        if (node == null) {
+            return new Node<>(key, value);
         }
-        return null;
+
+        if (node.key.equals(key)) {
+            previousValue = node.value;
+            node.value = value;
+        }
+
+        if (node.key.compareTo(key) < 0) {
+            node.right = put(node.right, key, value);
+        } else {
+            node.left = put(node.left, key, value);
+        }
+
+        return node;
     }
 
     @Override
