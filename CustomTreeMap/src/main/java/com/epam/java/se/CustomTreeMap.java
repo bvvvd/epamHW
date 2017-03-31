@@ -1,10 +1,15 @@
 package com.epam.java.se;
 
+import sun.awt.EventQueueItem;
+
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
+
+    private Node<K, V> root;
 
     @Override
     public int size() {
@@ -13,17 +18,17 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        return false;
+        return root.key.equals(key);
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return false;
+        return root.value.equals(value);
     }
 
     @Override
@@ -33,6 +38,16 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
+
+        if (root!=null){
+            V previousValue = root.value;
+            root.value = value;
+            return previousValue;
+        }else {
+            root = new Node(key, value);
+        }
         return null;
     }
 
@@ -64,5 +79,17 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
         return null;
+    }
+
+    private class Node<K extends Comparable<K>, V> {
+        private final K key;
+        private V value;
+        private Node<K, V> left;
+        private Node<K, V> right;
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
