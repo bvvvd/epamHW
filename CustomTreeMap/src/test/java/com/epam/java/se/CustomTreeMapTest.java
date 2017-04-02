@@ -252,13 +252,20 @@ public class CustomTreeMapTest {
     }
 
     @Test
-    public void testThatRemoveMethodReturnsNullInCaseOfRemovingNotPresentedKey () {
+    public void testThatRemoveMethodReturnsNullInCaseOfRemovingNotPresentedKey() {
         assertThat(map.remove(1), is(nullValue()));
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatRemoveMethodThrowsNPEIfArgumentIsNull() {
         map.remove(null);
+    }
+
+    @Test
+    public void testThatFilledMapIsNotEmpty() {
+        fillMap(20);
+
+        assertThat(map.isEmpty(), is(false));
     }
 
     private void fillMap(int amount) {
