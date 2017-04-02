@@ -366,6 +366,30 @@ public class CustomTreeMapTest {
         set.contains(null);
     }
 
+    @Test
+    public void testThatMapSizeDecrementingIfSomePairRemoved() {
+        fillMap(20);
+
+        assertThat(map.size(), is(20));
+
+        map.remove(0);
+
+        assertThat(map.size(), is(19));
+    }
+
+    @Test
+    public void testThatKeySetSizeWorksProperly() {
+        Set set = map.keySet();
+
+        assertThat(map.size(), is(equalTo(set.size())));
+
+        fillMap(20);
+
+        set = map.keySet();
+
+        assertThat(map.size(), is(equalTo(set.size())));
+    }
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))

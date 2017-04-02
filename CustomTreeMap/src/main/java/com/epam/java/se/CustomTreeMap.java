@@ -111,6 +111,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         Objects.requireNonNull(key);
         Node<K, V> nodeToRemove = find(root, (K) key);
         if (nodeToRemove != null) {
+            size -= 1;
             root = remove(root, (K) key);
             return nodeToRemove.value;
         }
@@ -208,7 +209,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         @Override
         public int size() {
-            return 0;
+            return size;
         }
 
         @Override
@@ -219,6 +220,11 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         @Override
         public boolean remove(Object o) {
             return CustomTreeMap.this.remove(o) != null;
+        }
+
+        @Override
+        public void clear() {
+            CustomTreeMap.this.clear();
         }
     }
 }
