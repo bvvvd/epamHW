@@ -3,11 +3,13 @@ package com.epam.java.se;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 public class CustomTreeMapTest {
 
@@ -388,6 +390,87 @@ public class CustomTreeMapTest {
         set = map.keySet();
 
         assertThat(map.size(), is(equalTo(set.size())));
+    }
+
+    @Test
+    public void testThatKeySetIteratorWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Set set = map.keySet();
+
+        Iterator iterator = set.iterator();
+
+        int count = 0;
+        while (iterator.hasNext()) {
+            assertThat(map.containsKey(iterator.next()), is(true));
+            count += 1;
+        }
+
+        assertEquals(count, size);
+    }
+
+
+    @Test
+    public void testThatKeySetSizeIsTheSameAsMapSize() {
+        fillMap(20);
+
+        Set set = map.keySet();
+
+        assertEquals(set.size(), map.size());
+    }
+
+    @Test
+    public void testThatKeySetIteratorCanRemoveKeys() {
+        IntStream.range(0, 20).forEach(
+                i -> map.put(i, String.valueOf(i))
+        );
+
+        Set set = map.keySet();
+
+        Iterator iterator = set.iterator();
+
+        while (iterator.hasNext()) {
+            if ((int) iterator.next() % 2 == 0) {
+                iterator.remove();
+            }
+        }
+
+        IntStream.range(0, 20).forEach(
+                i -> {
+                    if (i % 2 == 0) {
+                        assertThat(set.contains(i), is(false));
+                    } else {
+                        assertThat(set.contains(i), is(true));
+                    }
+                }
+        );
+    }
+
+    @Test
+    public void testThatRemovingElementsByKeyIteratorRemovesThemFromMap() {
+        IntStream.range(0, 20).forEach(
+                i -> map.put(i, String.valueOf(i))
+        );
+        Set set = map.keySet();
+
+        Iterator iterator = set.iterator();
+
+        while (iterator.hasNext()) {
+            if ((int) iterator.next() % 2 == 0) {
+                iterator.remove();
+            }
+        }
+
+        IntStream.range(0, 20).forEach(
+                i -> {
+                    if (i % 2 == 0) {
+                        assertThat(map.containsKey(i), is(false));
+                    } else {
+                        assertThat(map.containsKey(i), is(true));
+                    }
+                }
+        );
     }
 
     private void fillMap(int amount) {

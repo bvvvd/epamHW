@@ -48,7 +48,6 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     private Node<K, V> findValue(Node<K, V> node, V valueToFind) {
-
         if (node == null) {
             return null;
         }
@@ -204,7 +203,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     private class KeySet extends AbstractSet<K> {
         @Override
         public Iterator<K> iterator() {
-            return null;
+            return new KeyIterator();
         }
 
         @Override
@@ -225,6 +224,56 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         @Override
         public void clear() {
             CustomTreeMap.this.clear();
+        }
+    }
+
+    private abstract class CustomIterator implements Iterator {
+        protected Node<K, V>[] mapEntries = new Node[size];
+        protected int index = 0;
+
+        public CustomIterator() {
+            fillMapEntriesArray(root);
+
+            index = -1;
+        }
+
+        private void fillMapEntriesArray(Node<K, V> node) {
+            if (node == null) {
+                return;
+            }
+
+            mapEntries[index] = node;
+            index += 1;
+
+            if (node.left != null) {
+                fillMapEntriesArray(node.left);
+            }
+
+            if (node.right != null) {
+                fillMapEntriesArray(node.right);
+            }
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < mapEntries.length - 1;
+        }
+
+        @Override
+        public abstract Object next();
+
+        @Override
+        public void remove() {
+            CustomTreeMap.this.remove(mapEntries[index].key);
+        }
+    }
+
+    private class KeyIterator extends CustomIterator {
+        @Override
+        public Object next() {
+            index += 1;
+            return mapEntries[index].key;
         }
     }
 }
