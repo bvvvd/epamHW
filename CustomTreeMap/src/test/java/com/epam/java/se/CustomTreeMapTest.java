@@ -268,6 +268,15 @@ public class CustomTreeMapTest {
         assertThat(map.isEmpty(), is(false));
     }
 
+    @Test
+    public void testThatContainsValueWorksProperly() {
+        fillMap(20);
+
+        assertThat(map.containsValue("5"), is(true));
+    }
+
+
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))

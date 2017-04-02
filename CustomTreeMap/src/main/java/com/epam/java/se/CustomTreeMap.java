@@ -25,10 +25,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     public boolean containsKey(Object key) {
         Objects.requireNonNull(key);
 
-        if (root != null) {
-            return find(root, (K) key) != null;
-        }
-        return false;
+        return find(root, (K) key) != null;
     }
 
     private Node<K, V> find(Node<K, V> node, K key) {
@@ -50,11 +47,26 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     public boolean containsValue(Object value) {
         Objects.requireNonNull(value);
 
-        if (root != null) {
-            return root.value.equals(value);
+        return findValue(root, (V) value) != null;
+    }
+
+    private Node<K, V> findValue(Node<K, V> node, V valueToFind) {
+
+        if (node == null) {
+            return null;
         }
 
-        return false;
+        if (node.value.equals(valueToFind)) {
+            return node;
+        }
+
+        if (findValue(node.left, valueToFind) != null) {
+            return node;
+        } else if (findValue(node.right, valueToFind) != null) {
+            return node;
+        }
+
+        return null;
     }
 
     @Override
