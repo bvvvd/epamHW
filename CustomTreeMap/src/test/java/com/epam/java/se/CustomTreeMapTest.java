@@ -3,6 +3,7 @@ package com.epam.java.se;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -287,6 +288,12 @@ public class CustomTreeMapTest {
         map.containsValue(null);
     }
 
+    @Test
+    public void testThatKeySetReturnsEmptySetOnEmptyMap () {
+        Set set = map.keySet();
+
+        assertThat(set.isEmpty(), is(true));
+    }
 
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(

@@ -1,9 +1,6 @@
 package com.epam.java.se;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
@@ -178,7 +175,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        return null;
+        return new KeySet();
     }
 
     @Override
@@ -200,6 +197,18 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         public Node(K key, V value) {
             this.key = key;
             this.value = value;
+        }
+    }
+
+    private class KeySet extends AbstractSet<K> {
+        @Override
+        public Iterator<K> iterator() {
+            return null;
+        }
+
+        @Override
+        public int size() {
+            return 0;
         }
     }
 }
