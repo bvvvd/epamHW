@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CustomTreeMapTest {
 
@@ -490,6 +491,98 @@ public class CustomTreeMapTest {
         IntStream.range(0, 20).forEach(
                 i -> assertThat(values.contains(String.valueOf(i)), is(true))
         );
+    }
+
+    @Test
+    public void testThatValuesClearMethodClearsMap() {
+        fillMap(20);
+
+        Collection values = map.values();
+        values.clear();
+
+        assertTrue(map.isEmpty());
+    }
+
+    @Test
+    public void testThatClearingMapClearsValueCollection() {
+        fillMap(20);
+
+        Collection values = map.values();
+
+        map.clear();
+
+        assertTrue(values.isEmpty());
+    }
+
+    @Test
+    public void testThatRemovingElementFromMapRemovesValueFromValueCollection() {
+        int size = 20;
+
+        IntStream.range(0, size).forEach(
+                i -> map.put(i, String.valueOf(i))
+        );
+
+        Collection values = map.values();
+
+        IntStream.range(0, 10).forEach(
+                map::remove
+        );
+
+        assertThat(values.size(), is(equalTo(size / 2)));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatValuesContainsMethodThrowsNPEIfArgumentIsNull() {
+        Collection values = map.values();
+
+        values.contains(null);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testThatValueCollectionDoesNotSupportAddOperation() {
+        Collection values = map.values();
+
+        values.add(new Object());
+    }
+
+    @Test
+    public void testThatValueIteratorWorksProperly() {
+        int size = 20;
+
+        fillMap(size);
+
+        Collection values = map.values();
+
+        Iterator iterator = values.iterator();
+
+        int count = 0;
+        while (iterator.hasNext()) {
+            assertTrue(map.containsValue(iterator.next()));
+            count += 1;
+        }
+
+        assertThat(count, is(size));
+    }
+
+    @Test
+    public void testThatValueIteratorRemovesElements() {
+        int size = 20;
+        fillMap(size);
+
+        Collection values = map.values();
+
+        Iterator iterator = values.iterator();
+
+        int index = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            if (index < 10) {
+                iterator.remove();
+            }
+            index += 1;
+        }
+
+        assertThat(values.size(), is(size / 2));
     }
 
     private void fillMap(int amount) {

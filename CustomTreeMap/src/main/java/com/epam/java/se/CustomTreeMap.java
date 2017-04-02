@@ -280,7 +280,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     private class Values extends AbstractCollection<V> {
         @Override
         public Iterator<V> iterator() {
-            return null;
+            return new ValueIterator();
         }
 
         @Override
@@ -292,6 +292,18 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         public boolean contains(Object o) {
             return CustomTreeMap.this.containsValue(o);
         }
+
+        @Override
+        public void clear() {
+            CustomTreeMap.this.clear();
+        }
     }
 
+    private class ValueIterator extends CustomIterator {
+        @Override
+        public Object next() {
+            index += 1;
+            return mapEntries[index].value;
+        }
+    }
 }
