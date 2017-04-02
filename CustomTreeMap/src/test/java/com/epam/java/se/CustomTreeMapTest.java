@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -611,6 +612,21 @@ public class CustomTreeMapTest {
         Set entrySet = map.entrySet();
 
         assertTrue(entrySet.isEmpty());
+    }
+
+    @Test
+    public void testThatEntrySetWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Set<Map.Entry<Integer, String>> entrySet = map.entrySet();
+
+        assertThat(entrySet.size(), is(equalTo(size)));
+
+        for (Map.Entry<Integer, String> entry : entrySet) {
+            assertThat(map.containsKey(entry.getKey()), is(true));
+            assertThat(map.get(entry.getKey()), is(entry.getValue()));
+        }
     }
 
     private void fillMap(int amount) {
