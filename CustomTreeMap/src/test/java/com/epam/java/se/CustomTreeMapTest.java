@@ -289,10 +289,81 @@ public class CustomTreeMapTest {
     }
 
     @Test
-    public void testThatKeySetReturnsEmptySetOnEmptyMap () {
+    public void testThatKeySetReturnsEmptySetOnEmptyMap() {
         Set set = map.keySet();
 
         assertThat(set.isEmpty(), is(true));
+    }
+
+    @Test
+    public void testThatKeySetWorksProperly() {
+        fillMap(20);
+
+        Set set = map.keySet();
+
+        IntStream.range(0, 20).forEach(
+                set::contains
+        );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatKeySetRemoveMethodThrowsNPEWithNullArgument() {
+        Set set = map.keySet();
+
+        set.remove(null);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testThatKeySetAddThrowsUnsupportedOperationException() {
+        Set set = map.keySet();
+
+        set.add(1);
+    }
+
+    @Test
+    public void testThatKeySetRemoveMethodRemovesKeyFromMap() {
+        int key = 15;
+
+        fillMap(20);
+
+        Set set = map.keySet();
+
+        set.remove(key);
+
+        assertThat(map.containsKey(key), is(false));
+    }
+
+    @Test
+    public void testThatRemovesKeyFromMapRemovesItFromSetKeySet() {
+        int key = 10;
+
+        fillMap(20);
+
+        Set set = map.keySet();
+        assertThat(set.contains(key), is(true));
+
+        map.remove(key);
+        assertThat(set.contains(key), is(false));
+    }
+
+    @Test
+    public void testThatKeySetClearMethodClearsMap() {
+        fillMap(20);
+
+        Set set = map.keySet();
+
+        set.clear();
+
+        assertThat(map.isEmpty(), is(true));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatKeySetContainsMethodThrowsNPEIfArgumentIsNull() {
+        fillMap(20);
+
+        Set set = map.keySet();
+
+        set.contains(null);
     }
 
     private void fillMap(int amount) {

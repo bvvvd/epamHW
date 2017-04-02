@@ -210,5 +210,15 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         public int size() {
             return 0;
         }
+
+        @Override
+        public boolean contains(Object o) {
+            return CustomTreeMap.this.containsKey(o);
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return CustomTreeMap.this.remove(o) != null;
+        }
     }
 }
