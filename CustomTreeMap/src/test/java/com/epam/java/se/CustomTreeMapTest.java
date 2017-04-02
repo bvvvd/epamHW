@@ -193,6 +193,74 @@ public class CustomTreeMapTest {
         assertThat(map.get(1), is(nullValue()));
     }
 
+    @Test
+    public void testThatMapDoesNotContainNodeAfterRemovingItByKey() {
+        int key = 1;
+        int size = 20;
+        fillMap(size);
+
+        map.remove(key);
+        assertThat(map.containsKey(key), is(false));
+    }
+
+    @Test
+    public void testThatRemoveWorksCorrectlyWithRandomlyFilledMap() {
+        map.put(10, "a");
+        map.put(-10, "a");
+        map.put(20, "a");
+        map.put(20, "a");
+        map.put(250, "a");
+        map.put(10, "a");
+        map.put(17, "a");
+        map.put(1, "a");
+        map.put(-60, "a");
+        map.put(-12, "a");
+        map.put(8, "a");
+
+
+        map.remove(10);
+        map.remove(8);
+        map.remove(-12);
+        map.remove(250);
+
+        assertThat(map.containsKey(10), is(false));
+        assertThat(map.containsKey(8), is(false));
+        assertThat(map.containsKey(-12), is(false));
+        assertThat(map.containsKey(250), is(false));
+
+        assertThat(map.containsKey(-10), is(true));
+        assertThat(map.containsKey(20), is(true));
+        assertThat(map.containsKey(17), is(true));
+        assertThat(map.containsKey(1), is(true));
+        assertThat(map.containsKey(-60), is(true));
+    }
+
+    @Test
+    public void testThatRemoveWorksCorrectlyIfThereIsOnlyRootInMap() {
+        int key = 1;
+        map.put(key, "a");
+
+        map.remove(key);
+        assertThat(map.containsKey(key), is(false));
+    }
+
+    @Test
+    public void testThatRemoveMethodReturnsPreviousValueInCaseOfSuccessfulRemoving() {
+        map.put(1, "a");
+
+        assertThat(map.remove(1), is(equalTo("a")));
+    }
+
+    @Test
+    public void testThatRemoveMethodReturnsNullInCaseOfRemovingNotPresentedKey () {
+        assertThat(map.remove(1), is(nullValue()));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatRemoveMethodThrowsNPEIfArgumentIsNull() {
+        map.remove(null);
+    }
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))
