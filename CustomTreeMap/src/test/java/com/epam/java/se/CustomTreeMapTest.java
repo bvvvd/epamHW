@@ -3,6 +3,7 @@ package com.epam.java.se;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -470,6 +471,24 @@ public class CustomTreeMapTest {
                         assertThat(map.containsKey(i), is(true));
                     }
                 }
+        );
+    }
+
+    @Test
+    public void testThatValuesCollectionIsEmptyOnEmptyMap() {
+        assertThat(map.values().isEmpty(), is(true));
+    }
+
+    @Test
+    public void testThatValuesCollectionWorksProperly() {
+        int size = 20;
+        fillMap(size);
+
+        Collection values = map.values();
+        assertThat(values.size(), is(size));
+
+        IntStream.range(0, 20).forEach(
+                i -> assertThat(values.contains(String.valueOf(i)), is(true))
         );
     }
 
