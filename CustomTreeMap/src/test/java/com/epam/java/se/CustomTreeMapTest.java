@@ -841,6 +841,11 @@ public class CustomTreeMapTest {
         );
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testThatPutAllThrowsNPEIfArgumentIsNull() {
+        map.putAll(null);
+    }
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))
