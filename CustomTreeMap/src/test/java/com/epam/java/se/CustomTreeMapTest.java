@@ -585,6 +585,34 @@ public class CustomTreeMapTest {
         assertThat(values.size(), is(size / 2));
     }
 
+    @Test
+    public void testThatValueIteratorRemovesElementsFromMap() {
+        int size = 20;
+        fillMap(size);
+
+        Collection values = map.values();
+
+        Iterator iterator = values.iterator();
+
+        int index = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            if (index < 10) {
+                iterator.remove();
+            }
+            index += 1;
+        }
+
+        assertThat(map.size(), is(size / 2));
+    }
+
+    @Test
+    public void testThatEntrySetReturnsEmptySetOnEmptyMap() {
+        Set entrySet = map.entrySet();
+
+        assertTrue(entrySet.isEmpty());
+    }
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))

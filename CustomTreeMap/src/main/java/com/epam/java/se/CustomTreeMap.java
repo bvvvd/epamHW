@@ -185,7 +185,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        return new EntrySet();
     }
 
     private class Node<K extends Comparable<K>, V> {
@@ -304,6 +304,18 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         public Object next() {
             index += 1;
             return mapEntries[index].value;
+        }
+    }
+
+    private class EntrySet extends AbstractSet<Entry<K, V>> {
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return null;
+        }
+
+        @Override
+        public int size() {
+            return 0;
         }
     }
 }
