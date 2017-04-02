@@ -269,12 +269,23 @@ public class CustomTreeMapTest {
     }
 
     @Test
-    public void testThatContainsValueWorksProperly() {
+    public void testThatContainsValueWorksProperlyWithPresentedValue() {
         fillMap(20);
 
         assertThat(map.containsValue("5"), is(true));
     }
 
+    @Test
+    public void testThatContainsValueWorksProperlyWithNotPresentedValue() {
+        fillMap(50);
+
+        assertThat(map.containsValue("100"), is(false));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatContainsValueThrowsNPEIfArgumentIsNull() {
+        map.containsValue(null);
+    }
 
 
     private void fillMap(int amount) {
