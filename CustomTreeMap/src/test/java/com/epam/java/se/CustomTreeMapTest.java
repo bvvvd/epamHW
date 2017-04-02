@@ -820,6 +820,27 @@ public class CustomTreeMapTest {
         }
     }
 
+    @Test
+    public void testThatPutAllWorksProperly() {
+        int size = 20;
+        IntStream.range(0, size).forEach(
+                i -> map.put(i, String.valueOf(i))
+        );
+
+        Map<Integer, String> otherMap = new HashMap<>();
+        IntStream.range(size, size * 2).forEach(
+                i -> otherMap.put(i, String.valueOf(i))
+        );
+
+        map.putAll(otherMap);
+
+        assertThat(map.size(), is(equalTo(size * 2)));
+
+        IntStream.range(0, size * 2).forEach(
+                i -> assertThat(map.containsKey(i), is(true))
+        );
+    }
+
     private void fillMap(int amount) {
         IntStream.range(0, amount).forEach(
                 i -> map.put((int) (i * Math.pow(-1, i)), String.valueOf(i))

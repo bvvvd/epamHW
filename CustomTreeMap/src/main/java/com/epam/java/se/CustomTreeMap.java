@@ -164,7 +164,9 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-
+        m.entrySet().forEach(
+                entry -> CustomTreeMap.this.put(entry.getKey(), entry.getValue())
+        );
     }
 
     @Override
