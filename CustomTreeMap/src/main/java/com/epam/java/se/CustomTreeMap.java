@@ -215,6 +215,24 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
             this.value = value;
             return previousValue;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Node<?, ?> node = (Node<?, ?>) o;
+
+            if (key != null ? !key.equals(node.key) : node.key != null) return false;
+            return value != null ? value.equals(node.value) : node.value == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = key != null ? key.hashCode() : 0;
+            result = 31 * result + (value != null ? value.hashCode() : 0);
+            return result;
+        }
     }
 
     private class KeySet extends AbstractSet<K> {
@@ -334,8 +352,28 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         public int size() {
             return size;
         }
-    }
 
+        @Override
+        public boolean contains(Object o) {
+            Objects.requireNonNull(o);
+
+            if (o instanceof Node) {
+                Node<K, V> entryToCheck = (Node<K, V>) o;
+                K entryToCheckKey = entryToCheck.key;
+
+                Node<K, V> entryWithThisKeyFromMap = new Node<>(entryToCheckKey, CustomTreeMap.this.get(entryToCheckKey));
+
+                return entryToCheck.equals(entryWithThisKeyFromMap);
+            }
+
+            return false;
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return CustomTreeMap.this.remove(((Node<K, V>) o).key) != null;
+        }
+    }
 
     private class EntrySetIterator extends CustomIterator {
         @Override
