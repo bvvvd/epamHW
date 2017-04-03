@@ -6,6 +6,7 @@ public class CustomArrayList<E> implements List<E> {
     private static final int DEFAULT_CAPACITY = 10;
     private Object[] data = new Object[DEFAULT_CAPACITY];
     private int size;
+    private int capacity = DEFAULT_CAPACITY;
 
     @Override
     public int size() {
@@ -20,10 +21,11 @@ public class CustomArrayList<E> implements List<E> {
     @Override
     public boolean contains(Object o) {
         for (int i = 0; i < size; i++) {
-            if (o == null && data[i] == null) {
-                return true;
-            }
-            if (data[i].equals(o)) {
+            if (data[i] == null) {
+                if (o == null) {
+                    return true;
+                }
+            } else if (data[i].equals(o)) {
                 return true;
             }
         }
@@ -42,12 +44,17 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public boolean add(E e) {
-        if (size == data.length) {
-            data = Arrays.copyOf(data, (data.length * 3) / 2 + 1);
-        }
+        ensureCapacity();
 
         data[size++] = e;
         return false;
+    }
+
+    private void ensureCapacity() {
+        if (size == data.length) {
+            capacity = (data.length * 3) / 2 + 1;
+            data = Arrays.copyOf(data, capacity);
+        }
     }
 
     @Override
@@ -82,17 +89,19 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public E get(int index) {
+        checkBounds(index);
+        return (E) data[index];
+    }
+
+    private void checkBounds(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
-        return (E) data[index];
     }
 
     @Override
     public E set(int index, E element) {
-        if ((index <0)||(index>size)) {
-            throw  new IndexOutOfBoundsException();
-        }
+        checkBounds(index);
 
         E oldValue = (E) data[index];
         data[index] = element;
@@ -101,13 +110,14 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, Object element) {
-        if ((index > size) || (index < 0)) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkBounds(index);
+
         size += 1;
-        Object[] newData = new Object[DEFAULT_CAPACITY];
+        Object[] newData = new Object[capacity];
+
         System.arraycopy(data, 0, newData, 0, index);
         System.arraycopy(data, index, newData, index + 1, data.length - index - 1);
+
         newData[index] = element;
         data = newData;
     }
@@ -117,12 +127,26 @@ public class CustomArrayList<E> implements List<E> {
         E current = (E) data[index];
         System.arraycopy(data, index + 1, data, index, data.length - index - 1);
         size -= 1;
+
         return current;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        if (o == null) {
+            for (int i = 0; i < size; i++) {
+                if (data[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (data[i].equals(o)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -164,4 +188,5 @@ public class CustomArrayList<E> implements List<E> {
     public Object[] toArray(Object[] a) {
         return new Object[0];
     }
+
 }

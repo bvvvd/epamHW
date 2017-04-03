@@ -203,6 +203,29 @@ public class CustomListsTest {
         customList.set(-1, "a");
     }
 
+    @Test
+    public void testThatIndexOfMethodWorksProperlyOnPresentedElement() {
+        addValues();
+
+        assertThat(customList.indexOf("c"), is(2));
+    }
+
+    @Test
+    public void testThatIndexOfMethodReturnsNegative1OnNotPresentedValue() {
+        addValues();
+
+        assertThat(customList.indexOf("x"), is(-1));
+    }
+
+    @Test
+    public void testThatIndexOfMethodWorksProperlyWithNull() {
+        addValues();
+
+        customList.add(3, null);
+
+        assertThat(customList.indexOf(null), is(3));
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");
