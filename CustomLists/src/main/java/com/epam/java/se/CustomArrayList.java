@@ -90,14 +90,19 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public E set(int index, E element) {
+        if ((index <0)||(index>size)) {
+            throw  new IndexOutOfBoundsException();
+        }
+
+        E oldValue = (E) data[index];
         data[index] = element;
-        return null;
+        return oldValue;
     }
 
     @Override
     public void add(int index, Object element) {
         if ((index > size) || (index < 0)) {
-            throw new IllegalArgumentException();
+            throw new IndexOutOfBoundsException();
         }
         size += 1;
         Object[] newData = new Object[DEFAULT_CAPACITY];

@@ -118,15 +118,20 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
+        if ((index <0)||(index>size)) {
+            throw  new IndexOutOfBoundsException();
+        }
+
         CustomNode<T> currentNode = getCustomNode(index);
+        T oldValue = currentNode.value;
         currentNode.value = element;
-        return null;
+        return oldValue;
     }
 
     @Override
     public void add(int index, T element) {
         if ((index > size) || (index < 0)) {
-            throw new IllegalArgumentException();
+            throw new IndexOutOfBoundsException();
         }
 
         size += 1;

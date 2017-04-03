@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.omg.PortableInterceptor.IORInfoOperations;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -161,13 +162,13 @@ public class CustomListsTest {
         assertThat(customList.get(5), is("e"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void testThatWeCantAddElementByIndexMoreThanSizePlusOne() {
         addValues();
         customList.add(8, "x");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void testThatWeCantAddElementByNegativeIndex() {
         customList.add(-1, "x");
     }
@@ -179,6 +180,27 @@ public class CustomListsTest {
 
         customList.set(0, "x");
         assertThat(customList.get(0), is(equalTo("x")));
+    }
+
+    @Test
+    public void testThatSetMethodReturnsPreviousElement() {
+        addValues();
+
+        assertThat(customList.set(0, "x"), is(equalTo("a")));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatWeCantSetElementWithIndexMoreThanSize() {
+        addValues();
+
+        customList.set(20, "a");
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatWeCantSetElementWithNegativeIndex() {
+        addValues();
+
+        customList.set(-1, "a");
     }
 
     private void addValues() {
