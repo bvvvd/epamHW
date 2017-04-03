@@ -123,6 +123,10 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
+        if ((index > size) || (index < 0)) {
+            throw new IllegalArgumentException();
+        }
+
         size += 1;
 
         if (index == 0) {

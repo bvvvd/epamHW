@@ -95,6 +95,9 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, Object element) {
+        if ((index > size) || (index < 0)) {
+            throw new IllegalArgumentException();
+        }
         size += 1;
         Object[] newData = new Object[DEFAULT_CAPACITY];
         System.arraycopy(data, 0, newData, 0, index);

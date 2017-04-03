@@ -161,6 +161,17 @@ public class CustomListsTest {
         assertThat(customList.get(5), is("e"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatWeCantAddElementByIndexMoreThanSizePlusOne() {
+        addValues();
+        customList.add(8, "x");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatWeCantAddElementByNegativeIndex() {
+        customList.add(-1, "x");
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");
