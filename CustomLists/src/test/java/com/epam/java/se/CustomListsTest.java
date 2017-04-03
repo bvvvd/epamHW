@@ -172,6 +172,15 @@ public class CustomListsTest {
         customList.add(-1, "x");
     }
 
+    @Test
+    public void testThatWeCanSetElementByIndex() {
+        addValues();
+        assertThat(customList.get(0), is(equalTo("a")));
+
+        customList.set(0, "x");
+        assertThat(customList.get(0), is(equalTo("x")));
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");

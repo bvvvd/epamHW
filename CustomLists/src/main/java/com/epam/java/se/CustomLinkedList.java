@@ -118,6 +118,8 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
+        CustomNode<T> currentNode = getCustomNode(index);
+        currentNode.value = element;
         return null;
     }
 

@@ -89,7 +89,8 @@ public class CustomArrayList<E> implements List<E> {
     }
 
     @Override
-    public Object set(int index, Object element) {
+    public E set(int index, E element) {
+        data[index] = element;
         return null;
     }
 
