@@ -1,9 +1,6 @@
 package com.epam.java.se;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class CustomLinkedList<T> implements List<T> {
 
@@ -69,6 +66,7 @@ public class CustomLinkedList<T> implements List<T> {
         while (current != null) {
             if (o.equals(current.value)) {
                 prev.next = current.next;
+                size -= 1;
                 return true;
             }
             prev = current;
@@ -125,7 +123,27 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
+        size += 1;
 
+        if (index == 0) {
+            CustomNode<T> node = new CustomNode<>(element);
+            node.next = head;
+            head = node;
+            return;
+        }
+
+        if (index == size) {
+            add(element);
+        }
+
+        CustomNode<T> currentNode = head;
+        for (int currentNodeIndex = 1; currentNodeIndex <= index; currentNodeIndex++) {
+            currentNode = currentNode.next;
+        }
+
+        CustomNode<T> nodeToInsert = new CustomNode<>(element);
+        nodeToInsert.next = currentNode.next;
+        currentNode.next = nodeToInsert;
     }
 
     @Override

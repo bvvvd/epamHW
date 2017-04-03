@@ -95,7 +95,12 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, Object element) {
-
+        size += 1;
+        Object[] newData = new Object[DEFAULT_CAPACITY];
+        System.arraycopy(data, 0, newData, 0, index);
+        System.arraycopy(data, index, newData, index + 1, data.length - index - 1);
+        newData[index] = element;
+        data = newData;
     }
 
     @Override

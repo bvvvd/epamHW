@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -89,10 +90,6 @@ public class CustomListsTest {
         assertThat(customList.size(), is(size));
     }
 
-//    @Test
-//    public void testThatWeCanAddElementAtParticularPosition() {
-//    }
-
     @Test
     public void testThatWeCanGetElementByIndex() {
         customList.add("a");
@@ -134,6 +131,36 @@ public class CustomListsTest {
 
         assertThat(customList.remove(0), is(equalTo("a")));
     }
+
+    @Test
+    public void testThatRemovingNotExistingElementReturnsFalse() {
+        addValues();
+
+        assertThat(customList.remove(""), is(false));
+    }
+
+    @Test
+    public void testThatSizeDecrementsWithRemovingElement() {
+        addValues();
+
+        customList.remove("b");
+
+        assertThat(customList.size(), is(4));
+    }
+
+    @Test
+    public void testThatWeCanAddElementByIndex() {
+        addValues();
+        customList.add(3, "x");
+
+        assertThat(customList.get(0), is("a"));
+        assertThat(customList.get(1), is("b"));
+        assertThat(customList.get(2), is("c"));
+        assertThat(customList.get(3), is("x"));
+        assertThat(customList.get(4), is("d"));
+        assertThat(customList.get(5), is("e"));
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");
