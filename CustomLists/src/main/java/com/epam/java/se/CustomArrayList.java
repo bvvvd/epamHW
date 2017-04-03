@@ -33,8 +33,20 @@ public class CustomArrayList<E> implements List<E> {
     }
 
     @Override
-    public Iterator iterator() {
-        return null;
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return index < size;
+            }
+
+            @Override
+            public E next() {
+                return (E) data[index++];
+            }
+        };
     }
 
     @Override

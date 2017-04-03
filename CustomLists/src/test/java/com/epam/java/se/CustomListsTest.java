@@ -252,6 +252,17 @@ public class CustomListsTest {
         assertThat(customList.lastIndexOf(null), is(4));
     }
 
+    @Test
+    public void testThatIteratorWorksProperly() {
+        addValues();
+
+        Iterator<String> iterator = customList.iterator();
+
+        while (iterator.hasNext()) {
+            assertThat(customList.contains(iterator.next()), is(true));
+        }
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");
