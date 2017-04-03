@@ -151,7 +151,21 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        int index = 0;
+        if (o == null) {
+            for (int i = 0; i < size; i++) {
+                if (data[i] == null) {
+                    index = i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (data[i].equals(o)) {
+                    index = i;
+                }
+            }
+        }
+        return index != 0 ? index : -1;
     }
 
     @Override

@@ -226,6 +226,32 @@ public class CustomListsTest {
         assertThat(customList.indexOf(null), is(3));
     }
 
+    @Test
+    public void testThatLastIndexOfMethodWorksProperlyOnPresentedValue() {
+        addValues();
+
+        customList.add("a");
+
+        assertThat(customList.lastIndexOf("a"), is(5));
+    }
+
+    @Test
+    public void testThatLastIndexOfMethodReturnsNegative1OnNotPresentedValue() {
+        addValues();
+
+        assertThat(customList.lastIndexOf("x"), is(-1));
+    }
+
+    @Test
+    public void testThatLastIndexOfMethodWorksProperlyWithNull() {
+        addValues();
+
+        customList.add(3, null);
+        customList.add(1, null);
+
+        assertThat(customList.lastIndexOf(null), is(4));
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");

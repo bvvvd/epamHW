@@ -191,7 +191,26 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        int index = 0;
+        int resultIndex = 0;
+
+        if (o == null) {
+            for (CustomNode<T> currentNode = head.next; currentNode != null; currentNode = currentNode.next) {
+                if (currentNode.value == null) {
+                    resultIndex = index;
+                }
+                index += 1;
+            }
+        } else {
+            for (CustomNode<T> currentNode = head.next; currentNode != null; currentNode = currentNode.next) {
+                if (o.equals(currentNode.value)) {
+                    resultIndex = index;
+                }
+                index += 1;
+            }
+        }
+
+        return resultIndex != 0 ? resultIndex : -1;
     }
 
     @Override
@@ -207,15 +226,6 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return null;
-    }
-
-    public void print() {
-        CustomNode<T> node = head;
-
-        while (node != null) {
-            System.out.println(node.value);
-            node = node.next;
-        }
     }
 
     private CustomNode<T> getCustomNode(int index) {
