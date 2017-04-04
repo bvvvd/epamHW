@@ -1,5 +1,6 @@
 package com.epam.java.se;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -507,9 +508,85 @@ public class CustomListsTest {
         assertThat(customList.removeAll(list), is(false));
     }
 
+
     @Test(expected = NullPointerException.class)
     public void testThatRemoveAllThrowsNPEIfArgumentIsNull() {
         customList.removeAll(null);
+    }
+
+    @Test
+    public void testThatRetainAllWorksProperly() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+
+        customList.retainAll(list);
+
+        assertThat(customList.containsAll(list), is(true));
+
+        assertThat(customList.contains("d"), is(false));
+        assertThat(customList.contains("e"), is(false));
+    }
+
+    @Test
+    public void testThatRetainAllReturnsTrueIfListWasChanged() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+
+        assertThat(customList.retainAll(list), is(true));
+    }
+
+    @Test
+    public void testThatRetainAllReturnsFalseIfListWasChanged() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("e");
+
+        assertThat(customList.retainAll(list), is(false));
+    }
+
+    @Test
+    public void testThatSubListWorksProperly() {
+        addValues();
+
+        List<String> list = customList.subList(1,3);
+
+        assertThat(list.get(0), is("b"));
+        assertThat(list.get(1), is("c"));
+        assertThat(list.get(2), is("d"));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatWeCantUseSubListMethodWithLeftBoundLessThan0() {
+        addValues();
+
+        customList.subList(-1, 2);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatWeCantUseSubListMethodWithRightBoundMoreThanListSize() {
+        addValues();
+
+        customList.subList(0, customList.size() + 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatWeCantUseSubListMethodWithNegativeSizeFrame() {
+        addValues();
+
+        customList.subList(2, 1);
     }
 
     private void addValues() {

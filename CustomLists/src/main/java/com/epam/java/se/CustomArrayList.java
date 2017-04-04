@@ -34,24 +34,7 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<E>() {
-            int index = 0;
-
-            @Override
-            public void remove() {
-                CustomArrayList.this.remove(index);
-            }
-
-            @Override
-            public boolean hasNext() {
-                return index < size;
-            }
-
-            @Override
-            public E next() {
-                return (E) data[index++];
-            }
-        };
+        return new CustomIterator();
     }
 
     @Override
@@ -149,7 +132,7 @@ public class CustomArrayList<E> implements List<E> {
     }
 
     private void checkBoundsToAdd(int index) {
-        if ((index < 0) || (index > size)){
+        if ((index < 0) || (index > size)) {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -212,12 +195,36 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public List subList(int fromIndex, int toIndex) {
-        return null;
+        checkBounds(fromIndex);
+        checkBounds(toIndex);
+        checkFrameSize(fromIndex, toIndex);
+        List<E> result = new ArrayList<E>();
+
+        for (int i = fromIndex; i <= toIndex; i++) {
+            result.add((E) data[i]);
+        }
+
+        return result;
+    }
+
+    private void checkFrameSize(int fromIndex, int toIndex) {
+        if (toIndex - fromIndex < 0) {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
     public boolean retainAll(Collection c) {
-        return false;
+        Object[] dataCopy = toArray();
+        int startSize = size;
+
+        for (Object element : dataCopy) {
+            if (!c.contains(element)) {
+                remove(element);
+            }
+        }
+
+        return startSize != size;
     }
 
     @Override
@@ -251,4 +258,22 @@ public class CustomArrayList<E> implements List<E> {
         return a;
     }
 
+    private class CustomIterator implements Iterator<E> {
+        int index = 0;
+
+        @Override
+        public void remove() {
+            CustomArrayList.this.remove(index);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public E next() {
+            return (E) data[index++];
+        }
+    }
 }

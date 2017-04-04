@@ -145,7 +145,16 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        Object[] dataCopy = toArray();
+        int startSize = size;
+
+        for (Object element : dataCopy) {
+            if (!c.contains(element)) {
+                remove(element);
+            }
+        }
+
+        return startSize != size;
     }
 
     @Override
@@ -285,7 +294,22 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        checkBounds(fromIndex);
+        checkBounds(toIndex);
+        checkFrameSize(fromIndex, toIndex);
+        List<T> result = new LinkedList<T>();
+
+        for (int i = fromIndex; i <= toIndex; i++) {
+            result.add(getCustomNode(i).value);
+        }
+
+        return result;
+    }
+
+    private void checkFrameSize(int fromIndex, int toIndex) {
+        if (toIndex - fromIndex < 0) {
+            throw new IllegalArgumentException();
+        }
     }
 
     private CustomNode<T> getCustomNode(int index) {
