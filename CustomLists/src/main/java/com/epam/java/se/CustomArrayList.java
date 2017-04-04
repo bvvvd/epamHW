@@ -222,7 +222,12 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public boolean removeAll(Collection c) {
-        return false;
+        int startSize = size;
+        c.forEach(
+                element -> remove(element)
+        );
+
+        return startSize != size;
     }
 
     @Override

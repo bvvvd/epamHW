@@ -135,7 +135,12 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        int startSize = size;
+        c.forEach(
+                element -> remove(element)
+        );
+
+        return startSize != size;
     }
 
     @Override

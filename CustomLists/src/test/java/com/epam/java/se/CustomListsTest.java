@@ -16,6 +16,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
 public class CustomListsTest {
@@ -463,6 +464,52 @@ public class CustomListsTest {
 
         list.add("x");
         assertThat(customList.containsAll(list), is(false));
+    }
+
+    @Test
+    public void testThatRemoveAllWorksProperly() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+
+        customList.removeAll(list);
+
+        assertThat(customList.contains("d"), is(true));
+        assertThat(customList.contains("e"), is(true));
+
+        assertThat(customList.containsAll(list), is(false));
+    }
+
+    @Test
+    public void testThatRemoveAllReturnsTrueIfListIsChanged() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+
+        assertThat(customList.removeAll(list), is(true));
+    }
+
+    @Test
+    public void testThatRemoveAllReturnsFalseIfListIsNotChanged() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("x");
+        list.add("y");
+        list.add("z");
+
+        assertThat(customList.removeAll(list), is(false));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatRemoveAllThrowsNPEIfArgumentIsNull() {
+        customList.removeAll(null);
     }
 
     private void addValues() {
