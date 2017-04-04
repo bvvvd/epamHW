@@ -314,6 +314,13 @@ public class CustomListsTest {
         assertThat(actual, is(equalTo(customList.toArray())));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testThatToArrayThrowsNPEIfArgumentIsNull() {
+        addValues();
+
+        String[] actual = customList.toArray(null);
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");
