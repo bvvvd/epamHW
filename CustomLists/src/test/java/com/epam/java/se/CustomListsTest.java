@@ -263,6 +263,28 @@ public class CustomListsTest {
         }
     }
 
+    @Test
+    public void testThatIteratorRemoveMethodRemovesElementFromList() {
+        addValues();
+
+        Iterator<String> iterator = customList.iterator();
+
+        while (iterator.hasNext()) {
+            iterator.remove();
+        }
+
+        assertThat(customList.isEmpty(), is(true));
+    }
+
+    @Test
+    public void testThatToArrayMethodWorksProperly() {
+        String[] expected = {"a", "b", "c", "d", "e"};
+
+        addValues();
+
+        assertThat(customList.toArray(), is(equalTo(expected)));
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");

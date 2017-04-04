@@ -38,6 +38,11 @@ public class CustomArrayList<E> implements List<E> {
             int index = 0;
 
             @Override
+            public void remove() {
+                CustomArrayList.this.remove(index);
+            }
+
+            @Override
             public boolean hasNext() {
                 return index < size;
             }
@@ -50,8 +55,10 @@ public class CustomArrayList<E> implements List<E> {
     }
 
     @Override
-    public Object[] toArray() {
-        return new Object[0];
+    public E[] toArray() {
+        E[] result = (E[]) new Object[size];
+        System.arraycopy(data,0,result,0,size);
+        return result;
     }
 
     @Override

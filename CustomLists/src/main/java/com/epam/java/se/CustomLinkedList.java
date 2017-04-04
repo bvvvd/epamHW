@@ -38,6 +38,11 @@ public class CustomLinkedList<T> implements List<T> {
             public int index = 0;
 
             @Override
+            public void remove() {
+                CustomLinkedList.this.remove(index);
+            }
+
+            @Override
             public boolean hasNext() {
                 return index < size;
             }
@@ -50,8 +55,12 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     @Override
-    public Object[] toArray() {
-        return new Object[0];
+    public T[] toArray() {
+        T[] result = (T[]) new Object[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = getCustomNode(i).value;
+        }
+        return result;
     }
 
     @Override
@@ -121,18 +130,14 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkBounds(index);
 
         return getCustomNode(index).value;
     }
 
     @Override
     public T set(int index, T element) {
-        if ((index < 0) || (index > size)) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkBounds(index);
 
         CustomNode<T> currentNode = getCustomNode(index);
         T oldValue = currentNode.value;
@@ -142,9 +147,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
-        if ((index > size) || (index < 0)) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkBounds(index);
 
         size += 1;
 
@@ -169,10 +172,23 @@ public class CustomLinkedList<T> implements List<T> {
         currentNode.next = nodeToInsert;
     }
 
+    private void checkBounds(int index) {
+        if ((index >= size) || (index < 0)) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
     @Override
     public T remove(int index) {
+        checkBounds(index);
+
         CustomNode<T> current = getCustomNode(index - 1);
         size -= 1;
+        if (size == 0) {
+            T value = head.value;
+            clear();
+            return value;
+        }
         T value = current.value;
         current.next = current.next.next;
         return value;
