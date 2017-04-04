@@ -282,7 +282,36 @@ public class CustomListsTest {
 
         addValues();
 
-        assertThat(customList.toArray(), is(equalTo(expected)));
+        Object[] actual = customList.toArray();
+        assertThat(actual, is(equalTo(expected)));
+    }
+
+    @Test
+    public void testThatToArrayMethodReturnsEmptyArrayIfListIsEmpty() {
+        Object[] actual = customList.toArray();
+        assertThat(actual.length, is(0));
+    }
+
+    @Test
+    public void testThatToArrayMethodSavesOrder() {
+        addValues();
+
+        Object[] actual = customList.toArray();
+
+        IntStream.range(0, 5).forEach(
+                i -> assertThat(actual[i], is(equalTo(customList.get(i))))
+        );
+    }
+
+    @Test
+    public void testThatToArrayMethodWorksProperlyWithSpecifiedArray() {
+        addValues();
+
+        String[] actual = new String[customList.size()];
+
+        actual = customList.toArray(actual);
+
+        assertThat(actual, is(equalTo(customList.toArray())));
     }
 
     private void addValues() {
