@@ -343,6 +343,28 @@ public class CustomListsTest {
         assertThat(actual[customList.size()], is(nullValue()));
     }
 
+    @Test
+    public void testThatAddAllMethodWorksProperly() {
+        addValues();
+        int firstListSize = 5;
+
+        List<String> list = new ArrayList<>();
+        list.add("f");
+        list.add("g");
+        list.add("h");
+        int secondListSize = 3;
+
+        customList.addAll(list);
+        int resultingSize = firstListSize + secondListSize;
+
+        assertThat(customList.size(), is(equalTo(resultingSize)));
+
+        String[] expectedArray = {"a","b","c","d","e","f","g","h"};
+        for (int i = 0; i < expectedArray.length; i++) {
+            assertThat(customList.get(i), is(equalTo(expectedArray[i])));
+        }
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");

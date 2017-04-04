@@ -112,6 +112,9 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
+        c.forEach(
+                element -> add((T) element)
+        );
         return false;
     }
 

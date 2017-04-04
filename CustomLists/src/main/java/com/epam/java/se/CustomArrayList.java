@@ -92,6 +92,9 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(Collection c) {
+        c.forEach(
+                element -> add((E) element)
+        );
         return false;
     }
 
