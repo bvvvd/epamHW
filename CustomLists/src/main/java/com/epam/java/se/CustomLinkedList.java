@@ -124,7 +124,7 @@ public class CustomLinkedList<T> implements List<T> {
             add(index, (T) o);
             index += 1;
         }
-        return false;
+        return c.size() != 0;
     }
 
     @Override
@@ -162,7 +162,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
-        checkBounds(index);
+        checkBoundsToAdd(index);
 
         size += 1;
 
@@ -185,6 +185,12 @@ public class CustomLinkedList<T> implements List<T> {
         CustomNode<T> nodeToInsert = new CustomNode<>(element);
         nodeToInsert.next = currentNode.next;
         currentNode.next = nodeToInsert;
+    }
+
+    private void checkBoundsToAdd(int index) {
+        if ((index < 0) || (index > size)) {
+            throw  new IndexOutOfBoundsException();
+        }
     }
 
     private void checkBounds(int index) {

@@ -104,7 +104,7 @@ public class CustomArrayList<E> implements List<E> {
             add(index, o);
             index += 1;
         }
-        return false;
+        return c.size() != 0;
     }
 
     @Override
@@ -136,7 +136,7 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, Object element) {
-        checkBounds(index);
+        checkBoundsToAdd(index);
 
         size += 1;
         Object[] newData = new Object[capacity];
@@ -146,6 +146,12 @@ public class CustomArrayList<E> implements List<E> {
 
         newData[index] = element;
         data = newData;
+    }
+
+    private void checkBoundsToAdd(int index) {
+        if ((index < 0) || (index > size)){
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     @Override

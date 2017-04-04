@@ -408,14 +408,6 @@ public class CustomListsTest {
         }
     }
 
-    private void addValues() {
-        customList.add("a");
-        customList.add("b");
-        customList.add("c");
-        customList.add("d");
-        customList.add("e");
-    }
-
     @Test(expected = IndexOutOfBoundsException.class)
     public void testThatPutAllThrowsIndexOutOfBoundIfSpecifiedIndexIfMoreThanSize() {
         List<String> list = new ArrayList<>();
@@ -439,6 +431,31 @@ public class CustomListsTest {
     @Test(expected = NullPointerException.class)
     public void testThatPutAllThrowsNPEIfArgumentIsNull() {
         customList.addAll(null);
+    }
+
+    @Test
+    public void testThatAddAllWithIndexReturnsTrueOnListChanging() {
+        List<String> list = new ArrayList<>();
+        list.add("f");
+        list.add("g");
+        list.add("h");
+
+        assertThat(customList.addAll(0, list), is(true));
+    }
+
+    @Test
+    public void testThatAddAllWithIndexReturnsFalseOnListChanging() {
+        List<String> list = new ArrayList<>();
+
+        assertThat(customList.addAll(0, list), is(false));
+    }
+
+    private void addValues() {
+        customList.add("a");
+        customList.add("b");
+        customList.add("c");
+        customList.add("d");
+        customList.add("e");
     }
 
     public List<String> getCustomList() {
