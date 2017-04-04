@@ -6,11 +6,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.omg.PortableInterceptor.IORInfoOperations;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -319,6 +321,26 @@ public class CustomListsTest {
         addValues();
 
         String[] actual = customList.toArray(null);
+    }
+
+    @Test(expected = ArrayStoreException.class)
+    public void testThatToArrayThrowsArrayStoreExceptionIfTypeOfArraysAreNotCompatible() {
+        addValues();
+
+        File[] files = new File[customList.size()];
+
+        files = customList.toArray(files);
+    }
+
+    @Test
+    public void testThatArrayGeneratedByToArrayMethodStoresNullOnIndexSizeIfLengthOfArrayIsSmallerThanListSize() {
+        addValues();
+
+        String[] actual = new String[customList.size() * 2];
+
+        actual = customList.toArray(actual);
+
+        assertThat(actual[customList.size()], is(nullValue()));
     }
 
     private void addValues() {

@@ -222,6 +222,7 @@ public class CustomArrayList<E> implements List<E> {
         if (a.length < size) {
             return (T[]) Arrays.copyOf(data,size, a.getClass());
         }
+
         System.arraycopy(data,0,a,0,size);
         return a;
     }

@@ -69,8 +69,6 @@ public class CustomLinkedList<T> implements List<T> {
             a = (T[]) java.lang.reflect.Array.newInstance(
                     a.getClass().getComponentType(), size);
 
-        int index = 0;
-
         for (int i = 0; i < size; i++) {
             a[i] = (T) getCustomNode(i).value;
         }
