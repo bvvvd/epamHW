@@ -450,6 +450,21 @@ public class CustomListsTest {
         assertThat(customList.addAll(0, list), is(false));
     }
 
+    @Test
+    public void testThatContainsAllWorksProperly() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+
+        assertThat(customList.containsAll(list), is(true));
+
+        list.add("x");
+        assertThat(customList.containsAll(list), is(false));
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");

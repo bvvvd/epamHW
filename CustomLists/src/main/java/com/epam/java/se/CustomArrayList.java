@@ -227,7 +227,13 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection c) {
-        return false;
+        for (Object o : c) {
+            if (!contains(o)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override

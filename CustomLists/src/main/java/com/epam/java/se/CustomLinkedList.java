@@ -107,7 +107,13 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (Object o : c) {
+            if (!contains(o)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -189,7 +195,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     private void checkBoundsToAdd(int index) {
         if ((index < 0) || (index > size)) {
-            throw  new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException();
         }
     }
 
