@@ -359,7 +359,50 @@ public class CustomListsTest {
 
         assertThat(customList.size(), is(equalTo(resultingSize)));
 
-        String[] expectedArray = {"a","b","c","d","e","f","g","h"};
+        String[] expectedArray = {"a", "b", "c", "d", "e", "f", "g", "h"};
+        for (int i = 0; i < expectedArray.length; i++) {
+            assertThat(customList.get(i), is(equalTo(expectedArray[i])));
+        }
+    }
+
+    @Test
+    public void testThatAddAllReturnsTrueIfListWasChanged() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+        list.add("f");
+        list.add("g");
+        list.add("h");
+
+        assertThat(customList.addAll(list), is(true));
+    }
+
+    @Test
+    public void testThatAddAllReturnsFalseIfListWasNotChanged() {
+        addValues();
+
+        List<String> list = new ArrayList<>();
+
+        assertThat(customList.addAll(list), is(false));
+    }
+
+    @Test
+    public void testThatAddAllWithIndexWorksProperly() {
+        addValues();
+        int firstListSize = 5;
+
+        List<String> list = new ArrayList<>();
+        list.add("f");
+        list.add("g");
+        list.add("h");
+        int secondListSize = 3;
+
+        customList.addAll(3, list);
+        int resultingSize = firstListSize + secondListSize;
+
+        assertThat(customList.size(), is(equalTo(resultingSize)));
+
+        String[] expectedArray = {"a", "b", "c", "f", "g", "h", "d", "e"};
         for (int i = 0; i < expectedArray.length; i++) {
             assertThat(customList.get(i), is(equalTo(expectedArray[i])));
         }
@@ -371,6 +414,31 @@ public class CustomListsTest {
         customList.add("c");
         customList.add("d");
         customList.add("e");
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatPutAllThrowsIndexOutOfBoundIfSpecifiedIndexIfMoreThanSize() {
+        List<String> list = new ArrayList<>();
+        list.add("f");
+        list.add("g");
+        list.add("h");
+
+        customList.addAll(3, list);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatPutAllThrowsIndexOutOfBoundIfSpecifiedIndexIfLessThan0() {
+        List<String> list = new ArrayList<>();
+        list.add("f");
+        list.add("g");
+        list.add("h");
+
+        customList.addAll(-5, list);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatPutAllThrowsNPEIfArgumentIsNull() {
+        customList.addAll(null);
     }
 
     public List<String> getCustomList() {

@@ -115,11 +115,15 @@ public class CustomLinkedList<T> implements List<T> {
         c.forEach(
                 element -> add((T) element)
         );
-        return false;
+        return c.size() != 0;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
+        for (Object o : c) {
+            add(index, (T) o);
+            index += 1;
+        }
         return false;
     }
 

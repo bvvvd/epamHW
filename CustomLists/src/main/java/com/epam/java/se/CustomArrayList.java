@@ -57,7 +57,7 @@ public class CustomArrayList<E> implements List<E> {
     @Override
     public E[] toArray() {
         E[] result = (E[]) new Object[size];
-        System.arraycopy(data,0,result,0,size);
+        System.arraycopy(data, 0, result, 0, size);
         return result;
     }
 
@@ -95,11 +95,15 @@ public class CustomArrayList<E> implements List<E> {
         c.forEach(
                 element -> add((E) element)
         );
-        return false;
+        return c.size() != 0;
     }
 
     @Override
     public boolean addAll(int index, Collection c) {
+        for (Object o : c) {
+            add(index, o);
+            index += 1;
+        }
         return false;
     }
 
@@ -223,10 +227,10 @@ public class CustomArrayList<E> implements List<E> {
     @Override
     public <T> T[] toArray(T[] a) {
         if (a.length < size) {
-            return (T[]) Arrays.copyOf(data,size, a.getClass());
+            return (T[]) Arrays.copyOf(data, size, a.getClass());
         }
 
-        System.arraycopy(data,0,a,0,size);
+        System.arraycopy(data, 0, a, 0, size);
         return a;
     }
 
