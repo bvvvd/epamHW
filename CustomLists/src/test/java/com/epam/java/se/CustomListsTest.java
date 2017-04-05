@@ -2,6 +2,7 @@ package com.epam.java.se;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -561,7 +562,7 @@ public class CustomListsTest {
     public void testThatSubListWorksProperly() {
         addValues();
 
-        List<String> list = customList.subList(1,3);
+        List<String> list = customList.subList(1, 3);
 
         assertThat(list.get(0), is("b"));
         assertThat(list.get(1), is("c"));
@@ -589,15 +590,48 @@ public class CustomListsTest {
         customList.subList(2, 1);
     }
 
+    @Test(expected = NoSuchElementException.class)
+    public void testThatIteratorNextMethodThrowsNoSuchElementExceptionAfterLastElement() {
+        Iterator iterator = customList.iterator();
+
+        iterator.next();
+    }
+
+    @Test
+    public void testThatListIteratorNextWorksProperly() {
+        addValues();
+
+        ListIterator<String> iterator = customList.listIterator();
+
+        int count = 0;
+        while (iterator.hasNext()) {
+            assertThat(customList.contains(iterator.next()), is(true));
+            count += 1;
+        }
+
+        assertThat(count, is(equalTo(customList.size())));
+    }
+
+    @Test
+    public void testThatListIteratorPreviousWorksProperly() {
+        addValues();
+
+        ListIterator<String> iterator = customList.listIterator(customList.size());
+
+        int count = 0;
+        while (iterator.hasPrevious()) {
+            assertThat(customList.contains(iterator.previous()), is(true));
+            count += 1;
+        }
+
+        assertThat(count, is(equalTo(customList.size())));
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");
         customList.add("c");
         customList.add("d");
         customList.add("e");
-    }
-
-    public List<String> getCustomList() {
-        return customList;
     }
 }

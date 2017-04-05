@@ -185,12 +185,12 @@ public class CustomArrayList<E> implements List<E> {
 
     @Override
     public ListIterator listIterator() {
-        return null;
+        return new CustomListIterator(-1);
     }
 
     @Override
     public ListIterator listIterator(int index) {
-        return null;
+        return new CustomListIterator(index);
     }
 
     @Override
@@ -273,7 +273,71 @@ public class CustomArrayList<E> implements List<E> {
 
         @Override
         public E next() {
+            if (index + 1 > size) {
+                throw new NoSuchElementException();
+            }
             return (E) data[index++];
+        }
+    }
+
+    private class CustomListIterator implements ListIterator<E> {
+
+        private int index;
+
+        public CustomListIterator(int index) {
+            super();
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size - 1;
+        }
+
+        @Override
+        public E next() {
+            if (index > size) {
+                throw new NoSuchElementException();
+            }
+            return (E) data[++index];
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return index > 0;
+        }
+
+        @Override
+        public E previous() {
+            if (index < 1) {
+                throw new NoSuchElementException();
+            }
+            return (E) data[--index];
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
+        }
+
+        @Override
+        public void remove() {
+
+        }
+
+        @Override
+        public void set(E e) {
+
+        }
+
+        @Override
+        public void add(E e) {
+
         }
     }
 }

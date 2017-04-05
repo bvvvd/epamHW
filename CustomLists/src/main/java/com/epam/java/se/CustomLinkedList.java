@@ -34,24 +34,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            public int index = 0;
-
-            @Override
-            public void remove() {
-                CustomLinkedList.this.remove(index);
-            }
-
-            @Override
-            public boolean hasNext() {
-                return index < size;
-            }
-
-            @Override
-            public T next() {
-                return getCustomNode(index++).value;
-            }
-        };
+        return new CustomIterator();
     }
 
     @Override
@@ -284,12 +267,12 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        return null;
+        return new CustomListIterator(-1);
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        return null;
+        return new CustomListIterator(index);
     }
 
     @Override
@@ -331,6 +314,88 @@ public class CustomLinkedList<T> implements List<T> {
 
         public boolean hasNext() {
             return next != null;
+        }
+    }
+
+    private class CustomListIterator implements ListIterator<T> {
+
+        private int index = -1;
+
+        public CustomListIterator(int index) {
+            super();
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size - 1;
+        }
+
+        @Override
+        public T next() {
+            if (index > size) {
+                throw new NoSuchElementException();
+            }
+            return getCustomNode(++index).value;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return index > 0;
+        }
+
+        @Override
+        public T previous() {
+            if (index < 1) {
+                throw new NoSuchElementException();
+            }
+            return getCustomNode(--index).value;
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
+        }
+
+        @Override
+        public void remove() {
+        }
+
+        @Override
+        public void set(T t) {
+            CustomLinkedList.this.add(t);
+        }
+
+        @Override
+        public void add(T t) {
+            CustomLinkedList.this.add(t);
+        }
+    }
+
+    private class CustomIterator implements Iterator<T> {
+        public int index = 0;
+
+        @Override
+        public void remove() {
+            CustomLinkedList.this.remove(index);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public T next() {
+            if (index + 1 > size) {
+                throw new NoSuchElementException();
+            }
+            return getCustomNode(index++).value;
         }
     }
 }
