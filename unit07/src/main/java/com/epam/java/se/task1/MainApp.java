@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MainApp {
 
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, InvalidTransferAmountException {
 
         XMLParser parser = new XMLParser("transactions.xml");
 

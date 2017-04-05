@@ -42,7 +42,7 @@ public class XMLParser {
         return builder.toString();
     }
 
-    public List<Transaction> getTransactionsList() throws ParserConfigurationException, IOException, SAXException {
+    public List<Transaction> getTransactionsList() throws ParserConfigurationException, IOException, SAXException, InvalidTransferAmountException {
         final NodeList nodeList = getNodeList(filePath, "transaction");
 
         return convertToTransactionsList(nodeList);
@@ -74,7 +74,7 @@ public class XMLParser {
         return new Account(id, balance);
     }
 
-    private List<Transaction> convertToTransactionsList(NodeList nodeList) {
+    private List<Transaction> convertToTransactionsList(NodeList nodeList) throws InvalidTransferAmountException {
         final List<Transaction> result = new ArrayList<>();
 
         for (int i = 0; i < nodeList.getLength(); i++) {
@@ -84,7 +84,7 @@ public class XMLParser {
         return result;
     }
 
-    private Transaction createTransaction(Node item) {
+    private Transaction createTransaction(Node item) throws InvalidTransferAmountException {
         final StringTokenizer tokenizer =
                 new StringTokenizer(item.getTextContent().replaceAll(" ", ""), System.getProperty("line.separator"));
 

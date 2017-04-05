@@ -35,7 +35,7 @@ public class XMLParserTest {
     }
 
     @Test
-    public void testThatWeCanExtractListNodesFromXML() throws IOException, SAXException, ParserConfigurationException {
+    public void testThatWeCanExtractListNodesFromXML() throws IOException, SAXException, ParserConfigurationException, InvalidTransferAmountException {
         final List<Transaction> transactionList = parser.getTransactionsList();
 
         final Transaction firstTransaction = new Transaction(0, 2, 1000);

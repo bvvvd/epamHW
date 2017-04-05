@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
  * @author Valeriy Burmistrov
  */
 public class Quiz {
-    private static final ResourceBundle availableLanguages = ResourceBundle.getBundle("languages");
+    public static final ResourceBundle availableLanguages = ResourceBundle.getBundle("languages");
     private final Locale locale;
     private ResourceBundle questions;
     private ResourceBundle answers;

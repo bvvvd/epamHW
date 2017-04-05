@@ -5,10 +5,18 @@ public class Transaction {
     private final int toID;
     private final long amountOfTransfer;
 
-    public Transaction(int fromID, int toID, long amountOfTransfer) {
+    public Transaction(int fromID, int toID, long amountOfTransfer) throws InvalidTransferAmountException {
+        checkAmount(amountOfTransfer);
+
         this.fromID = fromID;
         this.toID = toID;
         this.amountOfTransfer = amountOfTransfer;
+    }
+
+    private void checkAmount(long amountOfTransfer) throws InvalidTransferAmountException {
+        if (amountOfTransfer < 0) {
+            throw new InvalidTransferAmountException("amount of transfer can not be negative " + amountOfTransfer);
+        }
     }
 
     public int getFromID() {
