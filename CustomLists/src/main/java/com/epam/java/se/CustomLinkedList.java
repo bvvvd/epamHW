@@ -206,7 +206,7 @@ public class CustomLinkedList<T> implements List<T> {
     public T remove(int index) {
         checkBounds(index);
 
-        CustomNode<T> current = getCustomNode(index - 1);
+        CustomNode<T> current = getCustomNode(index);
         size -= 1;
         if (size == 0) {
             T value = head.value;
@@ -214,7 +214,9 @@ public class CustomLinkedList<T> implements List<T> {
             return value;
         }
         T value = current.value;
-        current.next = current.next.next;
+
+        CustomNode<T> previous = getCustomNode(index - 1);
+        previous.next = current.next;
         return value;
     }
 
@@ -267,7 +269,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        return new CustomListIterator(-1);
+        return new CustomListIterator(0);
     }
 
     @Override
@@ -318,17 +320,18 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     private class CustomListIterator implements ListIterator<T> {
-
-        private int index = -1;
+        private int index;
+        private int lastPosition;
 
         public CustomListIterator(int index) {
             super();
             this.index = index;
+            this.lastPosition = -1;
         }
 
         @Override
         public boolean hasNext() {
-            return index < size - 1;
+            return index < size;
         }
 
         @Override
@@ -336,12 +339,13 @@ public class CustomLinkedList<T> implements List<T> {
             if (index > size) {
                 throw new NoSuchElementException();
             }
-            return getCustomNode(++index).value;
+            lastPosition = index;
+            return getCustomNode(index++).value;
         }
 
         @Override
         public boolean hasPrevious() {
-            return index > 0;
+            return index != 0;
         }
 
         @Override
@@ -349,31 +353,44 @@ public class CustomLinkedList<T> implements List<T> {
             if (index < 1) {
                 throw new NoSuchElementException();
             }
+            lastPosition = index;
             return getCustomNode(--index).value;
         }
 
         @Override
         public int nextIndex() {
-            return 0;
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return index;
         }
 
         @Override
         public int previousIndex() {
-            return 0;
+            if (!hasPrevious()) {
+                throw new NoSuchElementException();
+            }
+            return index - 1;
         }
 
         @Override
         public void remove() {
+            if (lastPosition < 0) {
+                throw new IllegalStateException();
+            }
+            CustomLinkedList.this.remove(lastPosition);
+            index = lastPosition;
+            lastPosition = -1;
         }
 
         @Override
         public void set(T t) {
-            CustomLinkedList.this.add(t);
+
         }
 
         @Override
         public void add(T t) {
-            CustomLinkedList.this.add(t);
+
         }
     }
 

@@ -102,7 +102,9 @@ public class CustomListsTest {
         customList.add("b");
         customList.add("c");
 
+        assertThat(customList.get(0), is(equalTo("a")));
         assertThat(customList.get(1), is(equalTo("b")));
+        assertThat(customList.get(2), is(equalTo("c")));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -128,7 +130,11 @@ public class CustomListsTest {
 
         customList.remove(1);
 
+        assertThat(customList.get(0), is(equalTo("a")));
+        assertThat(customList.get(2), is(equalTo("d")));
         assertThat(customList.get(1), is(equalTo("c")));
+        assertThat(customList.get(3), is(equalTo("e")));
+
     }
 
     @Test
@@ -625,6 +631,61 @@ public class CustomListsTest {
         }
 
         assertThat(count, is(equalTo(customList.size())));
+    }
+
+    @Test
+    public void testThatListIteratorNextIndexWorksProperly() {
+        addValues();
+
+        ListIterator iterator = customList.listIterator();
+
+        int index = 0;
+        while (iterator.hasNext()) {
+            assertThat(iterator.nextIndex(), is(equalTo(index)));
+            iterator.next();
+            index += 1;
+        }
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testThatListIteratorNextIndexThrowsNoSuchElementExceptionIfThereIsNoNextElement() {
+        ListIterator iterator = customList.listIterator();
+
+        iterator.nextIndex();
+    }
+
+    @Test
+    public void testThatListIteratorPreviousIndexWorksProperly() {
+        addValues();
+
+        ListIterator iterator = customList.listIterator(customList.size());
+
+        int index = customList.size() - 1;
+        while (iterator.hasPrevious()) {
+            assertThat(iterator.previousIndex(), is(equalTo(index)));
+            iterator.previous();
+            index -= 1;
+        }
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testThatListIteratorPreviousIndexThrowsNoSuchElementExceptionIfThereIsNoNextElement() {
+        ListIterator iterator = customList.listIterator();
+
+        iterator.nextIndex();
+    }
+
+    @Test
+    public void testThatListIteratorCanRemoveElementsFromList() {
+        addValues();
+
+        ListIterator iterator = customList.listIterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+
+        assertThat(customList.isEmpty(), is(true));
     }
 
     private void addValues() {
