@@ -320,41 +320,41 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     private class CustomListIterator implements ListIterator<T> {
-        private int index;
+        private int cursor;
         private int lastPosition;
 
         public CustomListIterator(int index) {
             super();
-            this.index = index;
+            this.cursor = index;
             this.lastPosition = -1;
         }
 
         @Override
         public boolean hasNext() {
-            return index < size;
+            return cursor < size;
         }
 
         @Override
         public T next() {
-            if (index > size) {
+            if (cursor > size) {
                 throw new NoSuchElementException();
             }
-            lastPosition = index;
-            return getCustomNode(index++).value;
+            lastPosition = cursor;
+            return getCustomNode(cursor++).value;
         }
 
         @Override
         public boolean hasPrevious() {
-            return index != 0;
+            return cursor != 0;
         }
 
         @Override
         public T previous() {
-            if (index < 1) {
+            if (cursor < 1) {
                 throw new NoSuchElementException();
             }
-            lastPosition = index;
-            return getCustomNode(--index).value;
+            lastPosition = cursor;
+            return getCustomNode(--cursor).value;
         }
 
         @Override
@@ -362,7 +362,7 @@ public class CustomLinkedList<T> implements List<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return index;
+            return cursor;
         }
 
         @Override
@@ -370,7 +370,7 @@ public class CustomLinkedList<T> implements List<T> {
             if (!hasPrevious()) {
                 throw new NoSuchElementException();
             }
-            return index - 1;
+            return cursor - 1;
         }
 
         @Override
@@ -379,18 +379,27 @@ public class CustomLinkedList<T> implements List<T> {
                 throw new IllegalStateException();
             }
             CustomLinkedList.this.remove(lastPosition);
-            index = lastPosition;
+            cursor = lastPosition;
             lastPosition = -1;
         }
 
         @Override
         public void set(T t) {
-
+            if (lastPosition < 0) {
+                throw new IllegalStateException();
+            }
+            CustomLinkedList.this.set(lastPosition, t);
+            cursor = lastPosition;
+            lastPosition = -1;
         }
 
         @Override
         public void add(T t) {
-
+            if (lastPosition < 0) {
+                throw new IllegalStateException();
+            }
+            CustomLinkedList.this.add(cursor++, t);
+            lastPosition = -1;
         }
     }
 

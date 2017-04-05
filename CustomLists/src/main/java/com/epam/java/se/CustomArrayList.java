@@ -281,41 +281,41 @@ public class CustomArrayList<E> implements List<E> {
     }
 
     private class CustomListIterator implements ListIterator<E> {
-        private int index;
+        private int cursor;
         private int lastPosition;
 
         public CustomListIterator(int index) {
             super();
-            this.index = index;
+            this.cursor = index;
             this.lastPosition = -1;
         }
 
         @Override
         public boolean hasNext() {
-            return index != size;
+            return cursor != size;
         }
 
         @Override
         public E next() {
-            if (index > size) {
+            if (cursor > size) {
                 throw new NoSuchElementException();
             }
-            lastPosition = index;
-            return (E) data[index++];
+            lastPosition = cursor;
+            return (E) data[cursor++];
         }
 
         @Override
         public boolean hasPrevious() {
-            return index != 0;
+            return cursor != 0;
         }
 
         @Override
         public E previous() {
-            if (index < 1) {
+            if (cursor < 1) {
                 throw new NoSuchElementException();
             }
-            lastPosition = index;
-            return (E) data[--index];
+            lastPosition = cursor;
+            return (E) data[--cursor];
         }
 
         @Override
@@ -323,7 +323,7 @@ public class CustomArrayList<E> implements List<E> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return index;
+            return cursor;
         }
 
         @Override
@@ -331,7 +331,7 @@ public class CustomArrayList<E> implements List<E> {
             if (!hasPrevious()) {
                 throw new NoSuchElementException();
             }
-            return index - 1;
+            return cursor - 1;
         }
 
         @Override
@@ -340,18 +340,27 @@ public class CustomArrayList<E> implements List<E> {
                 throw new IllegalStateException();
             }
             CustomArrayList.this.remove(lastPosition);
-            index = lastPosition;
+            cursor = lastPosition;
             lastPosition = -1;
         }
 
         @Override
         public void set(E e) {
-
+            if (lastPosition < 0) {
+                throw new IllegalStateException();
+            }
+            CustomArrayList.this.set(lastPosition, e);
+            cursor = lastPosition;
+            lastPosition = -1;
         }
 
         @Override
         public void add(E e) {
-
+            if (lastPosition < 0) {
+                throw new IllegalStateException();
+            }
+            CustomArrayList.this.add(cursor++, e);
+            lastPosition = -1;
         }
     }
 }

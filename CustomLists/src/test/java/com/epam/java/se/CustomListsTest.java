@@ -688,6 +688,64 @@ public class CustomListsTest {
         assertThat(customList.isEmpty(), is(true));
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testThatListIteratorRemoveMethodThrowsIllegalStateExceptionCursorHaveIllegalState() {
+        ListIterator iterator = customList.listIterator();
+
+        iterator.remove();
+    }
+
+    @Test
+    public void testThatWeCanSetElementByListIterator() {
+        int index = 3;
+        addValues();
+
+        assertThat(customList.get(index), is(equalTo("d")));
+
+        ListIterator iterator = customList.listIterator();
+        for (int i = 0; i <= index; i++) {
+            iterator.next();
+        }
+
+        iterator.set("x");
+
+        assertThat(customList.get(index), is(equalTo("x")));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testThatListIteratorSetMethodThrowsIllegalStateExceptionIfCursorHaveIllegalState() {
+        ListIterator iterator = customList.listIterator();
+
+        iterator.set("x");
+    }
+
+    @Test
+    public void testThatWeCanAddElementsToListByListIterator() {
+        int index = 3;
+        int startSize = 5;
+        addValues();
+
+        ListIterator iterator = customList.listIterator();
+
+        for (int i = 0; i <= index; i++) {
+            iterator.next();
+        }
+
+        iterator.add("x");
+
+        assertThat(customList.size(), is(startSize + 1));
+        assertThat(customList.get(index), is(equalTo("d")));
+        assertThat(customList.get(index + 1), is(equalTo("x")));
+        assertThat(customList.get(index + 2), is(equalTo("e")));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testThatListIteratorAddMethodThrowsIllegalStateExceptionIfCursorHaveIllegalState() {
+        ListIterator iterator = customList.listIterator();
+
+        iterator.add("x");
+    }
+
     private void addValues() {
         customList.add("a");
         customList.add("b");
