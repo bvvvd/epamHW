@@ -20,18 +20,19 @@ public class IntSet {
      * Set of non-negative integer numbers
      */
     private long[] nonNegativeData;
-
-    private IntSet(long[] negativeData, long[] nonNegativeData) {
-        this.negativeData = Arrays.copyOf(negativeData, negativeData.length);
-        this.nonNegativeData = Arrays.copyOf(nonNegativeData, nonNegativeData.length);
-    }
+    private final int numberOfBits = 64;
 
     /**
-     * Create a new default Set
+     * Creates a new default Set
      */
     public IntSet() {
         negativeData = new long[1];
         nonNegativeData = new long[1];
+    }
+
+    private IntSet(long[] negativeData, long[] nonNegativeData) {
+        this.negativeData = Arrays.copyOf(negativeData, negativeData.length);
+        this.nonNegativeData = Arrays.copyOf(nonNegativeData, nonNegativeData.length);
     }
 
     /**
@@ -41,17 +42,25 @@ public class IntSet {
      */
     public void add(int value) {
         if (value < 0) {
-            int absoluteValue = Math.abs(value);
-            int frameOfValue = (absoluteValue - 1) / 64;
+            int absoluteValue = getAbsoluteValue(value);
+            int frameOfValue = getFrameOfValue(absoluteValue);
             ensureCapacityOfNegativeData(frameOfValue + 1);
             final long mask = 1L << (absoluteValue - 1);
             negativeData[frameOfValue] |= mask;
         } else {
-            int frameOfValue = value / 64;
+            int frameOfValue = value / numberOfBits;
             ensureCapacityOfNonNegativeData(frameOfValue + 1);
             final long mask = 1L << value;
             nonNegativeData[frameOfValue] |= mask;
         }
+    }
+
+    private int getAbsoluteValue(int value) {
+        return Math.abs(value);
+    }
+
+    private int getFrameOfValue(int value) {
+        return (value - 1) / numberOfBits;
     }
 
     private void ensureCapacityOfNonNegativeData(int requiredCapacityOfNonNegativeData) {
@@ -89,8 +98,8 @@ public class IntSet {
      */
     public boolean contains(int value) {
         if (value < 0) {
-            int absoluteValue = Math.abs(value);
-            int frameOfValue = (absoluteValue - 1) / 64;
+            int absoluteValue = getAbsoluteValue(value);
+            int frameOfValue = getFrameOfValue(absoluteValue);
             if (frameOfValue >= getCapacityOfNegativeData()) {
                 return false;
             }
@@ -98,7 +107,7 @@ public class IntSet {
             final long result = negativeData[frameOfValue] & mask;
             return result != 0;
         } else {
-            int frameOfValue = value / 64;
+            int frameOfValue = value / numberOfBits;
             if (frameOfValue >= nonNegativeData.length) {
                 return false;
             }
@@ -115,15 +124,15 @@ public class IntSet {
      */
     public void remove(int value) {
         if (value < 0) {
-            int absoluteValue = Math.abs(value);
-            int frameOfValue = (absoluteValue - 1) / 64;
+            int absoluteValue = getAbsoluteValue(value);
+            int frameOfValue = getFrameOfValue(absoluteValue);
             if (frameOfValue >= getCapacityOfNegativeData()) {
                 return;
             }
             final long mask = 1L << (absoluteValue - 1);
             negativeData[frameOfValue] &= ~mask;
         } else {
-            int frameOfValue = value / 64;
+            int frameOfValue = value / numberOfBits;
             if (frameOfValue >= getCapacityOfNonNegativeData()) {
                 return;
             }
@@ -131,7 +140,6 @@ public class IntSet {
             nonNegativeData[frameOfValue] &= ~mask;
         }
     }
-
 
     /**
      * merges values of two IntSets

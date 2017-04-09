@@ -1,7 +1,5 @@
 package com.epam.java.se;
 
-import java.util.Map;
-
 /**
  * Created by chris on 20.02.2017.
  */
@@ -21,7 +19,9 @@ public class Task3 {
 
     public static void main(String[] args) {
         System.out.println("The value of the argument       |       The value of the function");
+
         double argument = leftBound;
+        
         while (Math.abs(rightBound - argument) > epsilon){
             argument += step;
             System.out.println(argument + "       |       " + getValueOfTheFunction(argument));

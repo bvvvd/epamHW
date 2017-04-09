@@ -128,14 +128,11 @@ public class IntSetTest {
         }
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testUnionNullArgumentThrowsIllegalArgumentException() throws Exception {
         final IntSet set = new IntSet();
-        try {
-            final IntSet united = set.union(null);
-        } catch (IllegalArgumentException e) {
-            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
-        }
+
+        final IntSet united = set.union(null);
     }
 
     @Test
@@ -174,14 +171,11 @@ public class IntSetTest {
         }
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIntersectionNullArgumentThrowsIllegalArgumentException() throws Exception {
         final IntSet set = new IntSet();
-        try {
-            final IntSet intersection = set.intersection(null);
-        } catch (IllegalArgumentException e) {
-            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
-        }
+
+        final IntSet intersection = set.intersection(null);
     }
 
     @Test
@@ -228,14 +222,11 @@ public class IntSetTest {
         }
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testDifferenceNullArgumentThrowsIllegalArgumentException() throws Exception {
         final IntSet set = new IntSet();
-        try {
-            final IntSet intersection = set.intersection(null);
-        } catch (IllegalArgumentException e) {
-            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
-        }
+
+        final IntSet intersection = set.intersection(null);
     }
 
     @Test
@@ -270,14 +261,11 @@ public class IntSetTest {
         assertTrue(set.isSubsetOf(anotherSet));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIsSubsetOfNullArgumentThrowsIllegalArgumentException() throws Exception {
         final IntSet set = new IntSet();
-        try {
-            final boolean isSubset = set.isSubsetOf(null);
-        } catch (IllegalArgumentException e) {
-            System.out.println("at least it's not NPE now, but you should do something with null in method's argument");
-        }
+
+        final boolean isSubset = set.isSubsetOf(null);
     }
 
 }
