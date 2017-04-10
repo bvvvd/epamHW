@@ -2,9 +2,6 @@ package com.epam.java.se.task3;
 
 import org.junit.Test;
 
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
 import java.io.*;
 import java.util.List;
 
