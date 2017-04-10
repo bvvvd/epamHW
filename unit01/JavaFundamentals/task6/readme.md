@@ -1,1 +1,1 @@
-My blocknote class realisation.
+My block note class realization.
