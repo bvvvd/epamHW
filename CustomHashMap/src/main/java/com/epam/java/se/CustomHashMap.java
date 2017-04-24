@@ -5,18 +5,22 @@ import java.util.*;
 /**
  * Custom implementation of HashMap.
  * Stores key-value pairs as <code>CustomEntry</code>.
- * Number of buckets is <code>CAPACITY</code>.
+ * Number of buckets is <code>capacity</code>.
  * This Map does not permit storage {@code null} keys and {@code null} values.
  *
  * @param <K> type of keys
  * @param <V> type of mapped values
  * @author Valeriy Burmistrov
- */
+*/
 public class CustomHashMap<K, V> implements Map<K, V> {
-    private int CAPACITY = 16;
-    private CustomEntry<K, V>[] buckets = new CustomEntry[CAPACITY];
-    private int size;
+    private final int DEFAULT_CAPACITY = 16;
+    private final float LOAD_FACTOR = 0.75f;
 
+    private int size;
+    private int capacity = DEFAULT_CAPACITY;
+    private int threshold = (int) (capacity * LOAD_FACTOR);
+
+    private CustomEntry<K, V>[] buckets = new CustomEntry[capacity];
     /**
      * @return number of mappings in this map
      */
@@ -59,7 +63,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public boolean containsValue(Object value) {
         Objects.requireNonNull(value);
 
-        for (int i = 0; i < CAPACITY; i++) {
+        for (int i = 0; i < capacity; i++) {
             CustomEntry currentEntry = buckets[i];
             while (currentEntry != null) {
                 if (currentEntry.value.equals(value)) {
@@ -90,7 +94,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     }
 
     private int getNumberOfBucket(Object key) {
-        return Math.abs(key.hashCode()) % CAPACITY;
+        return Math.abs(key.hashCode()) % capacity;
     }
 
     /**
@@ -196,7 +200,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
      */
     @Override
     public void clear() {
-        buckets = new CustomEntry[CAPACITY];
+        buckets = new CustomEntry[DEFAULT_CAPACITY];
         size = 0;
     }
 
