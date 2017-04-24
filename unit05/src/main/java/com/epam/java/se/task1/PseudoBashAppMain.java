@@ -12,6 +12,7 @@ public class PseudoBashAppMain {
     final static Nautilus nautilus = new Nautilus();
     final static FileEditor editor = new FileEditor();
     final static FileContentEditor contentEditor = new FileContentEditor();
+    private static String pathSeparator = System.getProperty("file.separator");
 
     public static void main(String[] args) {
         while (true) {
@@ -161,7 +162,7 @@ public class PseudoBashAppMain {
     }
 
     private static String makeFullFileName(String currentDirectory, String fileName) {
-        return currentDirectory.concat("\\").concat(fileName);
+        return currentDirectory.concat(pathSeparator).concat(fileName);
     }
 
     private static void printWorkingDirectory() {
