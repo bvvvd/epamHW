@@ -115,7 +115,10 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         if (buckets[numberOfBucket] == null) {
             buckets[numberOfBucket] = new CustomEntry<>(key, value);
+
             size += 1;
+
+            ensureCapacity();
         } else {
 
             CustomEntry currentEntry = findEntryWithTheSameKey(key);
@@ -124,7 +127,9 @@ public class CustomHashMap<K, V> implements Map<K, V> {
                 CustomEntry<K, V> newEntry = new CustomEntry<>(key, value);
                 newEntry.next = buckets[numberOfBucket];
                 buckets[numberOfBucket] = newEntry;
+
                 size += 1;
+                ensureCapacity();
             } else {
                 V previousValue = (V) currentEntry.value;
                 currentEntry.value = value;
@@ -133,6 +138,23 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         }
 
         return null;
+    }
+
+    private void ensureCapacity() {
+        if (size > threshold) {
+            resize();
+        }
+    }
+
+    private void resize() {
+        Iterator<Map.Entry<K, V>> iterator = entrySet().iterator();
+
+        size = 0;
+        capacity *= 2;
+        threshold = (int) (capacity * LOAD_FACTOR);
+        buckets = new CustomEntry[capacity];
+
+        iterator.forEachRemaining((entry) -> put(entry.getKey(), entry.getValue()));
     }
 
     private CustomEntry findEntryWithTheSameKey(K key) {
@@ -202,6 +224,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public void clear() {
         buckets = new CustomEntry[DEFAULT_CAPACITY];
         size = 0;
+        capacity = DEFAULT_CAPACITY;
     }
 
     /**
